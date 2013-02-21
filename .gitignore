@@ -1,0 +1,13 @@
+# Compiled Source  
+*.pyc
+
+# Files
+local_settings.py
+
+# Directories
+ve/
+
+# Temp Files
+*.py~
+*.html~
+*.*~
