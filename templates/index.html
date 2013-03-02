@@ -25,6 +25,17 @@
     <script type="text/javascript" src="{{ STATIC_URL }}js/tile-drag.js"></script>
 
     <title>DTC Bus Routes</title>
+
+    <style>
+    
+    .box { margin-top:160px;
+    
+        }
+    
+    
+    
+    </style>
+
 </head>
 <body class="modern-ui" onload=" ">
     <div class="page secondary">
@@ -36,14 +47,17 @@
             </div>
         </div>
      
-
-        <div class="page-region">
-            <div class="page-region-content">
-                <div class="grid">
-                </div>
-            </div>
+        <div class="grid">
+        <div class="row">       
+        <div class="span6"></div>
+        <div class="span6">        
+             <div class="input-control text box">
+               <input type="text" class="with-helper" placeholder="Enter Bus No." />
+               <button class="btn-search"></button>
+             </div>    
         </div>
-              
+        </div>        
+        </div>     
     
  
     </body>
