@@ -120,8 +120,7 @@ Bijwasan Railway X-ing
 Bijwasan School
 Botanical Garden Metro Station
 Botanical Garden Metro Station / Film City
-Botanical Garden Metro Station / Sec-16a
-Brahma Farm
+Botanical Garden Metro Station / Sec-16A
 Brar Square
 Budh Pur
 Budh Vihar
@@ -158,21 +157,17 @@ City Centre Metro Station
 City Centre Sector 32
 Clock Tower / Police Station Roshanara Road
 CRPF
-D Block Okhla Ph-II
-D K Depot
-D-Block Janakpuri
+D Block Okhla Industrial Area Ph-II
 D-Block Mangolpuri
-D-Block Okhla Industrial Area
 D.B. Gupta Marg
 D.B. Gupta Market
 D.B. Gupta Road
 D.D.U. Marg
 D.E.S.U. Colony Janak Puri
-D.K. Depot
+Dichaon Kalan Depot
 Dabri Village
 Dakshinpuri
 Dallupura
-Dariyapur
 Daryapur
 Daulatpur
 Daulatpur X-ing
@@ -180,7 +175,7 @@ Daurala Border
 Dawarka Sector 18 A
 Daya Basti
 Dayalpur
-Dda Flats Kalkaji
+DDA Flats Kalkaji
 Defence Colony
 Dehisra Border
 Delhi Gate
@@ -272,37 +267,36 @@ Goyla Dairy
 Goyla Village
 Greater Kailash Part-I N-Block Market
 Greater Kailash Part-II
-GTB Hospital
-GTK By Pass
-GTN Nagar
+G.T.B. Hospital
+G.T.K. By Pass
 Gulabi Bagh
-Gulabi Bagh Dda Flats
+Gulabi Bagh DDA Flats
 Gupta Market
 Guru Gobind Singh Marg
 Guru Gobind Singh Marg / New Rohtak Road
-Guru Govind Singh Marg / Faiz Road
+Guru Gobind Singh Marg / Faiz Road
 Guru Hari Kishan Nagar
-Gurudara Raghubir Nagar
+Gurudwara Raghubir Nagar
 Gandhi Nagar
 Hasan Pur Depot
 Haider Pur
-Haider Pur (Water Works)
+Haider Pur Water Works
 Haider Pur Village
 Hamdard Nagar
 Hamid Pur
-Har Govind Enclave
+Hargovind Enclave
 Harewali Border
 Harewali Village
 Harewali X-ing
 Hari Nagar Clock Tower
 Hari Nagar Depot
-Harijan Basti Rajoukri
+Harijan Basti Rajokri
 Harola Village / Rajni Gandha Chowk
 Harola Village / Sector 27
 Harsh Vihar
 Hasan Pur
 Hasan Pur Depot
-Hastal Bridge LIG Flats
+Hastsal Bridge LIG Flats
 Hauz Khas Terminal
 Hauzrani
 Hazi Pur More
@@ -311,17 +305,13 @@ High Court
 Hindon Regulator
 Hindon Regulator (Border)
 Hiran Kudna Village
-Hiran Kundna X-ing
+Hiran Kudna X-ing
 Hiranki
 Hiranki Village
 Holambi Kalan
 Holambi Khurd
-Holly Family
-Holly Family Hospital
-Holumbi Kalan
-Holumbi Kalan JJ Colony
-Holumbi Khurd
-Holumbi Khurd JJ Colony
+Holy Family Hospital
+Holambi Kalan JJ Colony
 Hosary Complex Petrol Pump
 Hoshiyar Pur Village
 I.I.T. Gate
@@ -344,11 +334,12 @@ Inder Lok Metro Station
 Inder Puri
 Inder Puri (Krishi Kunj)
 Inder Puri JJ Colony
-Inderlok Metro Station
 Indira Puri Loni Border
 ISBT Bridge
 ISBT Kashmere Gate (Nityanand Marg)
-ISBT / Mori Gate / Kashmiri Gate
+ISBT / Kashmiri Gate
+Mori Gate
+Mori Gate Terminal
 Ishwar Nagar
 Issa Pur MC School
 Issa Pur Temple
@@ -365,7 +356,7 @@ Jagat Puri
 Jagat Puri A-Block
 Jahangir Puri
 Jahangir Puri E-Block
-Jaipuria Mall (Indira Puram U.p.)
+Jaipuria Mall (Indira Puram U.P.)
 Jaitpur
 Jaitpur Village
 Jal Vihar Terminal
@@ -379,7 +370,6 @@ Janak Puri District Center
 Jantar Mantar
 Jasola Village
 Jat Khor
-Jawala Puri
 JD Block Maurya Enclave
 Jhande Walan
 Jharoda Camp
@@ -389,8 +379,8 @@ Jharoda Kalan
 Jharoda Village
 Jharoda X-ing
 Jhatikara X-ing
-Jhatikra More
-Jhatikra Village
+Jhatikara More
+Jhatikara Village
 Jheel
 Jheer Khore Temple
 Jhilmil Colony
@@ -399,7 +389,7 @@ Jhingola Village
 Jhuljhuli
 Jhund Pura
 Jind Pur
-JJ Colony Hastasal
+JJ Colony Hastsal
 Johri Pur Village
 Johri Pur X-ing
 Jonti Border
@@ -493,8 +483,6 @@ Lado Sarai More
 Lado Sarai X-ing
 Ladpur
 Lajpat Nagar
-Lajpat Nagar-I
-Lajpat Nagar Double Story
 Lajwanti Garden
 Lajwanti Garden/ Nangal Rai
 Lal Kuan
@@ -502,7 +490,6 @@ Lampur Border
 Laniyal Industries
 LDGO / Lotus
 Libas Pur G.T. Road
-Lig Flats Hastsal
 Lodhi Colony
 Loha Mandi
 Loniyan Industries
