@@ -129,8 +129,6 @@ Burari Village
 Burari X-ing
 Bawana JJ Colony B-Block
 Bawana KL-Block
-C Lal Chowk
-C R Park
 C.G.O. Complex (Ispat Bhawan)
 C.P.W.D. Colony Vasant Vihar
 C.R. Park
@@ -295,7 +293,7 @@ Harola Village / Rajni Gandha Chowk
 Harola Village / Sector 27
 Harsh Vihar
 Hasan Pur
-Hasan Pur Depot
+Hasan Pur Depot (Patparganj Depot)
 Hastsal Bridge LIG Flats
 Hauz Khas Terminal
 Hauzrani
@@ -504,6 +502,7 @@ Madan Pur Khadar X-ing
 Madan Pur X-ing
 Madhu Vihar
 Madhu Vihar (Dwarka)
+Madhuban Chowk
 Madi Pur JJ Colony
 Mahamaya Flyover West
 Maharana Inter College Sector 44
@@ -556,7 +555,6 @@ Mayur Vihar Ph-I X-ing
 Mayur Vihar Ph-II
 Mayur Vihar Ph-III
 Mayur Vihar Ph-III More
-MBS Nagar
 Mehrauli
 Mehrauli Terminal
 Mile Stone
@@ -566,9 +564,8 @@ Minto Road Terminal
 Mitha Pur
 Mitha Pur Chowk
 Mitha Pur Extn. (Sindhu Farm)
-Mitrao/ Jharoda Camp
+Mitraon / Jharoda Camp
 Mitraon
-Mitraou
 Model Town I
 Model Town II
 Model Town III
@@ -578,13 +575,12 @@ Mohd. Pur
 Mohindra Park
 Molar Bandh School
 Mool Chand Hospital
-More Lines
+More Line
 Mori Gate Terminal
 Mother Diary
 Moti Bagh I
 Moti Nagar
-MP Chowk
-MP Depot
+Maya Puri Depot
 Mubarak Pur Dabas
 Mukand Pur
 Mukand Pur X-ing
@@ -639,7 +635,6 @@ National Stadium
 Nawada
 Nawada Village
 Naya Bans
-Naya Bans Sector 3
 NDPO (Baba Kharak Singh Marg)
 Neb Sarai
 Neelkanth Apartments Sector 62
@@ -708,14 +703,13 @@ Narela A-7 Raja Harish Chandra Hospital
 Narela Sector A 5-6
 O.S. Communication
 Okhla
-Okhla Encl
+Okhla Enclave
 Okhla Extn.
 Okhla Extn. / Abul Fazal Enclave
 Okhla Tank
 Old Delhi Railway Station
 Old Nangal
 Old Secretariat
-P.R. Road
 Police Station Kirti Nagar
 Police Station Nizamuddin
 Police Station Paharganj
@@ -725,8 +719,6 @@ Police Station Sarojini Nagar
 Police Station Tughlak Road
 Police Station Tughlakabad
 Police Station Vivek Vihar
-P.T.S.
-P.T.S. School
 Pahari Temple
 Palam Airport
 Palam Colony
@@ -761,14 +753,12 @@ Pochanpur Mandir
 Pocket A-I
 Police Post Dilshad Garden
 Police Post Sector 60
-Police T. School
+Police Training School
 Poorvanchal Hostel
-Pooth Kala
 Pooth Kalan
 Pooth Khurd
 Power House
-PPG Depot
-PPG Village
+Patparganj Village
 Pragati Maidan
 Prahlad Vihar
 Prahladpur
@@ -783,7 +773,7 @@ Punjabi Bagh
 Punjabi Bagh Club
 Punjabi Bagh Terminal
 Purvanchal Hostel
-Pusa Road Petrol Pump / A.S. Road
+Pusa Road Petrol Pump / Arya Samaj Road
 Pushp Vihar Sector 1 Market
 Pushpanjali G-Block
 Pusta X-ing (N.H. 24)
@@ -793,7 +783,7 @@ Qutub Minar
 Qutub Minar Metro Station
 Qutubgarh
 Qutubgarh Border
-R-Block Rajendra Nagar
+Rajendra Nagar R-Block
 R.K. Puram Sector 1
 R.K. Puram Sector 6 X-ing
 R.K. Puram Sector 8
@@ -805,7 +795,7 @@ R.R. Lines
 Race Course
 Radha Swami Satsang Bhawan
 Radisson Hotel
-Radisson Plaza (towards Air Port)
+Radisson Plaza (Towards Air Port)
 Raghubir Nagar
 Raghubir Nagar F-Block
 Raghubir Nagar Gurudwara
@@ -892,9 +882,9 @@ S.J. Terminal
 S.K. Hospital
 S.K. Hospital / Shivaji Stadium
 S.M. Temple
-S.N. Depot
-S.N.P. Depot
-S.P. Depot
+Sarojini Nagar Depot
+Sri Niwas Puri Depot
+Seema Puri Depot
 S.P.G. Complex
 S.T.A. Office
 Sabha Pur Village
@@ -917,7 +907,7 @@ Samalkha Village
 Samalkha X-ing
 Samas Khalsa
 Samas Pur Khalsa
-Samey Pur
+Sameypur
 Sangam Vihar
 Sanoth Village
 Sanoth X-ing
@@ -1019,9 +1009,7 @@ Surehra X-ing
 Surya Nagar
 Swami Malai Mandir
 Swami Nagar
-Swaran Cinema
 Swarn Cinema
-Swarn Talkies
 Swaroop Nagar JJ Colony (Bhalswa)
 Syndicate Bank
 Tajpur Kalan
@@ -1061,9 +1049,8 @@ USSR Embassy (Russian Embassy)
 Uttam Nagar
 Uttam Nagar Terminal
 Uttam Nagar Terminal (via Pankha Raod)
-Uttam Ngr X-ing
+Uttam Nagar X-ing
 Uttari Pitam Pura
-V.V. Depot
 Vasant Kunj B-3
 Vasant Kunj C-9
 Vasant Kunj Sector A
