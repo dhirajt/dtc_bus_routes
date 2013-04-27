@@ -1,0 +1,55 @@
+{% extends "index.html" %}
+
+{% block title %}DTC Bus Routes | Route{% endblock %}
+
+
+
+{% block css %}
+#infobox {
+   float:left;
+ }     
+    
+#stops { 
+   margin-left:300px;
+   
+}  
+
+#content {
+   margin-top: 40px;
+   width:590px;
+}
+{% endblock %}
+
+
+{% block body %}
+    <div class="grid">
+     <div class="row">        
+        <div class="span5"></div>
+        
+        <div id="content" class="span6">
+           <div id="infobox">
+            <div class="tile bg-color-green" style="width:200px;height:auto;">
+            <div class="tile-content">
+            
+            <b> Route : {{ route }} <br/>
+                From : {{ first }} <br/>
+                To : {{ last }} <br />
+            </b>
+            </div>
+            </div>
+          </div>
+          
+           <div id="stops">
+                <b> Stops At: </b> <br /> <br />
+                {% for item in stops %}
+                <p> {{item.sequence}}. {{item.stage}} </p>
+                {% endfor %}  
+          </div>
+        
+        </div>
+       
+        
+        </div>
+      </div> 
+    </div>      
+{% endblock %}

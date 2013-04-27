@@ -1,0 +1,52 @@
+{% extends "index.html" %}
+
+{% block js %}
+<script type="text/javascript">
+ $().ready(function() {
+    $("#suggbus").focus().autocomplete(busno);
+ });
+</script>    
+{% endblock %}
+
+{% block title %}DTC Bus Routes{% endblock %}
+
+{% block css %}
+.label {
+   display: inline-block;
+   line-height: inherit;
+   font-size: 0.75em;
+   font-weight: bold;
+   padding: 2px 4px;  
+   background-color: rgb(185, 29, 71) !important;
+   color: rgb(255, 255, 255) !important; 
+    
+ }     
+    
+#err { 
+   position:absolute; 
+   top: 65%;
+   left: 43%;
+   
+}  
+{% endblock %}
+
+{% block body %}
+        <div class="grid">
+        <div class="row">        
+        <div class="span5"></div>
+        
+        <div class="span6">
+           {% if error %}
+            <span id="err" class="label">{{error}}</span>
+            {% endif %}
+           <form action="{% url search %}" method="GET" > 
+           <div class="input-control text box">
+            <input type="text" id="suggbus" name="bus" class="with-helper" placeholder="Enter Bus No." />
+            <button class="btn-search" type="submit"></button>
+            
+           </div>  
+           </form>      
+        </div>
+        </div> 
+        </div>      
+{% endblock %}

@@ -17,27 +17,19 @@
     <script type="text/javascript" src="{{ STATIC_URL }}js/dropdown.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/accordion.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/buttonset.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}js/carousel.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/input-control.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/pagecontrol.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}js/rating.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/slider.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/tile-slider.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/tile-drag.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/busno.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.autocomplete.js"></script>
     
-    <script type="text/javascript">
-        $().ready(function() {
+    {% block js %}
     
-        $("#suggbus").focus().autocomplete(busno);
+    {% endblock %}
     
-    
-    
-    });
-    </script>
-    
-    <title>DTC Bus Routes</title>
+    <title>{% block title %}{% endblock %}</title>
 
     <style>
     
@@ -45,23 +37,43 @@
     
         }
     
-      /* Wrapper for page content to push down footer */
       .container {
-        min-height: 100%;
-        height: auto !important;
         height: 100%;
-        
-        margin-top:255px;
         padding-top:10px;
         margin-left:550px;
       }
-
       
-      #footer {
-        height: 66px;
-        background-color: rgb(228, 237, 245);
-        
+      html {
+        position: relative;
+        min-height: 100%;
       }
+      
+      body {
+        margin: 0 0 80px; /* bottom = footer height */
+      }
+    
+      #footer{
+        height: 65px; 
+        width:100%;
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        background-color: rgb(228, 237, 245);
+     }
+      
+      #footer a{
+        color: rgb(82, 83, 85);
+        text-decoration:none;
+      }
+      #footer a:hover{
+      
+        text-decoration:underline;        
+      }
+      {% block css %}
+      
+      
+      
+      {% endblock %}
     
     </style>
 
@@ -70,45 +82,29 @@
     <div class="page secondary">
         <div class="page-header">
             <div class="page-header-content">
-                <h1>DTC <span style="font-size:45px; color:#91DB39" class="icon-bus"></span>
+                <h1>DTC <a href="{% url home %}"><span style="font-size:45px; color:#91DB39" class="icon-bus"></span></a>
                 Routes
                 </h1>
             </div>
         </div>
      
-        <div class="grid">
-        <div class="row">       
-        <div class="span5"></div>
-        <div class="span6">        
-             <div class="input-control text box">
-               <input type="text" id="suggbus" class="with-helper" placeholder="Enter Bus No." />
-               <button class="btn-search"></button>
-             </div>  
-             
-             
-             
-             
-             
-               
-        </div>
-        </div> 
-        
-        
-        
-               
-        </div>  
-        
+        {% block body %}
       
+        {% endblock %}
+        
+        
+     
     </div>
-    
-    </body>
     <div id="footer">
     
       <div class="container">
       &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
-      <a href="http://www.djangoproject.com/"><img src="https://www.djangoproject.com/m/img/badges/djangoproject120x25.gif" border="0" alt="A Django project." title="A Django project." /></a> <br />     
-       <a href="https://github.com/Dhiraj92/dtc-bus-routes/blob/master/LICENCE.md"> License </a>
-       | <a href="https://github.com/Dhiraj92/dtc-bus-routes/blob/master/LICENCE.md"> Disclaimer </a> | <a href="https://github.com/Dhiraj92/dtc-bus-routes/issues"> Bug Reports </a>
+      <a href="http://www.djangoproject.com/"><img src="https://www.djangoproject.com/m/img/badges/djangoproject120x25.gif" border="0" alt="A Django project." title="A Django project." /></a><br />     
+       <a href="https://github.com/Dhiraj92/dtc-bus-routes/blob/master/LICENCE.md">License</a>
+       | <a href="https://github.com/Dhiraj92/dtc-bus-routes/blob/master/LICENCE.md">Disclaimer</a> | <a href="https://github.com/Dhiraj92/dtc-bus-routes/issues">Bug Reports</a>
       </div>
     </div>
+    
+    </body>
+    
 </html>
