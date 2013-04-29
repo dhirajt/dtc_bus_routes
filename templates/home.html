@@ -6,36 +6,70 @@
     $("#suggbus").focus().autocomplete(busno);
  });
 </script>    
+
+
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+
+<script>(function(d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s); js.id = id;
+            js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=234317193266675";
+            fjs.parentNode.insertBefore(js, fjs);
+            }(document, 'script', 'facebook-jssdk'));</script>
+
+
 {% endblock %}
 
 {% block title %}DTC Bus Routes{% endblock %}
 
 {% block css %}
-.label {
-   display: inline-block;
-   line-height: inherit;
-   font-size: 0.75em;
-   font-weight: bold;
-   padding: 2px 4px;  
-   background-color: rgb(185, 29, 71) !important;
-   color: rgb(255, 255, 255) !important; 
+       .label {
+        display: inline-block;
+        line-height: inherit;
+        font-size: 0.75em;
+        font-weight: bold;
+        padding: 2px 4px;  
+        background-color: rgb(185, 29, 71) !important;
+        color: rgb(255, 255, 255) !important; 
     
- }     
+       }     
     
-#err { 
-   position:absolute; 
-   top: 65%;
-   left: 43%;
+       #err { 
+        position:absolute; 
+        top: 65%;
+        left: 43%;
    
-}  
+       }
+       #bar {
+        padding-left:50px;
+    
+      }  
+
+      .box { 
+        margin-top:160px;  
+      }
+
+      #share {
+        width:190px;
+        height:40px;
+        margin-top:100px;
+        text-align:center;
+      }
+      .fb-like{
+        float:right;
+      }
+      #twitter{
+        float:left;
+      }
+        
 {% endblock %}
 
 {% block body %}
         <div class="grid">
-        <div class="row">        
-        <div class="span5"></div>
-        
-        <div class="span6">
+        <div class="row">                
+        <div class="span5 offset6">
            {% if error %}
             <span id="err" class="label">{{error}}</span>
             {% endif %}
@@ -49,4 +83,17 @@
         </div>
         </div> 
         </div>      
+{% endblock %}
+
+{% block share %}
+
+ <div id="share" class="offset7">
+      <div id="fb-root"></div>
+      <div class="fb-like" data-href="http://dhirajthakur.pythonanywhere.com/" data-send="false" data-layout="button_count" data-width="100" data-show-faces="false" data-font="segoe ui"></div>
+
+         
+         <a href="https://twitter.com/share" id="twitter" class="twitter-share-button" data-url="http://dhirajthakur.pythonanywhere.com/" data-text="DTC Bus Route finder" data-via="dhirajthakur92" data-hashtags="dtc,busroute" data-dnt="true">Tweet</a> 
+         
+</div>
+
 {% endblock %}
