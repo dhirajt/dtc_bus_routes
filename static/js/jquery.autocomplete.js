@@ -422,7 +422,7 @@ $.Autocompleter.defaults = {
 	formatItem: function(row) { return row[0]; },
 	formatMatch: null,
 	autoFill: false,
-	width: 382,
+	width: 380,
 	multiple: false,
 	multipleSeparator: ", ",
 	highlight: function(value, term) {

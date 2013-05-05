@@ -1,5 +1,41 @@
 {% extends "index.html" %}
 
+{% block js %}
+<script type="text/javascript" src="{{ STATIC_URL }}js/jquery19.js"></script>
+
+<script>
+
+
+$(function (){
+
+$('body').tooltip({
+    selector: '[rel=tooltip]'
+});
+
+
+$(document).on('mouseenter','span[rel=tooltip]', function(){
+    var ele = $(this)
+    stage = $(this).html()
+    $.get( "{% url ajax_bus %}?q="+ encodeURIComponent(stage), 
+            function (response) {
+                ele.attr("data-original-title",response);
+            }
+         );
+   $(this).tooltip('show');
+});
+
+$(document).on('mouseleave','span[rel=tooltip]', function(){
+    $(this).tooltip('hide');
+});
+
+
+
+});
+
+</script>
+{% endblock %}
+
+
 {% block title %}DTC Bus Routes | Route{% endblock %}
 
 
@@ -18,6 +54,99 @@
    margin-top: 40px;
    width:590px;
 }
+
+
+.tooltip {
+  position: absolute;
+  z-index: 1030;
+  display: block;
+  font-size: 12px;
+  line-height: 1.4;
+  font-weight:normal;
+  opacity: 1;
+  filter: alpha(opacity=0);
+  visibility: visible;
+}
+
+.tooltip.in {
+  opacity: 0.8;
+  filter: alpha(opacity=80);
+}
+
+.tooltip.top {
+  padding: 5px 0;
+  margin-top: -3px;
+}
+
+.tooltip.right {
+  padding: 0 5px;
+  margin-left: 3px;
+}
+
+.tooltip.bottom {
+  padding: 5px 0;
+  margin-top: 3px;
+}
+
+.tooltip.left {
+  padding: 0 5px;
+  margin-left: -3px;
+}
+
+.tooltip-inner {
+  max-width: 200px;
+  padding: 8px;
+  color: #ffffff;
+  text-align: center;
+  text-decoration: none;
+  background-color: #000000;
+  -webkit-border-radius: 4px;
+     -moz-border-radius: 4px;
+          border-radius: 4px;
+}
+
+.tooltip-arrow {
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+}
+
+.tooltip.top .tooltip-arrow {
+  bottom: 0;
+  left: 50%;
+  margin-left: -5px;
+  border-top-color: #000000;
+  border-width: 5px 5px 0;
+}
+
+.tooltip.right .tooltip-arrow {
+  top: 50%;
+  left: 0;
+  margin-top: -5px;
+  border-right-color: #000000;
+  border-width: 5px 5px 5px 0;
+}
+
+.tooltip.left .tooltip-arrow {
+  top: 50%;
+  right: 0;
+  margin-top: -5px;
+  border-left-color: #000000;
+  border-width: 5px 0 5px 5px;
+}
+
+.tooltip.bottom .tooltip-arrow {
+  top: 0;
+  left: 50%;
+  margin-left: -5px;
+  border-bottom-color: #000000;
+  border-width: 0 5px 5px;
+}
+
+
+
 {% endblock %}
 
 
@@ -42,7 +171,7 @@
            <div id="stops">
                 <b> Stops At: </b> <br /> <br />
                 {% for item in stops %}
-                <p> {{item.sequence}}. {{item.stage}} </p>
+                <p> {{item.sequence}}. <span id="res" rel="tooltip" data-placement="right">{{item.stage}} </span> </p>
                 {% endfor %}  
           </div>
         
