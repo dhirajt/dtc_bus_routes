@@ -3,6 +3,14 @@
 {% block js %}
 
 <script type="text/javascript" src="{{ STATIC_URL }}js/jquery13.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/stgname.js"></script>
+
+<script type="text/javascript">
+ $().ready(function() {
+    $("#suggstg").focus().autocomplete(stg);
+    $("#suggstg1").focus().autocomplete(stg);
+ });
+</script>    
 
 
 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
@@ -31,14 +39,15 @@
         background-color: rgb(185, 29, 71) !important;
         color: rgb(255, 255, 255) !important; 
     
-       }     
-    
+       } 
        #err { 
         position:absolute; 
-        top: 65%;
-        left: 45%;
+        top: 50%;
+        left: 36%;
    
-       }
+       }    
+    
+       
        #bar {
         padding-left:50px;
     
@@ -48,6 +57,7 @@
         margin-top:150px;  
       }
 
+      
       #share {
         height:50px;
         margin-top:100px;
@@ -61,9 +71,13 @@
       #twitter{
         float:center;
       }
-        
-      #leftchoice {
-        width:350px;
+          
+      #suggstg , #suggstg1 {
+        width : 380px;
+        }
+      
+      #twostgroute {
+        padding-left:2.5%;
         }
         
 {% endblock %}
@@ -71,26 +85,20 @@
 {% block body %}
         <div class="grid">
         <div class="row">
-        <div class="span10 offset4" id="mainmenu">
-        <div id="choice" class="box">
-         <div id="leftchoice" class="span5">
-           <a href="{% url search %}"><button class="command-button default">
-                <b> Find route by bus number </b>
-                <small>Use this to see the route of a particular
-                       bus. For e.g. 182A</small>
-           </button> </a>
-        
-         </div> 
-         <div id="rightchoice" class="span5">
-         <a href="{% url searchstg %}"><button class="command-button default">
-                <b> Find buses between two stops </b>
-                <small>Find buses between your
-                       source stop and destination stop.</small>
-           </button> </a>
-           
-          </div>
-         </div>
-        </div>    
+        <div class="span13 offset2" id="twostgroute">
+            {% if error %}
+            <span id="err" class="label">{{error}}</span>
+            {% endif %} 
+           <form action="{% url searchstg %}" method="GET" > 
+           <div class="input-control text box">
+            From &nbsp;&nbsp; <input type="text" id="suggstg" name="startstg" class="with-helper" placeholder="Enter source stop name" /> to &nbsp;&nbsp;  
+            <input type="text" id="suggstg1" name="endstg" class="with-helper" placeholder="Enter destination stop name" /> 
+            <button class="default" type="submit">Find Route!</button>
+            
+           </div>  
+           </form>    
+          
+        </div>   
                 
         </div> 
         </div>      

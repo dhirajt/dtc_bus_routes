@@ -611,7 +611,7 @@ $.Autocompleter.Select = function (options, input, select, config) {
 			config.mouseDownOnSelect = false;
 		});
 		
-		if( options.width > 0 )
+		if( options.width )
 			element.css("width", options.width);
 			
 		needsInit = false;

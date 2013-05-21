@@ -1,0 +1,122 @@
+{% extends "index.html" %}
+{% load dictag %}
+
+{% block js %}
+<script type="text/javascript" src="{{ STATIC_URL }}js/jquery19.js"></script>
+
+<script>
+
+
+$(function (){
+
+$('body').tooltip({
+    selector: '[rel=tooltip]'
+});
+
+
+$(document).on('mouseenter','span[rel=tooltip]', function(){
+    var ele = $(this)
+    stage = $(this).html()
+    $.get( "{% url ajax_bus %}?q="+ encodeURIComponent(stage), 
+            function (response) {
+                ele.attr("data-original-title",response);
+            }
+         );
+   $(this).tooltip('show');
+});
+
+$(document).on('mouseleave','span[rel=tooltip]', function(){
+    $(this).tooltip('hide');
+});
+
+
+
+});
+
+</script>
+{% endblock %}
+
+
+{% block title %}DTC Bus Routes | Route{% endblock %}
+
+
+
+{% block css %}
+#infobox {
+   float:left;
+ }     
+    
+#stops { 
+   margin-left:300px;
+   
+}  
+
+#content {
+   margin-top: 40px;
+   width:590px;
+}
+
+.listview li {
+    width:350px;
+   }
+
+
+{% endblock %}
+
+
+{% block body %}
+    <div class="grid">
+     <div class="row">        
+        <div class="span5"></div>
+        
+        
+        
+        
+        
+        <div id="content" class="span7">
+           <div id="infobox">
+            <div class="tile bg-color-green" style="width:200px;height:auto;">
+            <div class="tile-content">
+            
+            <b> From : {{ startstg }} <br/>
+                To : {{ endstg }} <br />
+            </b>
+            </div>
+            </div>
+          </div>
+          
+           <div id="stops">
+                       <ul class="listview">
+                         {% for bus in buslist %}
+                         <li>
+                            {% if forloop.counter == 1 %}
+                            <div class="badge strech">
+                                Shortest route
+                            </div> 
+                            {% endif %}
+                            <div class="icon">
+                               <!-- <a href=""> --> 
+                               <h4><span style="font-size:30px;" class="icon-bus"></span></h4>
+                               
+                            </div>
+                             
+                            <div class="data">
+                                <h4>{{ bus }}</h4>
+                                {% with stoplist=data|getval:bus %}
+                                {% for stop in stoplist %}
+                                <span>{{ forloop.counter }}. {{ stop }}</span>
+                                {% endfor %}
+                                {% endwith %}
+                            </div>
+                        </li>
+                        {% endfor %}
+                       </ul>
+          </div>
+        
+        </div>
+       
+        
+        </div>
+      </div> 
+    </div>      
+{% endblock %}
