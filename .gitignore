@@ -12,3 +12,4 @@ rost/migrations
 *.py~
 *.html~
 *.*~
+*.go*~
