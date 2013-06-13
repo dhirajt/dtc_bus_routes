@@ -1,11 +1,15 @@
 {% extends "index.html" %}
 
 {% block js %}
+
+<link href="{{ STATIC_URL }}css/leaflet.css" rel="stylesheet"> 
+
 <script type="text/javascript" src="{{ STATIC_URL }}js/jquery19.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/leaflet.js"></script>
+
+
 
 <script>
-
-
 $(function (){
 
 $('body').tooltip({
@@ -43,18 +47,30 @@ $(document).on('mouseleave','span[rel=tooltip]', function(){
 {% block css %}
 #infobox {
    float:left;
+   width:10%;
  }     
     
 #stops { 
-   margin-left:300px;
-   
+   margin-top: 20px;
+   float:left;  
 }  
 
 #content {
    margin-top: 40px;
-   width:590px;
 }
 
+#map {
+    margin-top: 40px;
+    border:1px dashed gray;
+    height:500px;
+    background-color:#ffffff;
+    text-align: center;
+    
+}
+
+.leaflet-control-layers-toggle {
+	background-image: url("{{ STATIC_URL }}images/layers.png");
+}
 
 .tooltip {
   position: absolute;
@@ -153,9 +169,9 @@ $(document).on('mouseleave','span[rel=tooltip]', function(){
 {% block body %}
     <div class="grid">
      <div class="row">        
-        <div class="span5"></div>
+        <div class="span2"></div>
         
-        <div id="content" class="span6">
+        <div id="content" class="span4">
            <div id="infobox">
             <div class="tile bg-color-green" style="width:200px;height:auto;">
             <div class="tile-content">
@@ -166,19 +182,56 @@ $(document).on('mouseleave','span[rel=tooltip]', function(){
             </b>
             </div>
             </div>
-          </div>
-          
-           <div id="stops">
+           </div>
+           <div id="stops" class="span4">
                 <b> Stops At: </b> <br /> <br />
                 {% for item in stops %}
                 <p> {{item.sequence}}. <span id="res" rel="tooltip" data-placement="right">{{item.stage}} </span> </p>
                 {% endfor %}  
           </div>
-        
-        </div>
-       
-        
-        </div>
+        </div> 
+         
+          
+          <div id="map" class="span10"> </div>
+          <script> 
+                var Url = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/{styleId}/256/{z}/{x}/{y}.png',
+                    Attribution = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>';
+                
+                
+                var baselayer=L.tileLayer(Url, 
+                {   styleId : 997,
+			        maxZoom: 18,
+			        attribution: Attribution
+			    }),
+			    
+			        highways=L.tileLayer(Url, 
+			    {   styleId: 46561,
+			        attribution: Attribution
+			        
+			    });
+               
+                
+		        var baseIcon = L.Icon.extend({
+                     options: {
+                        iconSize:     [30, 35], 
+                        iconAnchor:   [15, 34], 
+                        popupAnchor:  [1, -25]
+                     } 
+                });
+
+                var busIcon = new baseIcon({iconUrl: '{{ STATIC_URL }}images/bus.png'}),
+                    gmIcon = new baseIcon({iconUrl: '{{ STATIC_URL }}images/gm.png'}),
+                    bmIcon = new baseIcon({iconUrl: '{{ STATIC_URL }}images/bm.png'}),
+                    vmIcon = new baseIcon({iconUrl: '{{ STATIC_URL }}images/vm.png'}),
+                    omIcon = new baseIcon({iconUrl: '{{ STATIC_URL }}images/om.png'}),
+                    rmIcon = new baseIcon({iconUrl: '{{ STATIC_URL }}images/rm.png'}),
+                    ymIcon = new baseIcon({iconUrl: '{{ STATIC_URL }}images/ym.png'});
+
+           </script>
+          <script type="text/javascript" src="{{ STATIC_URL }}js/maps.js"></script>
+
+         
+      
       </div> 
     </div>      
 {% endblock %}
