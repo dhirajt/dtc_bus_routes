@@ -6,8 +6,9 @@
 
 <script type="text/javascript" src="{{ STATIC_URL }}js/jquery19.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL }}js/leaflet.js"></script>
-
-
+<script type="text/javascript" src="{{ STATIC_URL }}js/TileLayer.Bing.js"></script>
+<script src='http://maps.google.com/maps/api/js?sensor=false&amp;v=3.2'></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/leaflet-google.js"></script>
 
 <script>
 $(function (){
@@ -161,6 +162,13 @@ $(document).on('mouseleave','span[rel=tooltip]', function(){
   border-width: 0 5px 5px;
 }
 
+.leaflet-map-pane {
+    z-index: 2 !important;
+}
+
+.leaflet-google-layer {
+    z-index: 1 !important;
+}
 
 
 {% endblock %}
@@ -198,17 +206,18 @@ $(document).on('mouseleave','span[rel=tooltip]', function(){
                     Attribution = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>';
                 
                 
-                var baselayer=L.tileLayer(Url, 
+                var cloudmadelayer=L.tileLayer(Url, 
                 {   styleId : 997,
 			        maxZoom: 18,
 			        attribution: Attribution
 			    }),
 			    
-			        highways=L.tileLayer(Url, 
-			    {   styleId: 46561,
-			        attribution: Attribution
-			        
-			    });
+			     googlelayer = new L.Google('ROADMAP'),
+			     BingAerialWithLabels = new L.TileLayer.Bing('AqOllaswadzkeAg1p8HrHnhXQnJZ2LSATfibDWbyHYi4UyI9wcFK6j-OFbo2Qkns', "AerialWithLabels",
+                        {
+                            maxZoom: 18,
+                            attribution: ''
+                        });
                
                 
 		        var baseIcon = L.Icon.extend({

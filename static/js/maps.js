@@ -463,7 +463,7 @@
                 var glblinepts = [
                     [28.67153, 77.15527],
 					[28.66199, 77.15748],  
-					[28.65655, 77.15140]
+					[28.65575, 77.15057]
 				] 
                 
                 for( i=0; i < glblinepts.length; i=i+1 ) {
@@ -503,7 +503,7 @@
                 {icon: gmIcon}).bindPopup("<b>Mundka</b><br />Green Line<br />Elevated"),
                 L.marker([28.66199, 77.15748],
                 {icon: gmIcon}).bindPopup("<b>Satguru Ramsingh Marg</b><br />Green Line<br />Elevated"),
-                L.marker([28.65655, 77.15140],
+                L.marker([28.65575, 77.15057],
                 {icon: gmIcon}).bindPopup("<b>Kirti Nagar</b><br />Blue Line, Green Line<br />Elevated"),
                 line5,line6]);
                 
@@ -543,11 +543,13 @@
                 var map = L.map('map',{
                     center: new L.LatLng(28.635, 77.224), 
                     zoom: 11,
-                    layers:[ baselayer ]
+                    layers:[ cloudmadelayer ]
                     });
                 
                 var baseMaps = {
-			        "Basic Map": baselayer,
+                    "Google Map": googlelayer,
+			        "Cloudmade Map": cloudmadelayer,
+			        "Bing" : BingAerialWithLabels
 		        };
 		        
 		        var overlayMaps = {
