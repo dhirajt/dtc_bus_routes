@@ -6,9 +6,11 @@ from django.core.exceptions import ObjectDoesNotExist
 from models import Stage, Route, StageSeq
 
 
+def server_error(request):
+    return render(request,template_name="500.html")
+
 def home(request, error=None):
     return render(request, template_name="home.html")
-
 
 def searchbynum(request):
     if request.GET:
