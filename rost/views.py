@@ -6,9 +6,11 @@ from django.core.exceptions import ObjectDoesNotExist
 from models import Stage, Route, StageSeq
 
 
+def server_error(request):
+    return render(request,template_name="500.html")
+
 def home(request, error=None):
     return render(request, template_name="home.html")
-
 
 def searchbynum(request):
     if request.GET:
@@ -19,7 +21,8 @@ def searchbynum(request):
             obj = None
 
         if obj:
-            stops = StageSeq.objects.filter(route=obj.id).order_by('sequence')
+            stops = StageSeq.objects.select_related().filter(
+                route=obj.id).order_by('sequence')
             return render(request, "results.html",
                           {"stops": stops,
                            "first": stops[0].stage,
@@ -71,7 +74,7 @@ def searchbystg(request):
 def payloadmaker(buses, startstg, endstg):
     data = {}
     for bus in buses:
-        stops = StageSeq.objects.filter(route__name=bus.name)
+        stops = StageSeq.objects.select_related().filter(route__name=bus.name)
         x = stops.get(stage__name__icontains=startstg).sequence
         y = stops.get(stage__name__icontains=endstg).sequence
         stops = stops[min(x, y)-1:max(x, y)]

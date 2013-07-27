@@ -8,6 +8,8 @@ from django.views.generic.simple import direct_to_template
 from django.contrib import admin
 admin.autodiscover()
 
+handler500 = 'rost.views.server_error'
+
 urlpatterns = patterns('',
 
     url(r'^$', 'rost.views.home', name='home'),
