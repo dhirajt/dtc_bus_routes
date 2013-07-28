@@ -19,7 +19,6 @@
 
 {% endblock %}
 
-{% block title %}DTC Bus Routes{% endblock %}
 
 {% block css %}
        .label {
@@ -74,7 +73,7 @@
         <div class="span10 offset4" id="mainmenu">
         <div id="choice" class="box">
          <div id="leftchoice" class="span5">
-           <a href="{% url search %}"><button class="command-button default">
+           <a href="{% url search_by_num %}"><button class="command-button default">
                 <b> Find route by bus number </b>
                 <small>Use this to see the route of a particular
                        bus. For e.g. 182A</small>
@@ -82,7 +81,7 @@
         
          </div> 
          <div id="rightchoice" class="span5">
-         <a href="{% url searchstg %}"><button class="command-button default">
+         <a href="{% url search_by_stage %}"><button class="command-button default">
                 <b> Find buses between two stops </b>
                 <small>Find buses between your
                        source stop and destination stop.</small>

@@ -12,10 +12,11 @@ handler500 = 'rost.views.server_error'
 
 urlpatterns = patterns('',
 
-    url(r'^$', 'rost.views.home', name='home'),
+    url(r'^$', direct_to_template, {'template': 'home.html'}, name='home'),
     url(r'^bus/', include('rost.urls')),
     url(r'^robots\.txt$', direct_to_template,
      {'template': 'robots.txt', 'mimetype': 'text/plain'}),
+     
     url(r'^admin/', include(admin.site.urls)),
 )
 

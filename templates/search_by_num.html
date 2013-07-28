@@ -25,8 +25,6 @@
 
 {% endblock %}
 
-{% block title %}DTC Bus Routes{% endblock %}
-
 {% block css %}
        .label {
         display: inline-block;
@@ -81,7 +79,7 @@
          {% if error %}
             <span id="err" class="label">{{error}}</span>
             {% endif %}
-           <form action="{% url search %}" method="GET" > 
+           <form action="{% url search_by_num %}" method="GET" > 
            <div class="input-control text box">
             <input type="text" id="suggbus" name="bus" class="with-helper" placeholder="Enter Bus No." />
             <button class="btn-search" type="submit"></button>

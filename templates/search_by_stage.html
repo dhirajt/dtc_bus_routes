@@ -27,7 +27,6 @@
 
 {% endblock %}
 
-{% block title %}DTC Bus Routes{% endblock %}
 
 {% block css %}
        .label {
@@ -89,10 +88,10 @@
             {% if error %}
             <span id="err" class="label">{{error}}</span>
             {% endif %} 
-           <form action="{% url searchstg %}" method="GET" > 
+           <form action="{% url search_by_stage %}" method="GET" > 
            <div class="input-control text box">
-            From &nbsp;&nbsp; <input type="text" id="suggstg" name="startstg" class="with-helper" placeholder="Enter source stop name" /> to &nbsp;&nbsp;  
-            <input type="text" id="suggstg1" name="endstg" class="with-helper" placeholder="Enter destination stop name" /> 
+            From &nbsp;&nbsp; <input type="text" id="suggstg" name="startstage" class="with-helper" placeholder="Enter source stop name" /> to &nbsp;&nbsp;  
+            <input type="text" id="suggstg1" name="endstage" class="with-helper" placeholder="Enter destination stop name" /> 
             <button class="default" type="submit">Find Route!</button>
             
            </div>  
