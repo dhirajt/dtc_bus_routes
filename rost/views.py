@@ -9,10 +9,8 @@ from models import Stage, Route, StageSeq
 def server_error(request):
     return render(request,template_name="500.html")
 
-def home(request, error=None):
-    return render(request, template_name="home.html")
 
-def searchbynum(request):
+def search_by_num(request):
     if request.GET:
         busno = request.GET['bus']
         try:
@@ -23,16 +21,16 @@ def searchbynum(request):
         if obj:
             stops = StageSeq.objects.select_related().filter(
                 route=obj.id).order_by('sequence')
-            return render(request, "results.html",
+            return render(request, "results_by_num.html",
                           {"stops": stops,
                            "first": stops[0].stage,
                            "last": stops[len(stops)-1].stage,
                            "route": busno})
         else:
             error = 'Bus not found!'
-            return render(request, "searchbynum.html", {"error": error})
+            return render(request, "search_by_num.html", {"error": error})
     else:
-        return render(request, "searchbynum.html")
+        return render(request, "search_by_num.html")
 
 
 def ajax_bus(request):
@@ -43,43 +41,43 @@ def ajax_bus(request):
     return HttpResponse(route_list)
 
 
-def searchbystg(request):
+def search_by_stage(request):
     if request.GET:
-        startstg = request.GET['startstg']
-        endstg = request.GET['endstg']
+        startstage = request.GET['startstage']
+        endstage = request.GET['endstage']
         try:
             buses = Route.objects.filter(
-                stages__name__icontains=startstg).filter(
-                stages__name__icontains=endstg)
+                stages__name__icontains=startstage).filter(
+                stages__name__icontains=endstage)
         except ObjectDoesNotExist:
             buses = None
 
         if buses:
-            data,buslist = payloadmaker(buses, startstg, endstg)
-            payload = {'startstg': startstg,
-                       'endstg': endstg,
+            data,buslist = payloadmaker(buses, startstage, endstage)
+            payload = {'startstage': startstage,
+                       'endstage': endstage,
                        'data': data,
                        'buslist':buslist
                        }
-            return render(request, "resultsstg.html", payload)
+            return render(request, "results_by_stage.html", payload)
         else:
             error = 'Either you entered wrong stop name or no direct route \
                  exists!'
-            return render(request, "searchbystg.html", {"error": error})
+            return render(request, "search_by_stage.html", {"error": error})
 
     else:
-        return render(request, "searchbystg.html")
+        return render(request, "search_by_stage.html")
 
 
-def payloadmaker(buses, startstg, endstg):
+def payloadmaker(buses, startstage, endstage):
     data = {}
     for bus in buses:
         stops = StageSeq.objects.select_related().filter(route__name=bus.name)
-        x = stops.get(stage__name__icontains=startstg).sequence
-        y = stops.get(stage__name__icontains=endstg).sequence
+        x = stops.get(stage__name__icontains=startstage).sequence
+        y = stops.get(stage__name__icontains=endstage).sequence
         stops = stops[min(x, y)-1:max(x, y)]
         data[bus.name] = [it.stage.name for it in stops]
-        if data[bus.name][0] != startstg:
+        if data[bus.name][0] != startstage:
             data[bus.name].reverse()
         
     shortest=max(data,key=len)

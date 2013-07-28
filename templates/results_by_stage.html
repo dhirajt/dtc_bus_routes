@@ -37,7 +37,7 @@ $(document).on('mouseleave','span[rel=tooltip]', function(){
 {% endblock %}
 
 
-{% block title %}DTC Bus Routes | Route{% endblock %}
+{% block title %}{{ block.super }} | Route{% endblock %}
 
 
 
@@ -74,8 +74,8 @@ $(document).on('mouseleave','span[rel=tooltip]', function(){
             <div class="tile bg-color-green" style="width:200px;height:auto;">
             <div class="tile-content">
             
-            <b> From : {{ startstg }} <br/>
-                To : {{ endstg }} <br />
+            <b> From : {{ startstage }} <br/>
+                To : {{ endstage }} <br />
             </b>
             </div>
             </div>
