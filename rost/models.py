@@ -9,6 +9,10 @@ class Stage(models.Model):
 
     def __unicode__(self):
         return self.name
+        
+    @models.permalink
+    def get_absolute_url(self):
+        return reverse('rost.views.bus_by_id',args=[(self.id,)])
 
 
 class Route(models.Model):
