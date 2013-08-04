@@ -1,6 +1,6 @@
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render
-from django.core.urlresolvers import reverse as urlreverse
+from django.core.urlresolvers import reverse
 from django.core.exceptions import ObjectDoesNotExist
 
 from models import Stage, Route, StageSeq
@@ -19,19 +19,25 @@ def search_by_num(request):
             obj = None
 
         if obj:
-            stops = StageSeq.objects.select_related().filter(
-                route=obj.id).order_by('sequence')
-            return render(request, "results_by_num.html",
-                          {"stops": stops,
-                           "first": stops[0].stage,
-                           "last": stops[len(stops)-1].stage,
-                           "route": busno})
+            return HttpResponseRedirect(reverse('bus_by_id',args=(obj.id,)))
         else:
             error = 'Bus not found!'
             return render(request, "search_by_num.html", {"error": error})
     else:
         return render(request, "search_by_num.html")
 
+
+def bus_by_id(request,busid=None):
+    stops = StageSeq.objects.select_related().filter(
+                 route=busid).order_by('sequence')
+    if stops:
+        return render(request, "results_by_num.html",
+                          {"stops": stops,
+                           "first": stops[0].stage,
+                           "last": stops[len(stops)-1].stage,
+                           "route": stops[0].route})
+    else :
+        raise Http404
 
 def ajax_bus(request):
     stop = request.GET.get('q')
