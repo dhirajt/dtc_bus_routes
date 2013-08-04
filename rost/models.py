@@ -1,6 +1,5 @@
 from django.db import models
 
-
 class Stage(models.Model):
     name = models.CharField(max_length=64)
     lattitude = models.FloatField(null=True, blank=True)
@@ -12,7 +11,7 @@ class Stage(models.Model):
         
     @models.permalink
     def get_absolute_url(self):
-        return reverse('rost.views.bus_by_id',args=[(self.id,)])
+        return ('rost.views.bus_by_id',[self.id])
 
 
 class Route(models.Model):
