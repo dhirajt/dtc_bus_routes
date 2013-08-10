@@ -5,7 +5,6 @@ from django.core.exceptions import ObjectDoesNotExist
 
 from models import Stage, Route, StageSeq
 
-
 def server_error(request):
     return render(request,template_name="500.html")
 
@@ -86,7 +85,7 @@ def payloadmaker(buses, startstage, endstage):
         if data[bus.name][0] != startstage:
             data[bus.name].reverse()
         
-    shortest=max(data,key=len)
+    shortest = min(data,key=lambda item:len(data[item]))
     buslist = [shortest] + [ i for i in data.keys() if i!=shortest ]
     return (data,buslist)
 
