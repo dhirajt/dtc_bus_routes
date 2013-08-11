@@ -4,6 +4,7 @@ from django.core.urlresolvers import reverse
 from django.core.exceptions import ObjectDoesNotExist
 
 from models import Stage, Route, StageSeq
+from .routefinder import findroutes
 
 def server_error(request):
     return render(request,template_name="500.html")
@@ -50,15 +51,9 @@ def search_by_stage(request):
     if request.GET:
         startstage = request.GET['startstage']
         endstage = request.GET['endstage']
-        try:
-            buses = Route.objects.filter(
-                stages__name__icontains=startstage).filter(
-                stages__name__icontains=endstage)
-        except ObjectDoesNotExist:
-            buses = None
+        buses, data, buslist = findroutes(startstage, endstage)
 
         if buses:
-            data,buslist = payloadmaker(buses, startstage, endstage)
             payload = {'startstage': startstage,
                        'endstage': endstage,
                        'data': data,
@@ -66,26 +61,9 @@ def search_by_stage(request):
                        }
             return render(request, "results_by_stage.html", payload)
         else:
-            error = 'Either you entered wrong stop name or no direct route \
-                 exists!'
+            error = 'Either you entered wrong stop name or no route exists!'
             return render(request, "search_by_stage.html", {"error": error})
 
     else:
         return render(request, "search_by_stage.html")
-
-
-def payloadmaker(buses, startstage, endstage):
-    data = {}
-    for bus in buses:
-        stops = StageSeq.objects.select_related().filter(route__name=bus.name)
-        x = stops.get(stage__name__icontains=startstage).sequence
-        y = stops.get(stage__name__icontains=endstage).sequence
-        stops = stops[min(x, y)-1:max(x, y)]
-        data[bus.name] = [it.stage.name for it in stops]
-        if data[bus.name][0] != startstage:
-            data[bus.name].reverse()
-        
-    shortest = min(data,key=lambda item:len(data[item]))
-    buslist = [shortest] + [ i for i in data.keys() if i!=shortest ]
-    return (data,buslist)
 
