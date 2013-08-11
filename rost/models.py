@@ -8,10 +8,11 @@ class Stage(models.Model):
 
     def __unicode__(self):
         return self.name
-        
-    @models.permalink
-    def get_absolute_url(self):
-        return ('rost.views.bus_by_id',[self.id])
+    
+    # This isn't correct! Uncomment this after implementing stage_by_id view func     
+    #@models.permalink          
+    #def get_absolute_url(self):
+    #    return ('rost.views.bus_by_id',[self.id])
 
 
 class Route(models.Model):
