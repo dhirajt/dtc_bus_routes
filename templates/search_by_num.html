@@ -2,8 +2,6 @@
 
 {% block js %}
 
-<script type="text/javascript" src="{{ STATIC_URL }}js/jquery13.js"></script>
-
 <script type="text/javascript">
  $().ready(function() {
     $("#suggbus").focus().autocomplete(busno);
@@ -22,7 +20,7 @@
   }
   return true;
 }
-</script>    
+
 </script>    
 
 
@@ -81,9 +79,7 @@
       #twitter{
         float:center;
       }
-      
-      
-        
+ 
 {% endblock %}
 
 {% block body %}
