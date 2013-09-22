@@ -10,93 +10,106 @@ $().ready(function () {
     $("#suggstg1").focus().autocomplete(stg);
 });
 
+function func_dialog(message) {
+    $.Dialog({
+        'title': 'Oops!',
+            'content': message,
+            'buttons': {
+            'Ok': {
+                'action': function () {}
+            }
+
+        }
+    });
+}
+
 function validateform() {
-  var from = document.forms.search_by_stage.startstage.value;
-  var to = document.forms.search_by_stage.endstage.value;
+    var from = document.forms.search_by_stage.startstage.value;
+    var to = document.forms.search_by_stage.endstage.value;
 
-  if (from === "" || to === "") {
-    alert("Source and/or destination can't be empty.\nPlease enter valid source and destination from suggestions.");
-    return false;
-  }
+    if (from === "" || to === "") {
+        func_dialog("Source and/or destination can't be empty.<br />Please enter valid source and destination from suggestions.");
+        return false;
+    }
 
-  var foundstart = $.inArray(from, stg) > -1;
-  var foundend = $.inArray(to, stg) > -1;
-  
-  if (!(foundstart) || !(foundend)) {
-    alert("Please enter the source and destination from suggestions only.");
-    return false;
-  }
-  return true;
+    var foundstart = $.inArray(from, stg) > -1;
+    var foundend = $.inArray(to, stg) > -1;
+
+    if (!(foundstart) || !(foundend)) {
+        func_dialog("Please enter the source and destination from suggestions only.");
+        return false;
+    }
+    return true;
 }
 </script>    
 
 
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+<script>
+! function (d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0],
+        p = /^http:/.test(d.location) ? 'http' : 'https';
+    if (!d.getElementById(id)) {
+        js = d.createElement(s);
+        js.id = id;
+        js.src = p + '://platform.twitter.com/widgets.js';
+        fjs.parentNode.insertBefore(js, fjs);
+    }
+}(document, 'script', 'twitter-wjs');
+</script>
 
-
-<script>(function(d, s, id) {
-            var js, fjs = d.getElementsByTagName(s)[0];
-            if (d.getElementById(id)) return;
-            js = d.createElement(s); js.id = id;
-            js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=508603022535540";
-            fjs.parentNode.insertBefore(js, fjs);
-            }(document, 'script', 'facebook-jssdk'));</script>
+<script>
+(function (d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s);
+    js.id = id;
+    js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=508603022535540";
+    fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));
+</script>
 
 
 {% endblock %}
 
-
 {% block css %}
-       .label {
-        display: inline-block;
-        line-height: inherit;
-        font-size: 0.75em;
-        font-weight: bold;
-        padding: 2px 4px;  
-        background-color: rgb(185, 29, 71) !important;
-        color: rgb(255, 255, 255) !important; 
-    
-       } 
-       #err { 
-        position:absolute; 
-        top: 50%;
-        left: 36%;
-   
-       }    
-    
-       
-       #bar {
-        padding-left:50px;
-    
-      }  
-
-      .box { 
-        margin-top:150px;  
-      }
-
-      
-      #share {
-        height:50px;
-        margin-top:100px;
-        text-align:center;
-        padding-left:8%;
-      }
-      
-      .fb-like{
-        float:center;
-      }
-      #twitter{
-        float:center;
-      }
-          
-      #suggstg , #suggstg1 {
-        width : 380px;
-        }
-      
-      #twostgroute {
-        padding-left:2.5%;
-        }
-        
+.label {
+    display: inline-block;
+    line-height: inherit;
+    font-size: 0.75em;
+    font-weight: bold;
+    padding: 2px 4px;
+    background-color: rgb(185, 29, 71) !important;
+    color: rgb(255, 255, 255) !important;
+}
+#err {
+    position:absolute;
+    top: 50%;
+    left: 36%;
+}
+#bar {
+    padding-left:50px;
+}
+.box {
+    margin-top:150px;
+}
+#share {
+    height:50px;
+    margin-top:100px;
+    text-align:center;
+    padding-left:8%;
+}
+.fb-like {
+    float:center;
+}
+#twitter {
+    float:center;
+}
+#suggstg, #suggstg1 {
+    width : 380px;
+}
+#twostgroute {
+    padding-left:2.5%;
+}   
 {% endblock %}
 
 {% block body %}

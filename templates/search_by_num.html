@@ -3,84 +3,99 @@
 {% block js %}
 
 <script type="text/javascript">
- $().ready(function() {
+$().ready(function () {
     $("#suggbus").focus().autocomplete(busno);
- });
+});
 
- function validateform() {
-  var bus = document.forms.search_by_num.bus.value;
+function func_dialog(message) {
+    $.Dialog({
+        'title': 'Oops!',
+            'content': message,
+            'buttons': {
+            'Ok': {
+                'action': function () {}
+            }
 
-  if (bus === "") {
-    alert("Bus number can't be empty.\nPlease enter a valid bus number from suggestions.");
-    return false;
-  }
-  var foundnum = $.inArray(bus, busno) > -1;
-  if (!(foundnum)) {
-    alert("Please enter a valid bus number from suggestions only.");
-    return false;
-  }
-  return true;
+        }
+    });
 }
 
+function validateform() {
+    var bus = document.forms.search_by_num.bus.value;
+
+    if (bus === "") {
+        func_dialog("Bus number can't be empty.<br />Please enter a valid bus number from suggestions.");
+        return false;
+    }
+    var foundnum = $.inArray(bus, busno) > -1;
+    if (!(foundnum)) {
+        func_dialog("Please enter a valid bus number from suggestions only.");
+        return false;
+    }
+    return true;
+}
 </script>    
 
+<script>
+! function (d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0],
+        p = /^http:/.test(d.location) ? 'http' : 'https';
+    if (!d.getElementById(id)) {
+        js = d.createElement(s);
+        js.id = id;
+        js.src = p + '://platform.twitter.com/widgets.js';
+        fjs.parentNode.insertBefore(js, fjs);
+    }
+}(document, 'script', 'twitter-wjs');
+</script>
 
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-
-
-<script>(function(d, s, id) {
-            var js, fjs = d.getElementsByTagName(s)[0];
-            if (d.getElementById(id)) return;
-            js = d.createElement(s); js.id = id;
-            js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=508603022535540";
-            fjs.parentNode.insertBefore(js, fjs);
-            }(document, 'script', 'facebook-jssdk'));</script>
+<script>
+(function (d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s);
+    js.id = id;
+    js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=508603022535540";
+    fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));
+</script>
 
 
 {% endblock %}
 
 {% block css %}
-       .label {
-        display: inline-block;
-        line-height: inherit;
-        font-size: 0.75em;
-        font-weight: bold;
-        padding: 2px 4px;  
-        background-color: rgb(185, 29, 71) !important;
-        color: rgb(255, 255, 255) !important; 
-    
-       }     
-    
-       #err { 
-        position:absolute; 
-        top: 65%;
-        left: 45%;
-   
-       }
-       #bar {
-        padding-left:50px;
-    
-      }  
-
-      .box { 
-        margin-top:150px;  
-      }
-
-      
-      #share {
-        height:50px;
-        margin-top:100px;
-        text-align:center;
-        padding-left:8%;
-      }
-      
-      .fb-like{
-        float:center;
-      }
-      #twitter{
-        float:center;
-      }
- 
+.label {
+    display: inline-block;
+    line-height: inherit;
+    font-size: 0.75em;
+    font-weight: bold;
+    padding: 2px 4px;
+    background-color: rgb(185, 29, 71) !important;
+    color: rgb(255, 255, 255) !important;
+}
+#err {
+    position:absolute;
+    top: 65%;
+    left: 45%;
+}
+#bar {
+    padding-left:50px;
+}
+.box {
+    margin-top:150px;
+}
+#share {
+    height:50px;
+    margin-top:100px;
+    text-align:center;
+    padding-left:8%;
+}
+.fb-like {
+    float:center;
+}
+#twitter {
+    float:center;
+}
 {% endblock %}
 
 {% block body %}
