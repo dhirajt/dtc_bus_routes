@@ -19,7 +19,11 @@ function validateform() {
     alert("Source and/or destination can't be empty.\nPlease enter valid source and destination from suggestions.");
     return false;
   }
-  if (!(from in stg) || !(to in stg)) {
+
+  var foundstart = $.inArray(from, stg) > -1;
+  var foundend = $.inArray(to, stg) > -1;
+  
+  if (!(foundstart) || !(foundend)) {
     alert("Please enter the source and destination from suggestions only.");
     return false;
   }
