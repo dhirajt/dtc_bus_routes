@@ -8,6 +8,21 @@
  $().ready(function() {
     $("#suggbus").focus().autocomplete(busno);
  });
+
+ function validateform() {
+  var bus = document.forms.search_by_num.bus.value;
+
+  if (bus === "") {
+    alert("Bus number can't be empty.\nPlease enter a valid bus number from suggestions.");
+    return false;
+  }
+  if (!(bus in busno)) {
+    alert("Please enter a valid bus number from suggestions only.");
+    return false;
+  }
+  return true;
+}
+</script>    
 </script>    
 
 
@@ -79,7 +94,7 @@
          {% if error %}
             <span id="err" class="label">{{error}}</span>
             {% endif %}
-           <form action="{% url search_by_num %}" method="GET" > 
+           <form name="search_by_num" action="{% url search_by_num %}" method="GET" onsubmit="return validateform()"> 
            <div class="input-control text box">
             <input type="text" id="suggbus" name="bus" class="with-helper" placeholder="Enter Bus No." />
             <button class="btn-search" type="submit"></button>

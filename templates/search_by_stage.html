@@ -6,10 +6,25 @@
 <script type="text/javascript" src="{{ STATIC_URL }}js/stgname.js"></script>
 
 <script type="text/javascript">
- $().ready(function() {
+$().ready(function () {
     $("#suggstg").focus().autocomplete(stg);
     $("#suggstg1").focus().autocomplete(stg);
- });
+});
+
+function validateform() {
+  var from = document.forms.search_by_stage.startstage.value;
+  var to = document.forms.search_by_stage.endstage.value;
+
+  if (from === "" || to === "") {
+    alert("Source and/or destination can't be empty.\nPlease enter valid source and destination from suggestions.");
+    return false;
+  }
+  if (!(from in stg) || !(to in stg)) {
+    alert("Please enter the source and destination from suggestions only.");
+    return false;
+  }
+  return true;
+}
 </script>    
 
 
@@ -88,7 +103,7 @@
             {% if error %}
             <span id="err" class="label">{{error}}</span>
             {% endif %} 
-           <form action="{% url search_by_stage %}" method="GET" > 
+           <form name="search_by_stage" action="{% url search_by_stage %}" method="GET" onsubmit="return validateform();"> 
            <div class="input-control text box">
             From &nbsp;&nbsp; <input type="text" id="suggstg" name="startstage" class="with-helper" placeholder="Enter source stop name" /> to &nbsp;&nbsp;  
             <input type="text" id="suggstg1" name="endstage" class="with-helper" placeholder="Enter destination stop name" /> 
