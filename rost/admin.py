@@ -11,14 +11,15 @@ class StageAdmin(admin.ModelAdmin):
     list_display = ( 'name', )
     search_fields = [ 'name' ]
     ordering = ( 'name', )
-    readonly_fields = ("show_url",)
-    
+    #readonly_fields = ("show_url",)   This is a mistake!
+    '''
     def show_url(self, instance):
         url = reverse('bus_by_id', kwargs={"busid": instance.pk})
         response = """<a href="{0}"> {0} </a>""".format(url)
         return response
     show_url.allow_tags = True
     show_url.short_description = "Url of this stage"
+    '''
     
 class StageSeqAdmin(admin.ModelAdmin):
     list_display = ( 'id', 'route', 'stage', 'sequence',)

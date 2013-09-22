@@ -1,37 +1,30 @@
 {% extends "index.html" %}
 
 {% block js %}
-<script type="text/javascript" src="{{ STATIC_URL }}js/jquery19.js"></script>
-
 <script>
+$(function () {
+
+    $('body').tooltip({
+        selector: '[rel=tooltip]'
+    });
 
 
-$(function (){
+    $(document).on('mouseenter', 'span[rel=tooltip]', function () {
+        var ele = $(this)
+        stage = $(this).html()
+        $.get("{% url ajax_bus %}?q=" + encodeURIComponent(stage),
 
-$('body').tooltip({
-    selector: '[rel=tooltip]'
-});
+        function (response) {
+            ele.attr("data-original-title", response);
+        });
+        $(this).tooltip('show');
+    });
 
-
-$(document).on('mouseenter','span[rel=tooltip]', function(){
-    var ele = $(this)
-    stage = $(this).html()
-    $.get( "{% url ajax_bus %}?q="+ encodeURIComponent(stage), 
-            function (response) {
-                ele.attr("data-original-title",response);
-            }
-         );
-   $(this).tooltip('show');
-});
-
-$(document).on('mouseleave','span[rel=tooltip]', function(){
-    $(this).tooltip('hide');
-});
-
-
+    $(document).on('mouseleave', 'span[rel=tooltip]', function () {
+        $(this).tooltip('hide');
+    });
 
 });
-
 </script>
 {% endblock %}
 
@@ -39,114 +32,94 @@ $(document).on('mouseleave','span[rel=tooltip]', function(){
 {% block title %}{{ block.super }} | Route{% endblock %}
 
 
-
 {% block css %}
 #infobox {
-   float:left;
- }     
-    
-#stops { 
-   margin-left:300px;
-   
-}  
-
+    float:left;
+}
+#stops {
+    margin-left:300px;
+}
 #content {
-   margin-top: 40px;
-   width:590px;
+    margin-top: 40px;
+    width:590px;
 }
-
-
 .tooltip {
-  position: absolute;
-  z-index: 1030;
-  display: block;
-  font-size: 12px;
-  line-height: 1.4;
-  font-weight:normal;
-  opacity: 1;
-  filter: alpha(opacity=0);
-  visibility: visible;
+    position: absolute;
+    z-index: 1030;
+    display: block;
+    font-size: 12px;
+    line-height: 1.4;
+    font-weight:normal;
+    opacity: 1;
+    filter: alpha(opacity=0);
+    visibility: visible;
 }
-
 .tooltip.in {
-  opacity: 0.8;
-  filter: alpha(opacity=80);
+    opacity: 0.8;
+    filter: alpha(opacity=80);
 }
-
 .tooltip.top {
-  padding: 5px 0;
-  margin-top: -3px;
+    padding: 5px 0;
+    margin-top: -3px;
 }
-
 .tooltip.right {
-  padding: 0 5px;
-  margin-left: 3px;
+    padding: 0 5px;
+    margin-left: 3px;
 }
-
 .tooltip.bottom {
-  padding: 5px 0;
-  margin-top: 3px;
+    padding: 5px 0;
+    margin-top: 3px;
 }
-
 .tooltip.left {
-  padding: 0 5px;
-  margin-left: -3px;
+    padding: 0 5px;
+    margin-left: -3px;
 }
-
 .tooltip-inner {
-  max-width: 200px;
-  padding: 8px;
-  color: #ffffff;
-  text-align: center;
-  text-decoration: none;
-  background-color: #000000;
-  -webkit-border-radius: 4px;
-     -moz-border-radius: 4px;
-          border-radius: 4px;
+    max-width: 200px;
+    padding: 8px;
+    color: #ffffff;
+    text-align: center;
+    text-decoration: none;
+    background-color: #000000;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
 }
-
 .tooltip-arrow {
-  position: absolute;
-  width: 0;
-  height: 0;
-  border-color: transparent;
-  border-style: solid;
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-color: transparent;
+    border-style: solid;
 }
-
 .tooltip.top .tooltip-arrow {
-  bottom: 0;
-  left: 50%;
-  margin-left: -5px;
-  border-top-color: #000000;
-  border-width: 5px 5px 0;
+    bottom: 0;
+    left: 50%;
+    margin-left: -5px;
+    border-top-color: #000000;
+    border-width: 5px 5px 0;
 }
-
 .tooltip.right .tooltip-arrow {
-  top: 50%;
-  left: 0;
-  margin-top: -5px;
-  border-right-color: #000000;
-  border-width: 5px 5px 5px 0;
+    top: 50%;
+    left: 0;
+    margin-top: -5px;
+    border-right-color: #000000;
+    border-width: 5px 5px 5px 0;
 }
-
 .tooltip.left .tooltip-arrow {
-  top: 50%;
-  right: 0;
-  margin-top: -5px;
-  border-left-color: #000000;
-  border-width: 5px 0 5px 5px;
+    top: 50%;
+    right: 0;
+    margin-top: -5px;
+    border-left-color: #000000;
+    border-width: 5px 0 5px 5px;
 }
-
 .tooltip.bottom .tooltip-arrow {
-  top: 0;
-  left: 50%;
-  margin-left: -5px;
-  border-bottom-color: #000000;
-  border-width: 0 5px 5px;
+    top: 0;
+    left: 50%;
+    margin-left: -5px;
+    border-bottom-color: #000000;
+    border-width: 0 5px 5px;
 }
-
-
-
 {% endblock %}
 
 

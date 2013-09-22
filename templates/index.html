@@ -10,26 +10,26 @@
     <link href="{{ STATIC_URL }}css/modern.css" rel="stylesheet">
     <link href="{{ STATIC_URL }}css/modern-responsive.css" rel="stylesheet">
     <link href="{{ STATIC_URL }}css/jquery.autocomplete.css" rel="stylesheet">
-    
-    {% block js %}
-    
-    {% endblock %}
-    
-    <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.mousewheel.js"></script>
+
+    <script type="text/javascript" src="{{ STATIC_URL }}js/jquery19.js"></script>
+    <!--<script type="text/javascript" src="{{ STATIC_URL }}js/jquery.mousewheel.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/tooltip.js"></script>
-    
     <script type="text/javascript" src="{{ STATIC_URL }}js/dropdown.js"></script>
-   <!-- <script type="text/javascript" src="{{ STATIC_URL }}js/accordion.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/accordion.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/buttonset.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/carousel.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/input-control.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/pagecontrol.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/slider.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/tile-slider.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}js/tile-drag.js"></script> -->
+    <script type="text/javascript" src="{{ STATIC_URL }}js/tile-drag.js"></script>-->
+    <script type="text/javascript" src="{{ STATIC_URL }}js/dialog.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/busno.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.autocomplete.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.autocomplete.min.js"></script>
+
+    {% block js %}
     
+    {% endblock %}
     
     <title>{% block title %}DTC Bus Routes{% endblock %}</title>
 
@@ -105,8 +105,8 @@
       <div class="container offset6">
       &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
       <a href="http://www.djangoproject.com/"><img src="{{ STATIC_URL }}images/djimg.gif" border="0" alt="A Django project." title="A Django project." /></a><br />     
-       <a href="https://github.com/Dhiraj92/dtc-bus-routes/blob/master/LICENCE">License</a>
-       | <a href="https://github.com/Dhiraj92/dtc-bus-routes/blob/master/DISCLAIMER">Disclaimer</a> | <a href="https://github.com/Dhiraj92/dtc-bus-routes/issues">Bug Reports</a>
+       <a href="https://github.com/dhirajt/dtc-bus-routes/blob/master/LICENCE">License</a>
+       | <a href="https://github.com/dhirajt/dtc-bus-routes/blob/master/DISCLAIMER">Disclaimer</a> | <a href="https://github.com/dhirajt/dtc-bus-routes/issues">Bug Reports</a>
       </div>
     </div>
     
