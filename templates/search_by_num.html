@@ -14,7 +14,8 @@
     alert("Bus number can't be empty.\nPlease enter a valid bus number from suggestions.");
     return false;
   }
-  if (!(bus in busno)) {
+  var foundnum = $.inArray(bus, busno) > -1;
+  if (!(foundnum)) {
     alert("Please enter a valid bus number from suggestions only.");
     return false;
   }
