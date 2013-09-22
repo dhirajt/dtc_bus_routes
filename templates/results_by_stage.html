@@ -2,37 +2,29 @@
 {% load dictag %}
 
 {% block js %}
-<script type="text/javascript" src="{{ STATIC_URL }}js/jquery19.js"></script>
 
 <script>
+$(function () {
+    $('body').tooltip({
+        selector: '[rel=tooltip]'
+    });
 
 
-$(function (){
+    $(document).on('mouseenter', 'span[rel=tooltip]', function () {
+        var ele = $(this)
+        stage = $(this).html()
+        $.get("{% url ajax_bus %}?q=" + encodeURIComponent(stage),
 
-$('body').tooltip({
-    selector: '[rel=tooltip]'
+        function (response) {
+            ele.attr("data-original-title", response);
+        });
+        $(this).tooltip('show');
+    });
+
+    $(document).on('mouseleave', 'span[rel=tooltip]', function () {
+        $(this).tooltip('hide');
+    });
 });
-
-
-$(document).on('mouseenter','span[rel=tooltip]', function(){
-    var ele = $(this)
-    stage = $(this).html()
-    $.get( "{% url ajax_bus %}?q="+ encodeURIComponent(stage), 
-            function (response) {
-                ele.attr("data-original-title",response);
-            }
-         );
-   $(this).tooltip('show');
-});
-
-$(document).on('mouseleave','span[rel=tooltip]', function(){
-    $(this).tooltip('hide');
-});
-
-
-
-});
-
 </script>
 {% endblock %}
 
@@ -43,24 +35,18 @@ $(document).on('mouseleave','span[rel=tooltip]', function(){
 
 {% block css %}
 #infobox {
-   float:left;
- }     
-    
-#stops { 
-   margin-left:300px;
-   
-}  
-
-#content {
-   margin-top: 40px;
-   width:590px;
+    float:left;
 }
-
+#stops {
+    margin-left:300px;
+}
+#content {
+    margin-top: 40px;
+    width:590px;
+}
 .listview li {
     width:350px;
-   }
-
-
+}
 {% endblock %}
 
 
