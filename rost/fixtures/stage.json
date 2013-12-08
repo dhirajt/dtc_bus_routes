@@ -68,8 +68,8 @@
                 566
             ], 
             "name": "A.I.I.M.S.", 
-            "longitude": 0.0, 
-            "lattitude": 0.0
+            "longitude": 77.212322, 
+            "lattitude": 28.569221
         }
     }, 
     {
@@ -146,8 +146,8 @@
                 568
             ], 
             "name": "Adarsh Nagar", 
-            "longitude": 0.0, 
-            "lattitude": 0.0
+            "longitude": 77.170962, 
+            "lattitude": 28.715732
         }
     }, 
     {
@@ -158,8 +158,8 @@
                 461
             ], 
             "name": "Adhyapak Nagar", 
-            "longitude": 0.0, 
-            "lattitude": 0.0
+            "longitude": 77.072511, 
+            "lattitude": 28.661069
         }
     }, 
     {
@@ -175,8 +175,8 @@
                 526
             ], 
             "name": "AE-Block Shalimar Bagh", 
-            "longitude": 0.0, 
-            "lattitude": 0.0
+            "longitude": 77.167279, 
+            "lattitude": 28.708449
         }
     }, 
     {
@@ -188,8 +188,8 @@
                 187
             ], 
             "name": "Aghapur Village", 
-            "longitude": 0.0, 
-            "lattitude": 0.0
+            "longitude": 77.358162, 
+            "lattitude": 28.563228
         }
     }, 
     {
@@ -10790,20 +10790,6 @@
         }
     }, 
     {
-        "pk": 600, 
-        "model": "rost.stage", 
-        "fields": {
-            "routes": [
-                199, 
-                297, 
-                298
-            ], 
-            "name": "N.H. 8 X-ing", 
-            "longitude": 0.0, 
-            "lattitude": 0.0
-        }
-    }, 
-    {
         "pk": 601, 
         "model": "rost.stage", 
         "fields": {
@@ -10832,7 +10818,7 @@
                 502, 
                 549
             ], 
-            "name": "N.H. X-ing", 
+            "name": "N.H. 8 X-ing", 
             "longitude": 0.0, 
             "lattitude": 0.0
         }
@@ -19973,8 +19959,8 @@
                 570
             ], 
             "name": "Aero City Metro Station", 
-            "longitude": 0.0, 
-            "lattitude": 0.0
+            "longitude": 77.120866, 
+            "lattitude": 28.548885
         }
     }
 ]
