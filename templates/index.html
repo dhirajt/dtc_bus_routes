@@ -14,8 +14,8 @@
     <script type="text/javascript" src="{{ STATIC_URL }}js/jquery19.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.mousewheel.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/tooltip.js"></script>
-    <!--<script type="text/javascript" src="{{ STATIC_URL }}js/dropdown.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/accordion.js"></script>
+    <!--<script type="text/javascript" src="{{ STATIC_URL }}js/dropdown.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/buttonset.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/carousel.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/input-control.js"></script>
@@ -26,7 +26,71 @@
     <script type="text/javascript" src="{{ STATIC_URL }}js/dialog.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/busno.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.autocomplete.min.js"></script>
+    
+    <script type="text/javascript">
+      function func_dialog(message) {
+        $.Dialog({
+            'title': 'Oops!',
+                'content': message,
+                'buttons': {
+                'Ok': {
+                    'action': function () {}
+                }
 
+            }
+        });
+      }
+
+      function validateform() {
+        var name = document.getElementsByName('name')[0].value;
+        var email = document.getElementsByName('email')[0].value;
+        var message = document.getElementsByName('message')[0].value;
+       
+        var error_message = "Your feedback could not be submitted because:<br />";
+        var error_string = "";
+        var success = false;
+
+        if (name && email && message) {
+             $.ajax({
+                url : "{% url feedback %}",
+                type: "POST",
+                data : {
+                  csrfmiddlewaretoken: "{{ csrf_token }}",
+                  name : name,
+                  email : email,
+                  message: message,
+                },
+                success: function( response ){
+                    if (response==="OK") {
+                      $('#formdiv').html('Thank you for your feedback! :)');
+                      success = true;
+                    }
+                    else {
+                      error_string += response;
+                    }
+                }
+            }); 
+        }
+        if (success===true) {
+          return;
+        }
+        if (!name) {
+          error_string += "<br > Name cannot be empty!";
+        }
+        if (!email) {
+          error_string += "<br > Email cannot be empty!";
+        }
+        if (!message) { 
+          error_string += "<br > Message cannot be empty!"
+        }
+        else if (message.length<5) {
+          error_string += "<br > You only wrote a few words!"
+        };
+        if (error_string) {
+          func_dialog(error_message+error_string);
+        };
+      }
+    </script>
     {% block js %}
     
     {% endblock %}
@@ -68,6 +132,15 @@
       
         text-decoration:underline;        
       }
+
+      #feedback {
+        padding-top: 4%;
+      }
+      #formdiv {
+        position: relative;
+        z-index: 2;
+        background-color: white;
+      }
             
       {% block css %}
       
@@ -85,6 +158,24 @@
                 <h1>DTC <a href="{% url home %}"><span style="font-size:45px; color:#91DB39" class="icon-bus"></span></a>
                 Routes
                 </h1>
+                {% if form %}
+                <div class="span4 offset12" id="feedback">
+                  <ul class="accordion" data-role="accordion">
+                    <li>
+                      <a href="#"> Feedback </a>
+                      <div id="formdiv">
+                          <div class="input-control text">
+                              Name : {{ form.name }}
+                              E-mail : {{ form.email }}
+                              Message: {{ form.message }}
+                          </div>
+                        <button class="standard" type="submit" onclick="validateform()">Submit</button>
+                      </div>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+                {% endif %} 
             </div>
         </div>
         

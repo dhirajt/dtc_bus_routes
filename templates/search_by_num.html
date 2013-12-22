@@ -7,19 +7,6 @@ $().ready(function () {
     $("#suggbus").focus().autocomplete(busno);
 });
 
-function func_dialog(message) {
-    $.Dialog({
-        'title': 'Oops!',
-            'content': message,
-            'buttons': {
-            'Ok': {
-                'action': function () {}
-            }
-
-        }
-    });
-}
-
 function validateform() {
     var bus = document.forms.search_by_num.bus.value;
 
