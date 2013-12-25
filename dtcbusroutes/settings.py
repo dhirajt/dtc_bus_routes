@@ -134,7 +134,8 @@ INSTALLED_APPS = (
 
     'south', 
     'debug_toolbar',
-    'geoposition'
+    'geoposition',
+    'kombu.transport.django'
 )
 
 TEMPLATE_CONTEXT_PROCESSORS += ('rost.context_processor.FeedbackFormProcessor',)
@@ -143,7 +144,7 @@ EMAIL_HOST = email_settings.host
 EMAIL_PORT = email_settings.port
 EMAIL_HOST_USER = email_settings.user
 EMAIL_HOST_PASSWORD = email_settings.password
-EMAIL_SUBJECT_PREFIX = '[Feedback]'
+EMAIL_SUBJECT_PREFIX = '[Django]'
 EMAIL_USE_TLS = True
 
 # A sample logging configuration. The only tangible logging

@@ -7,7 +7,6 @@ dtcbusroutes/email_settings.py
 
 # Directories
 ve/
-rost/migrations
 
 # Temp Files
 *.py~

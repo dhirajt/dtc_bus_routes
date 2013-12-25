@@ -1,14 +1,12 @@
+import pickle
+
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render
 from django.core.urlresolvers import reverse
 from django.core.exceptions import ObjectDoesNotExist
-from django.core.mail import send_mail
-
-from dtcbusroutes.settings import ADMINS
 
 from models import Stage, Route, StageSeq
 from feedback_form import FeedbackForm
-
 
 def server_error(request):
     return render(request,template_name="500.html")
@@ -101,15 +99,23 @@ def feedback_handler(request):
     if form.is_valid():
         form_data = form.cleaned_data
         if len(form_data['message'])<10:
-            errors.append("You only wrote a few words")
+            errors.append("You only wrote a few words in the message")
         else:
             admin_message = """
-                Name : {0}
-                E-mail : {1}
-                Message : {2} 
+                Name : {0} <br />
+                E-mail : {1} <br />
+                Message : {2} <br /><br />
             """.format(form_data['name'],form_data['email'],form_data['message'])
-            send_mail('Feedback on the dtc-bus-routes!', admin_message, 'admin@dhirajthakur.pythonanywhere.com',
-    [ADMINS[0][1]], fail_silently=False)
+
+            with open('feedback.pickle','rb+') as f:
+                try:
+                    content = pickle.load(f)
+                except EOFError:
+                    content = []
+                content.append(admin_message)
+                f.seek(0)
+                f.write(pickle.dumps(content))
+
     if not errors:
         response = "OK"
     else:
