@@ -135,7 +135,6 @@ INSTALLED_APPS = (
     'south', 
     'debug_toolbar',
     'geoposition',
-    'kombu.transport.django'
 )
 
 TEMPLATE_CONTEXT_PROCESSORS += ('rost.context_processor.FeedbackFormProcessor',)

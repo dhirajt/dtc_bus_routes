@@ -98,23 +98,20 @@ def feedback_handler(request):
 
     if form.is_valid():
         form_data = form.cleaned_data
-        if len(form_data['message'])<10:
-            errors.append("You only wrote a few words in the message")
-        else:
-            admin_message = """
-                Name : {0} <br />
-                E-mail : {1} <br />
-                Message : {2} <br /><br />
-            """.format(form_data['name'],form_data['email'],form_data['message'])
+        admin_message = """
+            Name : {0} <br />
+            E-mail : {1} <br />
+            Message : {2} <br /><br />
+        """.format(form_data['name'],form_data['email'],form_data['message'])
 
-            with open('feedback.pickle','rb+') as f:
-                try:
-                    content = pickle.load(f)
-                except EOFError:
-                    content = []
-                content.append(admin_message)
-                f.seek(0)
-                f.write(pickle.dumps(content))
+        with open('feedback.pickle','rb+') as f:
+            try:
+                content = pickle.load(f)
+            except EOFError:
+                content = []
+            content.append(admin_message)
+            f.seek(0)
+            f.write(pickle.dumps(content))
 
     if not errors:
         response = "OK"
