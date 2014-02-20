@@ -1,11 +1,11 @@
 from django.db import models
+from geoposition.fields import GeopositionField
 
 class Stage(models.Model):
     name = models.CharField(max_length=64)
-    lattitude = models.FloatField(null=True, blank=True)
-    longitude = models.FloatField(null=True, blank=True)
     routes = models.ManyToManyField('Route')
-
+    coordinates = GeopositionField()
+    
     def __unicode__(self):
         return self.name
     

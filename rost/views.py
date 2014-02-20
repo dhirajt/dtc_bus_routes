@@ -1,9 +1,12 @@
+import pickle
+
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render
 from django.core.urlresolvers import reverse
 from django.core.exceptions import ObjectDoesNotExist
 
 from models import Stage, Route, StageSeq
+from feedback_form import FeedbackForm
 
 def server_error(request):
     return render(request,template_name="500.html")
@@ -89,3 +92,29 @@ def payloadmaker(buses, startstage, endstage):
     buslist = [shortest] + [ i for i in data.keys() if i!=shortest ]
     return (data,buslist)
 
+def feedback_handler(request):
+    form = FeedbackForm(request.POST)
+    errors = []
+
+    if form.is_valid():
+        form_data = form.cleaned_data
+        admin_message = """
+            Name : {0} <br />
+            E-mail : {1} <br />
+            Message : {2} <br /><br />
+        """.format(form_data['name'],form_data['email'],form_data['message'])
+
+        with open('feedback.pickle','rb+') as f:
+            try:
+                content = pickle.load(f)
+            except EOFError:
+                content = []
+            content.append(admin_message)
+            f.seek(0)
+            f.write(pickle.dumps(content))
+
+    if not errors:
+        response = "OK"
+    else:
+        response = "<br />".join(errors)
+    return HttpResponse(response)

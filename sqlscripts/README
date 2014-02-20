@@ -1,6 +1,6 @@
 This folder contains the sql scripts for MySQL to setup the
 database. The sql scripts contain the snapshot of the server
-database as on 5 May 2013.
+database as on 22 Sept 2013.
 
 You can also use the fixtures in PROJECT_ROOT/rost/fixtures
 to load the values into the database by using 

@@ -1,6 +1,9 @@
 # Django settings for dtcbusroutes project.
 
 import os.path
+import email_settings
+from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS
+
 PROJECT_ROOT = os.path.dirname(os.path.dirname(__file__))
 
 DEBUG = True
@@ -131,7 +134,18 @@ INSTALLED_APPS = (
 
     'south', 
     'debug_toolbar',
-)    
+    'geoposition',
+)
+
+TEMPLATE_CONTEXT_PROCESSORS += ('rost.context_processor.FeedbackFormProcessor',)
+
+EMAIL_HOST = email_settings.host
+EMAIL_PORT = email_settings.port
+EMAIL_HOST_USER = email_settings.user
+EMAIL_HOST_PASSWORD = email_settings.password
+EMAIL_SUBJECT_PREFIX = '[Django]'
+EMAIL_USE_TLS = True
+
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
 # the site admins on every HTTP 500 error when DEBUG=False.

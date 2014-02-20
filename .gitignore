@@ -3,10 +3,10 @@
 
 # Files
 local_settings.py
+dtcbusroutes/email_settings.py
 
 # Directories
 ve/
-rost/migrations
 
 # Temp Files
 *.py~
