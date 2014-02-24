@@ -7,6 +7,5 @@ urlpatterns = patterns('rost.views',
   # url(r'stage/(?P<stageid>\d+)/$','stage_by_id',name='stage_by_id')   #not implemented yet
     url(r'route/(?P<busid>\d+)/$','bus_by_id',name='bus_by_id'),
     url(r'ajax/bus/$','ajax_bus',name='ajax_bus'),
-    url(r'feedback/$','feedback_handler',name='feedback')
 )
 
