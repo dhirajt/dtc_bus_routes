@@ -5,7 +5,7 @@ from django.shortcuts import render
 from django.core.urlresolvers import reverse
 from django.core.exceptions import ObjectDoesNotExist
 
-from models import Stage, Route, StageSeq
+from models import Stage, Route, StageSequence
 
 def server_error(request):
     return render(request,template_name="500.html")
@@ -29,7 +29,7 @@ def search_by_num(request):
 
 
 def bus_by_id(request,busid=None):
-    stops = StageSeq.objects.select_related().filter(
+    stops = StageSequence.objects.select_related().filter(
                  route=busid).order_by('sequence')
     if stops:
         return render(request, "results_by_num.html",
@@ -60,11 +60,10 @@ def search_by_stage(request):
             buses = None
 
         if buses:
-            data,buslist = payloadmaker(buses, startstage, endstage)
+            data_payload = payloadmaker(buses, startstage, endstage)
             payload = {'startstage': startstage,
                        'endstage': endstage,
-                       'data': data,
-                       'buslist':buslist
+                       'data': data_payload,
                        }
             return render(request, "results_by_stage.html", payload)
         else:
@@ -79,14 +78,15 @@ def search_by_stage(request):
 def payloadmaker(buses, startstage, endstage):
     data = {}
     for bus in buses:
-        stops = StageSeq.objects.select_related().filter(route__name=bus.name)
+        stops = StageSequence.objects.select_related().filter(route__name=bus.name)
         x = stops.get(stage__name__icontains=startstage).sequence
         y = stops.get(stage__name__icontains=endstage).sequence
         stops = stops[min(x, y)-1:max(x, y)]
         data[bus.name] = [it.stage.name for it in stops]
         if data[bus.name][0] != startstage:
             data[bus.name].reverse()
-        
+
     shortest = min(data,key=lambda item:len(data[item]))
     buslist = [shortest] + [ i for i in data.keys() if i!=shortest ]
-    return (data,buslist)
+    payload = [(bus,data[bus]) for bus in buslist]
+    return payload
