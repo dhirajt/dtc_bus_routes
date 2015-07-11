@@ -41,7 +41,7 @@ function validateform() {
     }
     return true;
 }
-</script>    
+</script>
 
 
 <script>
@@ -99,7 +99,7 @@ function validateform() {
     padding-left:8%;
 }
 .fb-like {
-    float:center;
+    vertical-align: top;
 }
 #twitter {
     float:center;
@@ -109,7 +109,7 @@ function validateform() {
 }
 #twostgroute {
     padding-left:2.5%;
-}   
+}
 {% endblock %}
 
 {% block body %}
@@ -118,20 +118,20 @@ function validateform() {
         <div class="span13 offset2" id="twostgroute">
             {% if error %}
             <span id="err" class="label">{{error}}</span>
-            {% endif %} 
-           <form name="search_by_stage" action="{% url search_by_stage %}" method="GET" onsubmit="return validateform();"> 
+            {% endif %}
+           <form name="search_by_stage" action="{% url 'search_by_stage' %}" method="GET" onsubmit="return validateform();">
            <div class="input-control text box">
-            From &nbsp;&nbsp; <input type="text" id="suggstg" name="startstage" class="with-helper" placeholder="Enter source stop name" /> to &nbsp;&nbsp;  
-            <input type="text" id="suggstg1" name="endstage" class="with-helper" placeholder="Enter destination stop name" /> 
+            From &nbsp;&nbsp; <input type="text" id="suggstg" name="startstage" class="with-helper" placeholder="Enter source stop name" /> to &nbsp;&nbsp;
+            <input type="text" id="suggstg1" name="endstage" class="with-helper" placeholder="Enter destination stop name" />
             <button class="default" type="submit">Find Route!</button>
-            
-           </div>  
-           </form>    
-          
-        </div>   
-                
-        </div> 
-        </div>      
+
+           </div>
+           </form>
+
+        </div>
+
+        </div>
+        </div>
 {% endblock %}
 
 {% block share %}
@@ -140,9 +140,9 @@ function validateform() {
       <div id="fb-root"></div>
       <div class="fb-like" data-href="http://www.facebook.com/dtcbusroutes" data-send="false" data-layout="button_count" data-width="100" data-show-faces="false" data-font="segoe ui"></div>
 
-         
-         <a href="https://twitter.com/share" id="twitter" class="twitter-share-button" data-url="http://dhirajthakur.pythonanywhere.com/" data-text="DTC Bus Route finder" data-via="dhirajthakur92" data-hashtags="dtc,busroute" data-dnt="true">Tweet</a> 
-         
+
+         <a href="https://twitter.com/share" id="twitter" class="twitter-share-button" data-url="http://dhirajthakur.pythonanywhere.com/" data-text="DTC Bus Route finder" data-via="dhirajthakur92" data-hashtags="dtc,busroute" data-dnt="true">Tweet</a>
+
 </div>
 
 {% endblock %}

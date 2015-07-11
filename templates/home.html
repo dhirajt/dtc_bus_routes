@@ -23,25 +23,25 @@
         line-height: inherit;
         font-size: 0.75em;
         font-weight: bold;
-        padding: 2px 4px;  
+        padding: 2px 4px;
         background-color: rgb(185, 29, 71) !important;
-        color: rgb(255, 255, 255) !important; 
-    
-       }     
-    
-       #err { 
-        position:absolute; 
+        color: rgb(255, 255, 255) !important;
+
+       }
+
+       #err {
+        position:absolute;
         top: 65%;
         left: 45%;
-   
+
        }
        #bar {
         padding-left:50px;
-    
-      }  
 
-      .box { 
-        margin-top:150px;  
+      }
+
+      .box {
+        margin-top:150px;
       }
 
       #share {
@@ -50,24 +50,23 @@
         text-align:center;
         padding-left:8%;
       }
-      
+
       .fb-like{
-        float:center;
+        vertical-align: top;
       }
       #twitter{
         float:center;
       }
-        
+
       #leftchoice {
         width:45%;
        }
-       
+
        /* width:350px;
         }
       #rightchoice {
         padding-right:0px;
-      } master code */ 
-        
+      } master code */
 {% endblock %}
 
 {% block body %}
@@ -76,26 +75,26 @@
         <div class="span10 offset4" id="mainmenu">
         <div id="choice" class="box">
          <div id="leftchoice" class="span5">
-           <a href="{% url search_by_num %}"><button class="command-button default">
+           <a href="{% url 'search_by_num' %}"><button class="command-button default">
                 <b> Find route by bus number </b>
                 <small>Use this to see the route of a particular
                        bus. For e.g. 182A</small>
            </button> </a>
-        
-         </div> 
+
+         </div>
          <div id="rightchoice" class="span5">
-         <a href="{% url search_by_stage %}"><button class="command-button default">
+         <a href="{% url 'search_by_stage' %}"><button class="command-button default">
                 <b> Find buses between two stops </b>
                 <small>Find buses between your
                        source stop and destination stop.</small>
            </button> </a>
-           
+
           </div>
          </div>
-        </div>    
-                
-        </div> 
-        </div>      
+        </div>
+
+        </div>
+        </div>
 {% endblock %}
 
 {% block share %}
@@ -103,10 +102,8 @@
  <div id="share" class="span8 offset4">
       <div id="fb-root"></div>
       <div class="fb-like" data-href="http://www.facebook.com/dtcbusroutes" data-send="false" data-layout="button_count" data-width="100" data-show-faces="false" data-font="segoe ui"></div>
+         <a href="https://twitter.com/share" id="twitter" class="twitter-share-button" data-url="http://dhirajthakur.pythonanywhere.com/" data-text="DTC Bus Route finder" data-via="dhirajthakur92" data-hashtags="dtc,busroute" data-dnt="true">Tweet</a>
 
-         
-         <a href="https://twitter.com/share" id="twitter" class="twitter-share-button" data-url="http://dhirajthakur.pythonanywhere.com/" data-text="DTC Bus Route finder" data-via="dhirajthakur92" data-hashtags="dtc,busroute" data-dnt="true">Tweet</a> 
-         
 </div>
 
 {% endblock %}

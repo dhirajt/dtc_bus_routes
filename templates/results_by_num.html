@@ -2,7 +2,7 @@
 
 {% block js %}
 
-<link href="{{ STATIC_URL }}css/leaflet.css" rel="stylesheet"> 
+<link href="{{ STATIC_URL }}css/leaflet.css" rel="stylesheet">
 
 <script type="text/javascript" src="{{ STATIC_URL }}js/leaflet.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL }}js/TileLayer.Bing.js"></script>
@@ -19,7 +19,7 @@ $(function () {
     $(document).on('mouseenter', 'span[rel=tooltip]', function () {
         var ele = $(this)
         stage = $(this).html()
-        $.get("{% url ajax_bus %}?q=" + encodeURIComponent(stage),
+        $.get("{% url 'ajax_bus' %}?q=" + encodeURIComponent(stage),
 
         function (response) {
             ele.attr("data-original-title", response);
@@ -43,12 +43,12 @@ $(function () {
 #infobox {
    float:left;
    width:10%;
- }     
-    
-#stops { 
+ }
+
+#stops {
    margin-top: 20px;
-   float:left;  
-}  
+   float:left;
+}
 
 #content {
    margin-top: 40px;
@@ -60,7 +60,7 @@ $(function () {
     height:500px;
     background-color:#ffffff;
     text-align: center;
-    
+
 }
 
 .leaflet-control-layers-toggle {
@@ -158,14 +158,14 @@ $(function () {
 
 {% block body %}
     <div class="grid">
-     <div class="row">        
+     <div class="row">
         <div class="span2"></div>
-        
+
         <div id="content" class="span4">
            <div id="infobox">
             <div class="tile bg-color-green" style="width:200px;height:auto;">
             <div class="tile-content">
-            
+
             <b> Route : {{ route }} <br/>
                 From : {{ first }} <br/>
                 To : {{ last }} <br />
@@ -177,37 +177,37 @@ $(function () {
                 <b> Stops At: </b> <br /> <br />
                 {% for item in stops %}
                 <p> {{item.sequence}}. <span id="res" rel="tooltip" data-placement="right">{{item.stage}} </span> </p>
-                {% endfor %}  
+                {% endfor %}
           </div>
-        </div> 
-         
-          
+        </div>
+
+
           <div id="map" class="span10"> </div>
-          <script> 
+          <script>
                 var Url = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/{styleId}/256/{z}/{x}/{y}.png',
                     Attribution = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>';
-                
-                
-                var cloudmadelayer=L.tileLayer(Url, 
+
+
+                var cloudmadelayer=L.tileLayer(Url,
                 {   styleId : 997,
 			        maxZoom: 18,
 			        attribution: Attribution
 			    }),
-			    
+
 			     googlelayer = new L.Google('ROADMAP'),
 			     BingAerialWithLabels = new L.TileLayer.Bing('AqOllaswadzkeAg1p8HrHnhXQnJZ2LSATfibDWbyHYi4UyI9wcFK6j-OFbo2Qkns', "AerialWithLabels",
                         {
                             maxZoom: 18,
                             attribution: ''
                         });
-               
-                
+
+
 		        var baseIcon = L.Icon.extend({
                      options: {
-                        iconSize:     [30, 35], 
-                        iconAnchor:   [15, 34], 
+                        iconSize:     [30, 35],
+                        iconAnchor:   [15, 34],
                         popupAnchor:  [1, -25]
-                     } 
+                     }
                 });
 
                 var busIcon = new baseIcon({iconUrl: '{{ STATIC_URL }}images/bus.png'}),
@@ -221,8 +221,8 @@ $(function () {
            </script>
           <script type="text/javascript" src="{{ STATIC_URL }}js/maps.js"></script>
 
-         
-      
-      </div> 
-    </div>      
+
+
+      </div>
+    </div>
 {% endblock %}

@@ -21,7 +21,7 @@ function validateform() {
     }
     return true;
 }
-</script>    
+</script>
 
 <script>
 ! function (d, s, id) {
@@ -78,7 +78,7 @@ function validateform() {
     padding-left:8%;
 }
 .fb-like {
-    float:center;
+  vertical-align: top;
 }
 #twitter {
     float:center;
@@ -87,26 +87,26 @@ function validateform() {
 
 {% block body %}
         <div class="grid">
-        <div class="row">   
+        <div class="row">
         <div class="span5 offset6" id="busnoroute">
-        
+
          {% if error %}
             <span id="err" class="label">{{error}}</span>
             {% endif %}
-           <form name="search_by_num" action="{% url search_by_num %}" method="GET" onsubmit="return validateform()"> 
+           <form name="search_by_num" action="{% url 'search_by_num' %}" method="GET" onsubmit="return validateform()">
            <div class="input-control text box">
             <input type="text" id="suggbus" name="bus" class="with-helper" placeholder="Enter Bus No." />
             <button class="btn-search" type="submit"></button>
-            
-           </div>  
-           </form> 
-                 
-        </div> 
-       
-         
-                
-        </div> 
-        </div>      
+
+           </div>
+           </form>
+
+        </div>
+
+
+
+        </div>
+        </div>
 {% endblock %}
 
 {% block share %}
@@ -115,9 +115,9 @@ function validateform() {
       <div id="fb-root"></div>
       <div class="fb-like" data-href="http://www.facebook.com/dtcbusroutes" data-send="false" data-layout="button_count" data-width="100" data-show-faces="false" data-font="segoe ui"></div>
 
-         
-         <a href="https://twitter.com/share" id="twitter" class="twitter-share-button" data-url="http://dhirajthakur.pythonanywhere.com/" data-text="DTC Bus Route finder" data-via="dhirajthakur92" data-hashtags="dtc,busroute" data-dnt="true">Tweet</a> 
-         
+
+         <a href="https://twitter.com/share" id="twitter" class="twitter-share-button" data-url="http://dhirajthakur.pythonanywhere.com/" data-text="DTC Bus Route finder" data-via="dhirajthakur92" data-hashtags="dtc,busroute" data-dnt="true">Tweet</a>
+
 </div>
 
 {% endblock %}
