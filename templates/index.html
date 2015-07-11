@@ -14,8 +14,8 @@
     <script type="text/javascript" src="{{ STATIC_URL }}js/jquery19.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.mousewheel.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/tooltip.js"></script>
-    <!--<script type="text/javascript" src="{{ STATIC_URL }}js/dropdown.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/accordion.js"></script>
+    <!--<script type="text/javascript" src="{{ STATIC_URL }}js/dropdown.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/buttonset.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/carousel.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/input-control.js"></script>
@@ -27,89 +27,114 @@
     <script type="text/javascript" src="{{ STATIC_URL }}js/busno.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.autocomplete.min.js"></script>
 
+    <script type="text/javascript">
+      function func_dialog(message) {
+        $.Dialog({
+            'title': 'Oops!',
+                'content': message,
+                'buttons': {
+                'Ok': {
+                    'action': function () {}
+                }
+
+            }
+        });
+      }
+    </script>
     {% block js %}
-    
+
     {% endblock %}
-    
+
     <title>{% block title %}DTC Bus Routes{% endblock %}</title>
 
     <style>
-    
-    
+
+
       .container {
         height: 100%;
         padding-top:10px;
         padding-left:6%;
       }
-      
+
       html {
         position: relative;
         min-height: 100%;
       }
-      
+
       body {
         margin: 0 0 80px; /* bottom = footer height */
       }
-    
+
       #footer{
-        height: 65px; 
+        height: 65px;
         width:100%;
         position: absolute;
         left: 0;
         bottom: 0;
         background-color: rgb(228, 237, 245);
      }
-      
+
       #footer a{
         color: rgb(82, 83, 85);
         text-decoration:none;
       }
       #footer a:hover{
-      
-        text-decoration:underline;        
+
+        text-decoration:underline;
       }
-            
+
       {% block css %}
-      
-      
-      
+
+
+
       {% endblock %}
-    
+
     </style>
 
 </head>
 <body class="modern-ui" onload=" ">
+    <script id="_webengage_script_tag" type="text/javascript">
+      var _weq = _weq || {};
+      _weq['webengage.licenseCode'] = '14507c365';
+      _weq['webengage.widgetVersion'] = "4.0";
+
+      (function(d){
+        var _we = d.createElement('script');
+        _we.type = 'text/javascript';
+        _we.async = true;
+        _we.src = (d.location.protocol == 'https:' ? "https://ssl.widgets.webengage.com" : "http://cdn.widgets.webengage.com") + "/js/widget/webengage-min-v-4.0.js";
+        var _sNode = d.getElementById('_webengage_script_tag');
+        _sNode.parentNode.insertBefore(_we, _sNode);
+      })(document);
+    </script>
     <div class="page secondary">
         <div class="page-header">
             <div class="page-header-content">
-                <h1>DTC <a href="{% url home %}"><span style="font-size:45px; color:#91DB39" class="icon-bus"></span></a>
+                <h1>DTC <a href="{% url 'home' %}"><span style="font-size:45px; color:#91DB39" class="icon-bus"></span></a>
                 Routes
                 </h1>
             </div>
         </div>
-        
+
         {% block body %}
-      
+
         {% endblock %}
-        
-        
-     
     </div>
-      
+
       {% block share %}
-      
+
       {% endblock %}
-     
+
     <div id="footer">
-    
+
       <div class="container offset6">
       &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
-      <a href="http://www.djangoproject.com/"><img src="{{ STATIC_URL }}images/djimg.gif" border="0" alt="A Django project." title="A Django project." /></a><br />     
+      <a href="http://www.djangoproject.com/"><img src="{{ STATIC_URL }}images/djimg.gif" border="0" alt="A Django project." title="A Django project." /></a><br />
        <a href="https://github.com/dhirajt/dtc-bus-routes/blob/master/LICENCE">License</a>
        | <a href="https://github.com/dhirajt/dtc-bus-routes/blob/master/DISCLAIMER">Disclaimer</a> | <a href="https://github.com/dhirajt/dtc-bus-routes/issues">Bug Reports</a>
       </div>
     </div>
-    
+
     </body>
-    
+
 </html>

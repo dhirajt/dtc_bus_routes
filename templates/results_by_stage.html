@@ -1,5 +1,4 @@
 {% extends "index.html" %}
-{% load dictag %}
 
 {% block js %}
 
@@ -13,7 +12,7 @@ $(function () {
     $(document).on('mouseenter', 'span[rel=tooltip]', function () {
         var ele = $(this)
         stage = $(this).html()
-        $.get("{% url ajax_bus %}?q=" + encodeURIComponent(stage),
+        $.get("{% url 'ajax_bus' %}?q=" + encodeURIComponent(stage),
 
         function (response) {
             ele.attr("data-original-title", response);
@@ -52,57 +51,55 @@ $(function () {
 
 {% block body %}
     <div class="grid">
-     <div class="row">        
+     <div class="row">
         <div class="span5"></div>
-        
-        
-        
-        
-        
+
+
+
+
+
         <div id="content" class="span7">
            <div id="infobox">
             <div class="tile bg-color-green" style="width:200px;height:auto;">
             <div class="tile-content">
-            
+
             <b> From : {{ startstage }} <br/>
                 To : {{ endstage }} <br />
             </b>
             </div>
             </div>
           </div>
-          
+
            <div id="stops">
                        <ul class="listview">
-                         {% for bus in buslist %}
+                         {% for bus,stoplist in data %}
                          <li>
                             {% if forloop.counter == 1 %}
                             <div class="badge strech">
                                 Shortest route
-                            </div> 
+                            </div>
                             {% endif %}
                             <div class="icon">
-                               <!-- <a href=""> --> 
+                               <!-- <a href=""> -->
                                <h4><span style="font-size:30px;" class="icon-bus"></span></h4>
-                               
+
                             </div>
-                             
+
                             <div class="data">
                                 <h4>{{ bus }}</h4>
-                                {% with stoplist=data|getval:bus %}
                                 {% for stop in stoplist %}
                                 <span>{{ forloop.counter }}. {{ stop }}</span>
                                 {% endfor %}
-                                {% endwith %}
                             </div>
                         </li>
                         {% endfor %}
                        </ul>
           </div>
-        
+
         </div>
-       
-        
+
+
         </div>
-      </div> 
-    </div>      
+      </div>
+    </div>
 {% endblock %}
