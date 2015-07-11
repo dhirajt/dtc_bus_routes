@@ -43,8 +43,9 @@ def bus_by_id(request,busid=None):
 def ajax_bus(request):
     stop = request.GET.get('q')
     obj = Stage.objects.get(name=stop)
+    route_names = list(obj.route_set.values_list('name',flat=True))
     route_list = '<b>Buses from here :</b> <br/>'+(
-                 '<br />'.join([rout.name for rout in obj.routes.all()]))
+                 '<br />'.join(route_names))
     return HttpResponse(route_list)
 
 
