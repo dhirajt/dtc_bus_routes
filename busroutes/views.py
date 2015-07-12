@@ -1,7 +1,7 @@
 import pickle
 
 from django.http import HttpResponse, HttpResponseRedirect, Http404
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.core.urlresolvers import reverse
 from django.core.exceptions import ObjectDoesNotExist
 
@@ -20,7 +20,9 @@ def search_by_num(request):
             obj = None
 
         if obj:
-            return HttpResponseRedirect(reverse('bus_by_id',args=(obj.id,)))
+            return redirect(
+                'bus_by_id', bus_id=obj.id, source=obj.start_stage.name_slug,
+                destination=obj.end_stage.name_slug)
         else:
             error = 'Bus not found!'
             return render(request, "search_by_num.html", {"error": error})
@@ -28,9 +30,18 @@ def search_by_num(request):
         return render(request, "search_by_num.html")
 
 
-def bus_by_id(request,busid=None):
-    stops = StageSequence.objects.select_related().filter(
-                 route=busid).order_by('sequence')
+def bus_by_id(request,bus_id=None,source='',destination=''):
+    stops = list(StageSequence.objects.select_related().filter(
+                 route=bus_id).order_by('sequence'))
+    if not stops:
+        raise Http404
+
+    source_stage = stops[0].stage.name_slug
+    destination_stage  = stops[len(stops)-1].stage.name_slug
+
+    if source!=source_stage or destination!=destination_stage:
+        return redirect('bus_by_id',bus_id=bus_id,source=source_stage,destination=destination_stage)
+
     if stops:
         return render(request, "results_by_num.html",
                           {"stops": stops,

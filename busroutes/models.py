@@ -5,6 +5,7 @@ from geoposition.fields import GeopositionField
 
 class Stage(models.Model):
     name = models.CharField(max_length=64,unique=True)
+    name_slug = models.SlugField(max_length=100)
     coordinates = GeopositionField()
 
     class Meta:

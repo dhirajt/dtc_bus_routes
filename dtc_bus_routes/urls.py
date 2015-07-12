@@ -24,8 +24,8 @@ urlpatterns = [
     url(r'^$', TemplateView.as_view(template_name="home.html"), name='home'),
 
     url(r'route/search/$','busroutes.views.search_by_stage',name='search_by_stage'),
-    url(r'search/$','busroutes.views.search_by_num',name='search_by_num'),
+    url(r'bus/search/$','busroutes.views.search_by_num',name='search_by_num'),
   # url(r'stage/(?P<stageid>\d+)/$','buroutes.views.stage_by_id',name='stage_by_id')   #not implemented yet
-    url(r'route/(?P<busid>\d+)/$','busroutes.views.bus_by_id',name='bus_by_id'),
+    url(r'route/(?P<bus_id>\d+)/(?P<source>.+)/to/(?P<destination>.+)/$','busroutes.views.bus_by_id',name='bus_by_id'),
     url(r'ajax/bus/$','busroutes.views.ajax_bus',name='ajax_bus'),
 ]
