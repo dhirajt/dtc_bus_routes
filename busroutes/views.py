@@ -90,10 +90,20 @@ def search_by_stage(request):
 def payloadmaker(buses, startstage, endstage):
     data = {}
     for bus in buses:
-        stops = StageSequence.objects.select_related().filter(route__name=bus.name)
-        x = stops.get(stage__name__icontains=startstage).sequence
-        y = stops.get(stage__name__icontains=endstage).sequence
-        stops = stops[min(x, y)-1:max(x, y)]
+        stops = list(StageSequence.objects.select_related().filter(
+            route__name=bus.name).order_by('sequence'))
+
+        start_stage = [i for i in stops if i.stage.name == startstage][0]
+        end_stage = [i for i in stops if i.stage.name == endstage][0]
+
+        x = stops.index(start_stage)
+        y = stops.index(end_stage)
+
+        if y<x:
+            x,y = y,x
+
+        stops = stops[x:y+1]
+
         data[bus.name] = [it.stage.name for it in stops]
         if data[bus.name][0] != startstage:
             data[bus.name].reverse()
