@@ -15,8 +15,15 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
-
 from django.views.generic import TemplateView
+from django.contrib.sitemaps.views import sitemap
+
+from sitemaps import RouteSitemap, StaticViewSitemap
+
+sitemaps = {
+    'routes': RouteSitemap,
+    'page_urls': StaticViewSitemap
+}
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
@@ -29,4 +36,7 @@ urlpatterns = [
   # url(r'stage/(?P<stageid>\d+)/$','buroutes.views.stage_by_id',name='stage_by_id')   #not implemented yet
     url(r'bus/route/(?P<bus_id>\d+)/(?P<source>.+)/to/(?P<destination>.+)/$','busroutes.views.bus_by_id',name='bus_by_id'),
     url(r'ajax/bus/$','busroutes.views.ajax_bus',name='ajax_bus'),
+
+    url(r'^sitemap\.xml$', sitemap, {'sitemaps': sitemaps},
+        name='django.contrib.sitemaps.views.sitemap')
 ]

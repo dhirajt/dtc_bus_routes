@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 from django.db import models
+from django.utils import timezone
+from django.core.urlresolvers import reverse
+
 from geoposition.fields import GeopositionField
 
 
@@ -34,6 +37,7 @@ class Route(models.Model):
     end_stage = models.ForeignKey(Stage, related_name='end_stage')
     direction = models.CharField(max_length=4)  # up or down
     ac_bus_available = models.BooleanField(default=False)
+    last_modified = models.DateTimeField(auto_now=True)
     stages = models.ManyToManyField(
         Stage, through="StageSequence",through_fields=('route', 'stage'))
 
@@ -42,6 +46,13 @@ class Route(models.Model):
         verbose_name_plural = "Routes"
 
         unique_together = (('name','direction'),('name','start_stage','end_stage'),)
+
+    def get_absolute_url(self):
+        return reverse('bus_by_id',kwargs={
+            'bus_id':self.id,
+            'source':self.start_stage.name_slug,
+            'destination':self.end_stage.name_slug
+        })
 
     def __unicode__(self):
         return self.name
