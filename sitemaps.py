@@ -17,7 +17,7 @@ class RouteSitemap(Sitemap):
 
 
 class StaticViewSitemap(Sitemap):
-    priority = 0.6
+    priority = 0.9
     changefreq = 'weekly'
 
     def items(self):

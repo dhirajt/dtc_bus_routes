@@ -66,8 +66,8 @@ def search_by_stage(request):
         endstage = request.GET['endstage']
         try:
             buses = Route.objects.filter(
-                stages__name__icontains=startstage).filter(
-                stages__name__icontains=endstage)
+                stages__name=startstage).filter(
+                stages__name=endstage)
         except ObjectDoesNotExist:
             buses = None
 

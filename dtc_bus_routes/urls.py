@@ -25,6 +25,8 @@ sitemaps = {
     'page_urls': StaticViewSitemap
 }
 
+handler500 = 'busroutes.views.server_error'
+
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
 
