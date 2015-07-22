@@ -1,7 +1,22 @@
 {% extends "index.html" %}
 
-{% block js %}
+{% block title %}{{ block.super }} | Route from {{ startstage }} to {{ endstage }}{% endblock %}
 
+{% block meta_tags %}
+  <meta name="description" content="DTC Bus Routes | Route from {{ startstage }} to {{ endstage }} lists buses between {{ startstage }} and {{ endstage }}. It tells you all the stops the bus goes through between those two stops with maps. It also tells you timings of the bus.">
+  <meta name="keywords" content="dtc, bus, delhi bus, bus routes, delhi bus route,  delhi bus service, dtc bus, dtc bus service, dtc routes, delhi buses, delhi bus list, delhi bus timings, delhi bus details, delhi bus rote details, delhi transport corporation, delhi bus banner, bus in delhi, bus for delhi, bus for south delhi, bus for north delhi, bus for east delhi, buses in delhi,  delhi bus details, delhi bus route finder, delhi bus route no, delhi bus details, delhi bus route chart, delhi bus route search, {{ startstage }}, {{ endstage }}, delhi bus between {{ startstage }} and {{ endstage }}, dtc {{ startstage }}, dtc {{ endstage }}">
+
+  <meta itemprop="name" content="DTC Bus Routes | Route from {{ startstage }} to {{ endstage }}">
+  <meta itemprop="description" content="DTC Bus Routes | Route from {{ startstage }} to {{ endstage }} lists buses between {{ startstage }} and {{ endstage }}. It tells you all the stops the bus goes through between those two stops with maps. It also tells you timings of the bus.">
+
+  <meta property="og:title" content="DTC Bus Routes | Route from {{ startstage }} to {{ endstage }}" />
+  <meta property="og:description" content="DTC Bus Routes | Route from {{ startstage }} to {{ endstage }} lists buses between {{ startstage }} and {{ endstage }}. It tells you all the stops the bus goes through between those two stops with maps. It also tells you timings of the bus." />
+
+  <meta name="twitter:title" content="DTC Bus Routes | Route from {{ startstage }} to {{ endstage }}">
+  <meta name="twitter:description" content="DTC Bus Routes | Route from {{ startstage }} to {{ endstage }} lists buses between {{ startstage }} and {{ endstage }}. It tells you all the stops the bus goes through between those two stops with maps. It also tells you timings of the bus.">
+{% endblock %}
+
+{% block js %}
 <script>
 $(function () {
     $('body').tooltip({
@@ -26,10 +41,6 @@ $(function () {
 });
 </script>
 {% endblock %}
-
-
-{% block title %}{{ block.super }} | Route{% endblock %}
-
 
 
 {% block css %}

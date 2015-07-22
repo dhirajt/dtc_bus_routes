@@ -45,8 +45,8 @@ def bus_by_id(request,bus_id=None,source='',destination=''):
     if stops:
         return render(request, "results_by_num.html",
                           {"stops": stops,
-                           "first": stops[0].stage,
-                           "last": stops[len(stops)-1].stage,
+                           "startstage": stops[0].stage,
+                           "endstage": stops[len(stops)-1].stage,
                            "route": stops[0].route})
     else :
         raise Http404
@@ -60,24 +60,39 @@ def ajax_bus(request):
     return HttpResponse(route_list)
 
 
+def bus_by_stages(request,source='',destination=''):
+    buses = Route.objects.filter(
+            stages__name_slug=source).filter(
+            stages__name_slug=destination)
+
+    if buses.exists():
+        startstage = Stage.objects.get(name_slug=source)
+        endstage =  Stage.objects.get(name_slug=destination)
+
+        data_payload = payloadmaker(buses, source, destination)
+        payload = {
+            'startstage': startstage.name,
+            'endstage': endstage.name,
+            'data': data_payload,
+        }
+        return render(request, "results_by_stage.html", payload)
+    else:
+        return redirect('search_by_stage')
+
 def search_by_stage(request):
     if request.GET:
         startstage = request.GET['startstage']
         endstage = request.GET['endstage']
-        try:
-            buses = Route.objects.filter(
+        buses = Route.objects.filter(
                 stages__name=startstage).filter(
                 stages__name=endstage)
-        except ObjectDoesNotExist:
-            buses = None
 
-        if buses:
-            data_payload = payloadmaker(buses, startstage, endstage)
-            payload = {'startstage': startstage,
-                       'endstage': endstage,
-                       'data': data_payload,
-                       }
-            return render(request, "results_by_stage.html", payload)
+        buses_exist = buses.exists()
+        source = Stage.objects.get(name=startstage)
+        destination =  Stage.objects.get(name=endstage)
+
+        if buses_exist and source and destination:
+            return redirect('bus_by_stage',source=source.name_slug,destination=destination.name_slug)
         else:
             error = 'Either you entered wrong stop name or no direct route \
                  exists!'
@@ -93,8 +108,8 @@ def payloadmaker(buses, startstage, endstage):
         stops = list(StageSequence.objects.select_related().filter(
             route__name=bus.name).order_by('sequence'))
 
-        start_stage = [i for i in stops if i.stage.name == startstage][0]
-        end_stage = [i for i in stops if i.stage.name == endstage][0]
+        start_stage = [i for i in stops if i.stage.name_slug == startstage][0]
+        end_stage = [i for i in stops if i.stage.name_slug == endstage][0]
 
         x = stops.index(start_stage)
         y = stops.index(end_stage)
