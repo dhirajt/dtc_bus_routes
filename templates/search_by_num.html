@@ -20,7 +20,7 @@
 
 <script type="text/javascript">
 $().ready(function () {
-    $("#suggbus").focus().autocomplete(busno);
+    $("#suggbus").focus().autocomplete("{% url 'ajax_bus_number_search' %}");
 });
 
 function validateform() {

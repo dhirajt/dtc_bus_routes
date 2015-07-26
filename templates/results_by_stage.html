@@ -27,7 +27,7 @@ $(function () {
     $(document).on('mouseenter', 'span[rel=tooltip]', function () {
         var ele = $(this)
         stage = $(this).html()
-        $.get("{% url 'ajax_bus' %}?q=" + encodeURIComponent(stage),
+        $.get("{% url 'ajax_buses_from_here' %}?q=" + encodeURIComponent(stage),
 
         function (response) {
             ele.attr("data-original-title", response);

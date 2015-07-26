@@ -17,13 +17,10 @@
 {% endblock %}
 
 {% block js %}
-
-<script type="text/javascript" src="{{ STATIC_URL }}js/stgname.js"></script>
-
 <script type="text/javascript">
 $().ready(function () {
-    $("#suggstg").focus().autocomplete(stg);
-    $("#suggstg1").focus().autocomplete(stg);
+    $("#suggstg").focus().autocomplete("{% url 'ajax_stage_search' %}");
+    $("#suggstg1").focus().autocomplete("{% url 'ajax_stage_search' %}");
 });
 
 function func_dialog(message) {

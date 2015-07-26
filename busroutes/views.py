@@ -1,6 +1,6 @@
-import pickle
+import json
 
-from django.http import HttpResponse, HttpResponseRedirect, Http404
+from django.http import HttpResponse, Http404, HttpResponseBadRequest
 from django.shortcuts import render, redirect
 from django.core.urlresolvers import reverse
 from django.core.exceptions import ObjectDoesNotExist
@@ -51,7 +51,7 @@ def bus_by_id(request,bus_id=None,source='',destination=''):
     else :
         raise Http404
 
-def ajax_bus(request):
+def ajax_buses_from_here(request):
     stop = request.GET.get('q')
     obj = Stage.objects.get(name=stop)
     route_names = list(obj.route_set.values_list('name',flat=True))
@@ -59,6 +59,23 @@ def ajax_bus(request):
                  '<br />'.join(route_names))
     return HttpResponse(route_list)
 
+def ajax_bus_number_search(request):
+    if not request.is_ajax():
+        return HttpResponseBadRequest
+    query = request.GET.get('q','')
+    buses = []
+    if query:
+        buses = list(Route.objects.filter(name__istartswith=query).values_list('name',flat=True))
+    return HttpResponse("\n".join(buses))
+
+def ajax_stage_search(request):
+    if not request.is_ajax():
+        return HttpResponseBadRequest
+    query = request.GET.get('q','')
+    stages = []
+    if query:
+        stages = list(Stage.objects.filter(name__istartswith=query).values_list('name',flat=True))
+    return HttpResponse("\n".join(stages))
 
 def bus_by_stages(request,source='',destination=''):
     buses = Route.objects.filter(
