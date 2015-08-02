@@ -1,5 +1,21 @@
 {% extends "index.html" %}
 
+{% block title %}{{ block.super }} | Route {{ route }} | {{ startstage }} to {{ endstage }}{% endblock %}
+
+{% block meta_tags %}
+  <meta name="description" content="DTC Bus Routes | Route {{ route }} | {{ startstage }} to {{ endstage }} lists all stages/stops on route/bus {{ route }}. It tells you all the stops the bus goes with maps. It also tells you timings of the bus.">
+  <meta name="keywords" content="dtc, bus, delhi bus, bus routes, delhi bus route,  delhi bus service, dtc bus, dtc bus service, dtc routes, delhi buses, delhi bus list, delhi bus timings, delhi bus details, delhi bus rote details, delhi transport corporation, delhi bus banner, bus in delhi, bus for delhi, bus for south delhi, bus for north delhi, bus for east delhi, buses in delhi,  delhi bus details, delhi bus route finder, delhi bus route no, delhi bus details, delhi bus route chart, delhi bus route search, dtc route {{ route }}, delhi bus route {{ route }}, dtc {{ route }}">
+
+  <meta itemprop="name" content="DTC Bus Routes | Route {{ route }} | {{ startstage }} to {{ endstage }}">
+  <meta itemprop="description" content="DTC Bus Routes | Route {{ route }} | {{ startstage }} to {{ endstage }} lists all stages/stops on route/bus {{ route }}. It tells you all the stops the bus goes with maps. It also tells you timings of the bus.">
+
+  <meta property="og:title" content="DTC Bus Routes | Route {{ route }} | {{ startstage }} to {{ endstage }}" />
+  <meta property="og:description" content="DTC Bus Routes | Route {{ route }} | {{ startstage }} to {{ endstage }} lists all stages/stops on route/bus {{ route }}. It tells you all the stops the bus goes with maps. It also tells you timings of the bus." />
+
+  <meta name="twitter:title" content="DTC Bus Routes | Route {{ route }} | {{ startstage }} to {{ endstage }}">
+  <meta name="twitter:description" content="DTC Bus Routes | Route {{ route }} | {{ startstage }} to {{ endstage }} lists all stages/stops on route/bus {{ route }}. It tells you all the stops the bus goes with maps. It also tells you timings of the bus.">
+{% endblock %}
+
 {% block js %}
 
 <link href="{{ STATIC_URL }}css/leaflet.css" rel="stylesheet">
@@ -19,7 +35,7 @@ $(function () {
     $(document).on('mouseenter', 'span[rel=tooltip]', function () {
         var ele = $(this)
         stage = $(this).html()
-        $.get("{% url 'ajax_bus' %}?q=" + encodeURIComponent(stage),
+        $.get("{% url 'ajax_buses_from_here' %}?q=" + encodeURIComponent(stage),
 
         function (response) {
             ele.attr("data-original-title", response);
@@ -34,10 +50,6 @@ $(function () {
 });
 </script>
 {% endblock %}
-
-
-{% block title %}{{ block.super }} | Route{% endblock %}
-
 
 {% block css %}
 #infobox {
@@ -167,8 +179,8 @@ $(function () {
             <div class="tile-content">
 
             <b> Route : {{ route }} <br/>
-                From : {{ first }} <br/>
-                To : {{ last }} <br />
+                From : {{ startstage }} <br/>
+                To : {{ endstage }} <br />
             </b>
             </div>
             </div>

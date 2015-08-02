@@ -1,2 +1,4 @@
 User-agent: *
-Disallow:
+Disallow: /admin/
+
+sitemap: http://www.dtcbusroutes.in/sitemap.xml
