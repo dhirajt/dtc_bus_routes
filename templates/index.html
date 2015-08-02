@@ -1,11 +1,44 @@
+{% load static %}
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="target-densitydpi=device-dpi, width=device-width, initial-scale=1.0, maximum-scale=1">
-    <meta name="description" content="Find DTC bus routes">
     <meta name="author" content="Dhiraj Thakur">
-    <meta name="keywords" content="dtc, bus, delhi bus, bus routes">
+
+    <link rel="canonical" href="http://www.dtcbusroutes.in{{ request.path }}" />
+    <meta name="google-site-verification" content="E1z0_7E9gqi6Z3uV0k_41EiVwKOZxb7zXlORbrZw3ms" />
+    <meta name="msvalidate.01" content="66641B4DCE41F4F43AC11DAE66F5693D" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="fb:admins" content="100000669078751" />
+    <meta property="og:url" content="http://www.dtcbusroutes.in{{ request.path }}" />
+    <meta property="og:image" content="http://www.dtcbusroutes.in{% static 'images/logo_meta.png' %}" />
+    <meta property="og:site_name" content="DTC Bus Routes" />
+    <meta property="og:see_also" content="http://www.dtcbusroutes.in/">
+
+    <meta itemprop="image" content="http://www.dtcbusroutes.in{% static 'images/logo_meta.png' %}">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:url" content="http://www.dtcbusroutes.in{{ request.path }}">
+    <meta name="twitter:image" content="http://www.dtcbusroutes.in{% static 'images/logo_meta.png' %}">
+
+    <title>{% block title %}DTC Bus Routes{% endblock %}</title>
+
+    {% block meta_tags %}
+    <meta name="description" content="DTC Bus Routes makes it easier for you to commute in Delhi. It provides you the updated dtc bus routes and timings.">
+    <meta name="keywords" content="dtc, bus, delhi bus, bus routes, delhi bus route,  delhi bus service, dtc bus, dtc bus service, dtc routes, delhi buses, delhi bus list, delhi bus timings, delhi bus details, delhi bus rote details, delhi transport corporation, delhi bus banner, bus in delhi, bus for delhi, bus for south delhi, bus for north delhi, bus for east delhi, buses in delhi,  delhi bus details, delhi bus route finder, delhi bus route no, delhi bus details, delhi bus route chart, delhi bus route search">
+
+    <meta itemprop="name" content="DTC Bus Routes">
+    <meta itemprop="description" content="DTC Bus Routes makes it easier for you to commute in Delhi. It provides you the updated dtc bus routes and timings.">
+
+    <meta property="og:title" content="DTC Bus Routes" />
+    <meta property="og:description" content="DTC Bus Routes makes it easier for you to commute in Delhi. It provides you the updated dtc bus routes and timings." />
+
+    <meta name="twitter:title" content="DTC Bus Routes">
+    <meta name="twitter:description" content="DTC Bus Routes makes it easier for you to commute in Delhi. It provides you the updated dtc bus routes and timings.">
+    {% endblock %}
 
     <link href="{{ STATIC_URL }}css/modern.css" rel="stylesheet">
     <link href="{{ STATIC_URL }}css/modern-responsive.css" rel="stylesheet">
@@ -24,8 +57,17 @@
     <script type="text/javascript" src="{{ STATIC_URL }}js/tile-slider.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/tile-drag.js"></script>-->
     <script type="text/javascript" src="{{ STATIC_URL }}js/dialog.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}js/busno.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.autocomplete.min.js"></script>
+
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-65039991-1', 'auto');
+    ga('send', 'pageview');
+    </script>
 
     <script type="text/javascript">
       function func_dialog(message) {
@@ -44,8 +86,6 @@
     {% block js %}
 
     {% endblock %}
-
-    <title>{% block title %}DTC Bus Routes{% endblock %}</title>
 
     <style>
 
@@ -94,18 +134,18 @@
 </head>
 <body class="modern-ui" onload=" ">
     <script id="_webengage_script_tag" type="text/javascript">
-      var _weq = _weq || {};
-      _weq['webengage.licenseCode'] = '14507c365';
-      _weq['webengage.widgetVersion'] = "4.0";
+    var _weq = _weq || {};
+    _weq['webengage.licenseCode'] = '76aa07a';
+    _weq['webengage.widgetVersion'] = "4.0";
 
-      (function(d){
-        var _we = d.createElement('script');
-        _we.type = 'text/javascript';
-        _we.async = true;
-        _we.src = (d.location.protocol == 'https:' ? "https://ssl.widgets.webengage.com" : "http://cdn.widgets.webengage.com") + "/js/widget/webengage-min-v-4.0.js";
-        var _sNode = d.getElementById('_webengage_script_tag');
-        _sNode.parentNode.insertBefore(_we, _sNode);
-      })(document);
+    (function(d){
+    var _we = d.createElement('script');
+    _we.type = 'text/javascript';
+    _we.async = true;
+    _we.src = (d.location.protocol == 'https:' ? "https://ssl.widgets.webengage.com" : "http://cdn.widgets.webengage.com") + "/js/widget/webengage-min-v-4.0.js";
+    var _sNode = d.getElementById('_webengage_script_tag');
+    _sNode.parentNode.insertBefore(_we, _sNode);
+    })(document);
     </script>
     <div class="page secondary">
         <div class="page-header">
@@ -130,8 +170,8 @@
       <div class="container offset6">
       &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
       <a href="http://www.djangoproject.com/"><img src="{{ STATIC_URL }}images/djimg.gif" border="0" alt="A Django project." title="A Django project." /></a><br />
-       <a href="https://github.com/dhirajt/dtc-bus-routes/blob/master/LICENCE">License</a>
-       | <a href="https://github.com/dhirajt/dtc-bus-routes/blob/master/DISCLAIMER">Disclaimer</a> | <a href="https://github.com/dhirajt/dtc-bus-routes/issues">Bug Reports</a>
+       <a href="https://github.com/dhirajt/dtc_bus_routes/blob/master/LICENCE">License</a>
+       | <a href="https://github.com/dhirajt/dtc_bus_routes/blob/master/DISCLAIMER">Disclaimer</a> | <a href="https://github.com/dhirajt/dtc_bus_routes/issues">Bug Reports</a>
       </div>
     </div>
 

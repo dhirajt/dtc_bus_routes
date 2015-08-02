@@ -1,10 +1,26 @@
 {% extends "index.html" %}
 
+{% block title %}{{ block.super }} | Search By Bus Number{% endblock %}
+
+{% block meta_tags %}
+  <meta name="description" content="DTC Bus Routes | Search By Bus Number lets you find buses from a bus number. It tells you all the stop the bus goes through with maps. It also tells you timings of the bus.">
+  <meta name="keywords" content="dtc, bus, delhi bus, bus routes, delhi bus route,  delhi bus service, dtc bus, dtc bus service, dtc routes, delhi buses, delhi bus list, delhi bus timings, delhi bus details, delhi bus rote details, delhi transport corporation, delhi bus banner, bus in delhi, bus for delhi, bus for south delhi, bus for north delhi, bus for east delhi, buses in delhi,  delhi bus details, delhi bus route finder, delhi bus route no, delhi bus details, delhi bus route chart, delhi bus route search, delhi bus search by number,dtc bus number, delhi bus number">
+
+  <meta itemprop="name" content="DTC Bus Routes | Search By Bus Number">
+  <meta itemprop="description" content="DTC Bus Routes | Search By Bus Number lets you find buses from a bus number. It tells you all the stop the bus goes through with maps. It also tells you timings of the bus.">
+
+  <meta property="og:title" content="DTC Bus Routes | Search By Bus Number" />
+  <meta property="og:description" content="DTC Bus Routes | Search By Bus Number lets you find buses from a bus number. It tells you all the stop the bus goes through with maps. It also tells you timings of the bus." />
+
+  <meta name="twitter:title" content="DTC Bus Routes | Search By Bus Number">
+  <meta name="twitter:description" content="DTC Bus Routes | Search By Bus Number lets you find buses from a bus number. It tells you all the stop the bus goes through with maps. It also tells you timings of the bus.">
+{% endblock %}
+
 {% block js %}
 
 <script type="text/javascript">
 $().ready(function () {
-    $("#suggbus").focus().autocomplete(busno);
+    $("#suggbus").focus().autocomplete("{% url 'ajax_bus_number_search' %}");
 });
 
 function validateform() {
