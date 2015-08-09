@@ -1,8 +1,11 @@
+# -*- coding: utf-8 -*-
 import json
+import redis
 
 from django.http import HttpResponse, Http404, HttpResponseBadRequest
 from django.shortcuts import render, redirect
 from django.core.urlresolvers import reverse
+from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 
 from models import Stage, Route, StageSequence
@@ -64,8 +67,14 @@ def ajax_bus_number_search(request):
         return HttpResponseBadRequest
     query = request.GET.get('q','')
     buses = []
+
     if query:
-        buses = list(Route.objects.filter(name__istartswith=query).values_list('name',flat=True))
+        rclient = redis.StrictRedis(connection_pool=settings.BUS_REDIS_POOL)
+        buses = rclient.smembers(query)
+        if not buses:
+            buses = list(Route.objects.filter(name__istartswith=query).values_list('name',flat=True))
+            rclient.sadd(query,*buses)
+            rclient.expire(query,6*60*60)
     return HttpResponse("\n".join(buses))
 
 def ajax_stage_search(request):
@@ -74,7 +83,12 @@ def ajax_stage_search(request):
     query = request.GET.get('q','')
     stages = []
     if query:
-        stages = list(Stage.objects.filter(name__istartswith=query).values_list('name',flat=True))
+        rclient = redis.StrictRedis(connection_pool=settings.STAGE_REDIS_POOL)
+        stages = rclient.smembers(query)
+        if not stages:
+            stages = list(Stage.objects.filter(name__istartswith=query).values_list('name',flat=True))
+            rclient.sadd(query,*stages)
+            rclient.expire(query,6*60*60)
     return HttpResponse("\n".join(stages))
 
 def bus_by_stages(request,source='',destination=''):

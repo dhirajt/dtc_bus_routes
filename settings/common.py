@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/dev/ref/settings/
 from __future__ import absolute_import, unicode_literals
 
 import environ
+import  redis
 
 ROOT_DIR = environ.Path(__file__) - 3  # (/a/b/myfile.py - 3 = /)
 APPS_DIR = ROOT_DIR.path('dtc_bus_routes')
@@ -203,6 +204,12 @@ AUTHENTICATION_BACKENDS = (
 
 # SLUGLIFIER
 AUTOSLUG_SLUGIFY_FUNCTION = 'slugify.slugify'
+
+
+# CACHE POOLS
+DEFAULT_REDIS_POOL = redis.ConnectionPool(host='localhost',port=6379,db=0)
+BUS_REDIS_POOL = redis.ConnectionPool(host='localhost',port=6379,db=1)
+STAGE_REDIS_POOL = redis.ConnectionPool(host='localhost',port=6379,db=2)
 
 
 # LOGGING CONFIGURATION
