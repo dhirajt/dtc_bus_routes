@@ -119,11 +119,12 @@ def search_by_stage(request):
                 stages__name=endstage)
 
         buses_exist = buses.exists()
-        source = Stage.objects.get(name=startstage)
-        destination =  Stage.objects.get(name=endstage)
+        source = list(Stage.objects.filter(name=startstage))
+        destination =  list(Stage.objects.filter(name=endstage))
 
         if buses_exist and source and destination:
-            return redirect('bus_by_stage',source=source.name_slug,destination=destination.name_slug)
+            return redirect('bus_by_stage',source=source[0].name_slug,
+                destination=destination[0].name_slug)
         else:
             error = 'Either you entered wrong stop name or no direct route \
                  exists!'
