@@ -15,6 +15,14 @@ class Stage(models.Model):
         verbose_name = "Stage"
         verbose_name_plural = "Stages"
 
+    @property
+    def latitude(self):
+        return self.coordinates.latitude
+
+    @property
+    def longitude(self):
+        return self.coordinates.longitude
+
     def __unicode__(self):
         return self.name
 

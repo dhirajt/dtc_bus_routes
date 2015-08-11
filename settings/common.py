@@ -38,16 +38,22 @@ DJANGO_APPS = (
 )
 THIRD_PARTY_APPS = (
     'geoposition',
+    'rest_framework'
 )
 
 # Apps specific for this project go here.
 LOCAL_APPS = (
     'busroutes',
+    'api'
     # Your stuff: custom apps go here
 )
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAdminUser',),
+}
 
 # MIDDLEWARE CONFIGURATION
 # ------------------------------------------------------------------------------
