@@ -73,8 +73,9 @@ def ajax_bus_number_search(request):
         buses = rclient.smembers(query)
         if not buses:
             buses = list(Route.objects.filter(name__istartswith=query).values_list('name',flat=True))
-            rclient.sadd(query,*buses)
-            rclient.expire(query,6*60*60)
+            if buses:
+                rclient.sadd(query,*buses)
+                rclient.expire(query,6*60*60)
     return HttpResponse("\n".join(buses))
 
 def ajax_stage_search(request):
@@ -87,8 +88,9 @@ def ajax_stage_search(request):
         stages = rclient.smembers(query)
         if not stages:
             stages = list(Stage.objects.filter(name__istartswith=query).values_list('name',flat=True))
-            rclient.sadd(query,*stages)
-            rclient.expire(query,6*60*60)
+            if stages:
+                rclient.sadd(query,*stages)
+                rclient.expire(query,6*60*60)
     return HttpResponse("\n".join(stages))
 
 def bus_by_stages(request,source='',destination=''):
