@@ -48,6 +48,7 @@ class Route(models.Model):
     last_modified = models.DateTimeField(auto_now=True)
     stages = models.ManyToManyField(
         Stage, through="StageSequence",through_fields=('route', 'stage'))
+    is_active = models.BooleanField(default=True)
 
     class Meta:
         verbose_name = "Route"
