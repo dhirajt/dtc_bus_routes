@@ -69,69 +69,92 @@
     ga('send', 'pageview');
     </script>
 
+    <!-- Begin Cookie Consent plugin by Silktide - http://silktide.com/cookieconsent -->
     <script type="text/javascript">
-      function func_dialog(message) {
-        $.Dialog({
-            'title': 'Oops!',
-                'content': message,
-                'buttons': {
-                'Ok': {
-                    'action': function () {}
-                }
-
-            }
-        });
-      }
+    window.cookieconsent_options = {
+      "message":"To give you the best possible experience, this site uses cookies. Continuing to use this site means you agree to our use of cookies. To know more about cookies",
+      "dismiss":"Got it!",
+      "learnMore":"click here.",
+      "link":"http://www.whatarecookies.com/",
+      "theme":"dark-top"};
     </script>
-    {% block js %}
-
-    {% endblock %}
-
-    <style>
-
-
-      .container {
-        height: 100%;
-        padding-top:10px;
-        padding-left:6%;
-      }
-
-      html {
-        position: relative;
-        min-height: 100%;
-      }
-
-      body {
-        margin: 0 0 80px; /* bottom = footer height */
-      }
-
-      #footer{
-        height: 65px;
-        width:100%;
-        position: absolute;
-        left: 0;
-        bottom: 0;
-        background-color: rgb(228, 237, 245);
-     }
-
-      #footer a{
-        color: rgb(82, 83, 85);
-        text-decoration:none;
-      }
-      #footer a:hover{
-
-        text-decoration:underline;
-      }
-
-      {% block css %}
-
-
-
-      {% endblock %}
-
-    </style>
-
+    <script type="text/javascript" src="//s3.amazonaws.com/cc.silktide.com/cookieconsent.latest.min.js"></script>
+    <!-- End Cookie Consent plugin -->
 </head>
+
+<script type="text/javascript">
+  function func_dialog(message) {
+    $.Dialog({
+        'title': 'Oops!',
+            'content': message,
+            'buttons': {
+            'Ok': {
+                'action': function () {}
+            }
+
+        }
+    });
+  }
+</script>
+{% block js %}
+
+{% endblock %}
+
+<style>
+  .container {
+    height: 100%;
+    padding-top:10px;
+    padding-left:6%;
+  }
+
+  html {
+    position: relative;
+    min-height: 100%;
+  }
+
+  body {
+    margin: 0 0 80px; /* bottom = footer height */
+  }
+
+  #footer{
+    height: 65px;
+    width:100%;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    background-color: rgb(228, 237, 245);
+ }
+
+  #footer a{
+    color: rgb(82, 83, 85);
+    text-decoration:none;
+  }
+  #footer a:hover{
+    text-decoration:underline;
+  }
+
+  #share {
+    margin-top: 3%;
+    margin-bottom: 5%;
+    text-align:center;
+  }
+
+  .fb-like{
+    vertical-align: top;
+  }
+
+  #twitter{
+    float:center;
+  }
+
+  {% block css %}
+
+
+
+  {% endblock %}
+
+</style>
+
 <body class="modern-ui" onload=" ">
     <script id="_webengage_script_tag" type="text/javascript">
     var _weq = _weq || {};
@@ -161,12 +184,34 @@
         {% endblock %}
     </div>
 
-      {% block share %}
+    {% block share %}
+     <div id="share" class="span9 offset4">
+          <div id="fb-root"></div>
+          <div class="fb-like" data-href="http://www.facebook.com/dtcbusroutes" data-send="false" data-layout="button_count" data-width="100" data-show-faces="false" data-font="segoe ui"></div>
+             <a href="https://twitter.com/share" id="twitter" class="twitter-share-button" data-url="http://dhirajthakur.pythonanywhere.com/" data-text="DTC Bus Route finder" data-via="dhirajthakur92" data-hashtags="dtc,busroute" data-dnt="true">Tweet</a>
 
-      {% endblock %}
+    </div>
+    {% endblock %}
+
+    {% block bottom_responsive_ad %}
+    <div id="ad_unit" class="span9 offset4">
+      <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+      <!-- Home Page Responsive -->
+      <ins class="adsbygoogle"
+      style="display:block"
+      data-ad-client="ca-pub-2660771687848747"
+      data-ad-slot="5824987163"
+      data-ad-format="auto"></ins>
+      <script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+      {% if debug %}
+      google_ad_test = "on";
+      {% endif %}
+      </script>
+    </div>
+    {% endblock %}
 
     <div id="footer">
-
       <div class="container offset6">
       &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
       <a href="http://www.djangoproject.com/"><img src="{{ STATIC_URL }}images/djimg.gif" border="0" alt="A Django project." title="A Django project." /></a><br />
