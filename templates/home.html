@@ -1,5 +1,7 @@
 {% extends "index.html" %}
 
+{% block title %}DTC Buses Routes, Bus Timings and other information | {{ block.super }}{% endblock %}
+
 {% block js %}
 
 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
@@ -44,20 +46,6 @@
         margin-top:150px;
       }
 
-      #share {
-        height:50px;
-        margin-top:100px;
-        text-align:center;
-        padding-left:8%;
-      }
-
-      .fb-like{
-        vertical-align: top;
-      }
-      #twitter{
-        float:center;
-      }
-
       #leftchoice {
         width:45%;
        }
@@ -95,15 +83,4 @@
 
         </div>
         </div>
-{% endblock %}
-
-{% block share %}
-
- <div id="share" class="span8 offset4">
-      <div id="fb-root"></div>
-      <div class="fb-like" data-href="http://www.facebook.com/dtcbusroutes" data-send="false" data-layout="button_count" data-width="100" data-show-faces="false" data-font="segoe ui"></div>
-         <a href="https://twitter.com/share" id="twitter" class="twitter-share-button" data-url="http://dhirajthakur.pythonanywhere.com/" data-text="DTC Bus Route finder" data-via="dhirajthakur92" data-hashtags="dtc,busroute" data-dnt="true">Tweet</a>
-
-</div>
-
 {% endblock %}

@@ -1,8 +1,11 @@
+# -*- coding: utf-8 -*-
 import json
+import redis
 
 from django.http import HttpResponse, Http404, HttpResponseBadRequest
 from django.shortcuts import render, redirect
 from django.core.urlresolvers import reverse
+from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 
 from models import Stage, Route, StageSequence
@@ -15,7 +18,7 @@ def search_by_num(request):
     if request.GET:
         busno = request.GET['bus']
         try:
-            obj = Route.objects.get(name=busno)
+            obj = Route.objects.get(name=busno,is_active=True)
         except ObjectDoesNotExist:
             obj = None
 
@@ -32,7 +35,7 @@ def search_by_num(request):
 
 def bus_by_id(request,bus_id=None,source='',destination=''):
     stops = list(StageSequence.objects.select_related().filter(
-                 route=bus_id).order_by('sequence'))
+                 route__is_active=True,route=bus_id).order_by('sequence'))
     if not stops:
         raise Http404
 
@@ -54,7 +57,8 @@ def bus_by_id(request,bus_id=None,source='',destination=''):
 def ajax_buses_from_here(request):
     stop = request.GET.get('q')
     obj = Stage.objects.get(name=stop)
-    route_names = list(obj.route_set.values_list('name',flat=True))
+    route_names = list(obj.route_set.filter(is_active=True).values_list('name',flat=True))
+    route_names = sorted(route_names)
     route_list = '<b>Buses from here :</b> <br/>'+(
                  '<br />'.join(route_names))
     return HttpResponse(route_list)
@@ -64,8 +68,18 @@ def ajax_bus_number_search(request):
         return HttpResponseBadRequest
     query = request.GET.get('q','')
     buses = []
+
     if query:
-        buses = list(Route.objects.filter(name__istartswith=query).values_list('name',flat=True))
+        rclient = redis.StrictRedis(connection_pool=settings.BUS_REDIS_POOL)
+        buses = rclient.smembers(query)
+        buses = sorted(buses)
+        if not buses:
+            buses = list(Route.objects.filter(
+                is_active=True,name__istartswith=query).values_list('name',flat=True))
+            if buses:
+                buses = sorted(buses)
+                rclient.sadd(query,*buses)
+                rclient.expire(query,6*60*60)
     return HttpResponse("\n".join(buses))
 
 def ajax_stage_search(request):
@@ -74,13 +88,21 @@ def ajax_stage_search(request):
     query = request.GET.get('q','')
     stages = []
     if query:
-        stages = list(Stage.objects.filter(name__istartswith=query).values_list('name',flat=True))
+        rclient = redis.StrictRedis(connection_pool=settings.STAGE_REDIS_POOL)
+        stages = rclient.smembers(query)
+        stages = sorted(stages)
+        if not stages:
+            stages = list(Stage.objects.filter(name__istartswith=query).values_list('name',flat=True))
+            if stages:
+                stages = sorted(stages)
+                rclient.sadd(query,*stages)
+                rclient.expire(query,6*60*60)
     return HttpResponse("\n".join(stages))
 
 def bus_by_stages(request,source='',destination=''):
     buses = Route.objects.filter(
-            stages__name_slug=source).filter(
-            stages__name_slug=destination)
+            is_active=True,
+            stages__name_slug=source).filter(stages__name_slug=destination)
 
     if buses.exists():
         startstage = Stage.objects.get(name_slug=source)
@@ -101,15 +123,15 @@ def search_by_stage(request):
         startstage = request.GET['startstage']
         endstage = request.GET['endstage']
         buses = Route.objects.filter(
-                stages__name=startstage).filter(
-                stages__name=endstage)
+            is_active=True,stages__name=startstage).filter(stages__name=endstage)
 
         buses_exist = buses.exists()
-        source = Stage.objects.get(name=startstage)
-        destination =  Stage.objects.get(name=endstage)
+        source = list(Stage.objects.filter(name=startstage))
+        destination =  list(Stage.objects.filter(name=endstage))
 
         if buses_exist and source and destination:
-            return redirect('bus_by_stage',source=source.name_slug,destination=destination.name_slug)
+            return redirect('bus_by_stage',source=source[0].name_slug,
+                destination=destination[0].name_slug)
         else:
             error = 'Either you entered wrong stop name or no direct route \
                  exists!'
