@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.views.generic import TemplateView
 from django.contrib.sitemaps.views import sitemap
 
+from api import urls as api_urls
 from sitemaps import RouteSitemap, StaticViewSitemap
 
 sitemaps = {
@@ -28,6 +29,7 @@ sitemaps = {
 handler500 = 'busroutes.views.server_error'
 
 urlpatterns = [
+    url(r'^api/v1/', include(api_urls)),
     url(r'^admin/', include(admin.site.urls)),
 
     url(r'^$', TemplateView.as_view(template_name="home.html"), name='home'),

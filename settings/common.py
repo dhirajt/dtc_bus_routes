@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/dev/ref/settings/
 from __future__ import absolute_import, unicode_literals
 
 import environ
+import  redis
 
 ROOT_DIR = environ.Path(__file__) - 3  # (/a/b/myfile.py - 3 = /)
 APPS_DIR = ROOT_DIR.path('dtc_bus_routes')
@@ -37,16 +38,22 @@ DJANGO_APPS = (
 )
 THIRD_PARTY_APPS = (
     'geoposition',
+    'rest_framework'
 )
 
 # Apps specific for this project go here.
 LOCAL_APPS = (
     'busroutes',
+    'api'
     # Your stuff: custom apps go here
 )
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAdminUser',),
+}
 
 # MIDDLEWARE CONFIGURATION
 # ------------------------------------------------------------------------------
@@ -203,6 +210,12 @@ AUTHENTICATION_BACKENDS = (
 
 # SLUGLIFIER
 AUTOSLUG_SLUGIFY_FUNCTION = 'slugify.slugify'
+
+
+# CACHE POOLS
+DEFAULT_REDIS_POOL = redis.ConnectionPool(host='localhost',port=6379,db=0)
+BUS_REDIS_POOL = redis.ConnectionPool(host='localhost',port=6379,db=1)
+STAGE_REDIS_POOL = redis.ConnectionPool(host='localhost',port=6379,db=2)
 
 
 # LOGGING CONFIGURATION
