@@ -1,3 +1,19 @@
+                var baseIcon = L.Icon.extend({
+                     options: {
+                        iconSize:     [30, 35],
+                        iconAnchor:   [15, 34],
+                        popupAnchor:  [1, -25]
+                     }
+                });
+
+                var busIcon = new baseIcon({iconUrl: static_url+'images/bus.png'}),
+                    gmIcon = new baseIcon({iconUrl: static_url+'images/gm.png'}),
+                    bmIcon = new baseIcon({iconUrl: static_url+'images/bm.png'}),
+                    vmIcon = new baseIcon({iconUrl: static_url+'images/vm.png'}),
+                    omIcon = new baseIcon({iconUrl: static_url+'images/om.png'}),
+                    rmIcon = new baseIcon({iconUrl: static_url+'images/rm.png'}),
+                    ymIcon = new baseIcon({iconUrl: static_url+'images/ym.png'});
+
                 // Delhi Metro Red Line
 
                 var rlinepts = [
@@ -28,7 +44,7 @@
                     rlinepts[ i ] = new L.LatLng( rlinepts[ i ][ 0 ], rlinepts[ i ][ 1 ] );
                 }
 
-                 line1 = new L.Polyline( rlinepts, { color: "red" } );
+                line1 = new L.Polyline( rlinepts, { color: "red" } );
 
 
                 var redline = L.layerGroup([
@@ -81,6 +97,9 @@
                 // Delhi Metro Violet Line
 
                 var vlinepts = [
+                    [28.627198, 77.24096],
+                    [28.62588, 77.2341],
+                    [28.62646, 77.21910],
                     [28.61474, 77.21191],
                     [28.60276, 77.22829],
                     [28.5904, 77.23326],
@@ -108,38 +127,47 @@
 
 
                 var violetline = L.layerGroup([
+                L.marker([28.627198, 77.24096],
+                    {icon: vmIcon}).bindPopup("<b>ITO</b><br />Violet Line<br />Underground"),
+
+                L.marker([28.62588, 77.2341],
+                    {icon: vmIcon}).bindPopup("<b>Mandi House</b><br />Blue Line, Violet Line<br />Underground"),
+
+                L.marker([28.62646, 77.21910],
+                    {icon: vmIcon}).bindPopup("<b>Janpath</b><br />Violet Line<br />Underground"),
+
                 L.marker([28.61474, 77.21191],
-                {icon: vmIcon}).bindPopup("<b>Central Secretariat</b><br />Yellow Line, Violet Line<br />Underground"),
+                    {icon: vmIcon}).bindPopup("<b>Central Secretariat</b><br />Yellow Line, Violet Line<br />Underground"),
                 L.marker([28.60276, 77.22829],
-                {icon: vmIcon}).bindPopup("<b>Khan Market</b><br />Violet Line<br />Underground"),
+                    {icon: vmIcon}).bindPopup("<b>Khan Market</b><br />Violet Line<br />Underground"),
                 L.marker([28.5904, 77.23326],
-                {icon: vmIcon}).bindPopup("<b>Jawaharlal Nehru Stadium</b><br />Violet Line<br />Underground"),
+                    {icon: vmIcon}).bindPopup("<b>Jawaharlal Nehru Stadium</b><br />Violet Line<br />Underground"),
                 L.marker([28.5843, 77.23766],
-                {icon: vmIcon}).bindPopup("<b>Jangpura</b><br />Violet Line<br />Underground"),
+                    {icon: vmIcon}).bindPopup("<b>Jangpura</b><br />Violet Line<br />Underground"),
                 L.marker([28.57079, 77.23653],
-                {icon: vmIcon}).bindPopup("<b>Lajpat Nagar</b><br />Violet Line<br />Elevated"),
+                    {icon: vmIcon}).bindPopup("<b>Lajpat Nagar</b><br />Violet Line<br />Elevated"),
                 L.marker([28.56417, 77.23423],
-                {icon: vmIcon}).bindPopup("<b>Moolchand</b><br />Violet Line<br />Elevated"),
+                    {icon: vmIcon}).bindPopup("<b>Moolchand</b><br />Violet Line<br />Elevated"),
                 L.marker([28.55527, 77.24205],
-                {icon: vmIcon}).bindPopup("<b>Kailash Colony</b><br />Violet Line<br />Elevated"),
+                    {icon: vmIcon}).bindPopup("<b>Kailash Colony</b><br />Violet Line<br />Elevated"),
                 L.marker([28.55148, 77.25154],
-                {icon: vmIcon}).bindPopup("<b>Nehru Place</b><br />Violet Line<br />Elevated"),
+                    {icon: vmIcon}).bindPopup("<b>Nehru Place</b><br />Violet Line<br />Elevated"),
                 L.marker([28.55007, 77.25835],
-                {icon: vmIcon}).bindPopup("<b>Kalkaji Mandir</b><br />Violet Line<br />Elevated"),
+                    {icon: vmIcon}).bindPopup("<b>Kalkaji Mandir</b><br />Violet Line<br />Elevated"),
                 L.marker([28.54451, 77.26401],
-                {icon: vmIcon}).bindPopup("<b>Govind Puri</b><br />Violet Line<br />Elevated"),
+                    {icon: vmIcon}).bindPopup("<b>Govind Puri</b><br />Violet Line<br />Elevated"),
                 L.marker([28.54292, 77.27504],
-                {icon: vmIcon}).bindPopup("<b>Okhla</b><br />Violet Line<br />Elevated"),
+                    {icon: vmIcon}).bindPopup("<b>Okhla</b><br />Violet Line<br />Elevated"),
                 L.marker([28.53824, 77.28319],
-                {icon: vmIcon}).bindPopup("<b>Jasola Apollo</b><br />Violet Line<br />Elevated"),
+                    {icon: vmIcon}).bindPopup("<b>Jasola Apollo</b><br />Violet Line<br />Elevated"),
                 L.marker([28.52878, 77.28826],
-                {icon: vmIcon}).bindPopup("<b>Sarita Vihar</b><br />Violet Line<br />Elevated"),
+                    {icon: vmIcon}).bindPopup("<b>Sarita Vihar</b><br />Violet Line<br />Elevated"),
                 L.marker([28.51938, 77.29388],
-                {icon: vmIcon}).bindPopup("<b>Mohan Estate</b><br />Violet Line<br />Elevated"),
+                    {icon: vmIcon}).bindPopup("<b>Mohan Estate</b><br />Violet Line<br />Elevated"),
                 L.marker([28.50254, 77.2993],
-                {icon: vmIcon}).bindPopup("<b>Tughlakabad</b><br />Violet Line<br />Elevated"),
+                    {icon: vmIcon}).bindPopup("<b>Tughlakabad</b><br />Violet Line<br />Elevated"),
                 L.marker([28.49334, 77.30307],
-                {icon: vmIcon}).bindPopup("<b>Badarpur</b><br />Violet Line<br />Elevated"),
+                    {icon: vmIcon}).bindPopup("<b>Badarpur</b><br />Violet Line<br />Elevated"),
                 line2]);
 
 
@@ -242,7 +270,7 @@
                 L.marker([28.62342, 77.2425],
                 {icon: bmIcon}).bindPopup("<b>Pragati Maidan</b><br />Blue Line<br />Elevated"),
                 L.marker([28.62588, 77.2341],
-                {icon: bmIcon}).bindPopup("<b>Mandi House</b><br />Blue Line<br />Underground"),
+                {icon: bmIcon}).bindPopup("<b>Mandi House</b><br />Violet Line, Blue Line<br />Underground"),
                 L.marker([28.63003, 77.22436],
                 {icon: bmIcon}).bindPopup("<b>Barakhambha Road</b><br />Blue Line<br />Underground"),
                 L.marker([28.63282, 77.21826],
@@ -540,17 +568,17 @@
                 {icon: omIcon}).bindPopup("<b>Dwarka Sector 21</b><br />Blue Line, Airport Express<br />Underground"),line4]);
 
 
-                var map = L.map('map',{
-                    center: new L.LatLng(28.635, 77.224),
-                    zoom: 12,
-                    layers:[ googlelayer ]
-                    });
+                // var map = L.map('map',{
+                //     center: new L.LatLng(28.635, 77.224),
+                //     zoom: 12,
+                //     layers:[ googlelayer ]
+                //     });
 
-                var baseMaps = {
-                    "Google Map": googlelayer,
-			              "Mapbox Map": mapboxlayer,
-			              "Bing" : BingAerialWithLabels
-		        };
+                // var baseMaps = {
+                //     "Google Map": googlelayer,
+			    //     "Mapbox Map": mapboxlayer,
+			    //     "Bing" : BingAerialWithLabels
+		        // };
 
 		        var overlayMaps = {
 		            "Red Line Metro" : redline,
@@ -558,7 +586,5 @@
 		            "Blue Line Metro" : blueline,
 		            "Yellow Line Metro" : yellowline,
 		            "Green Line Metro" : greenline,
-			          "Airport Express Metro": airport
+			        "Airport Express Metro": airport
 		        };
-
-            L.control.layers(baseMaps,overlayMaps).addTo(map);

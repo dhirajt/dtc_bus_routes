@@ -17,100 +17,64 @@
 {% endblock %}
 
 {% block js %}
+{{ block.super }}
 <script type="text/javascript">
-$().ready(function () {
-    $("#suggstg").focus().autocomplete("{% url 'ajax_stage_search' %}");
-    $("#suggstg1").focus().autocomplete("{% url 'ajax_stage_search' %}");
-});
-
-function func_dialog(message) {
-    $.Dialog({
-        'title': 'Oops!',
-            'content': message,
-            'buttons': {
-            'Ok': {
-                'action': function () {}
-            }
-
-        }
+    $().ready(function () {
+        $("#suggstg").focus().autocomplete("{% url 'ajax_stage_search' %}");
+        $("#suggstg1").focus().autocomplete("{% url 'ajax_stage_search' %}");
     });
-}
 
-function validateform() {
-    var from = document.forms.search_by_stage.startstage.value;
-    var to = document.forms.search_by_stage.endstage.value;
+    function validateform() {
+        var from = document.forms.search_by_stage.startstage.value;
+        var to = document.forms.search_by_stage.endstage.value;
 
-    if (from === "" || to === "") {
-        func_dialog("Source and/or destination can't be empty.<br />Please enter valid source and destination from suggestions.");
-        return false;
+        if (from === "" || to === "") {
+            func_dialog("Oops!","Source and/or destination can't be empty.<br />Please enter valid source and destination from suggestions.");
+            return false;
+        }
+
+        var foundstart = $.inArray(from, stg) > -1;
+        var foundend = $.inArray(to, stg) > -1;
+
+        if (!(foundstart) || !(foundend)) {
+            func_dialog("Oops!","Please enter the source and destination from suggestions only.");
+            return false;
+        }
+        return true;
     }
-
-    var foundstart = $.inArray(from, stg) > -1;
-    var foundend = $.inArray(to, stg) > -1;
-
-    if (!(foundstart) || !(foundend)) {
-        func_dialog("Please enter the source and destination from suggestions only.");
-        return false;
-    }
-    return true;
-}
 </script>
-
-
-<script>
-! function (d, s, id) {
-    var js, fjs = d.getElementsByTagName(s)[0],
-        p = /^http:/.test(d.location) ? 'http' : 'https';
-    if (!d.getElementById(id)) {
-        js = d.createElement(s);
-        js.id = id;
-        js.src = p + '://platform.twitter.com/widgets.js';
-        fjs.parentNode.insertBefore(js, fjs);
-    }
-}(document, 'script', 'twitter-wjs');
-</script>
-
-<script>
-(function (d, s, id) {
-    var js, fjs = d.getElementsByTagName(s)[0];
-    if (d.getElementById(id)) return;
-    js = d.createElement(s);
-    js.id = id;
-    js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=508603022535540";
-    fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));
-</script>
-
-
 {% endblock %}
 
 {% block css %}
-.label {
-    display: inline-block;
-    line-height: inherit;
-    font-size: 0.75em;
-    font-weight: bold;
-    padding: 2px 4px;
-    background-color: rgb(185, 29, 71) !important;
-    color: rgb(255, 255, 255) !important;
-}
-#err {
-    position:absolute;
-    top: 50%;
-    left: 36%;
-}
-#bar {
-    padding-left:50px;
-}
-.box {
-    margin-top:150px;
-}
-#suggstg, #suggstg1 {
-    width : 380px;
-}
-#twostgroute {
-    padding-left:2.5%;
-}
+    {{ block.super }}
+    <style>
+        .label {
+            display: inline-block;
+            line-height: inherit;
+            font-size: 0.75em;
+            font-weight: bold;
+            padding: 2px 4px;
+            background-color: rgb(185, 29, 71) !important;
+            color: rgb(255, 255, 255) !important;
+        }
+        #err {
+            position:absolute;
+            top: 50%;
+            left: 36%;
+        }
+        #bar {
+            padding-left:50px;
+        }
+        .box {
+            margin-top:150px;
+        }
+        #suggstg, #suggstg1 {
+            width : 380px;
+        }
+        #twostgroute {
+            padding-left:2.5%;
+        }
+    </style>
 {% endblock %}
 
 {% block body %}
