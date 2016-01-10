@@ -24,6 +24,8 @@ class RouteAdmin(admin.ModelAdmin):
 class StageAdmin(admin.ModelAdmin):
     list_display = ('name','name_slug','coordinates')
     search_fields = ['name', 'name_slug', 'coordinates']
+    prepopulated_fields = {'name_slug': ('name',)}
+
     ordering = ('name',)
 
 class StageSeqAdmin(admin.ModelAdmin):
