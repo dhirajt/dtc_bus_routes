@@ -17,13 +17,12 @@
 {% endblock %}
 
 {% block js %}
+{{ block.super }}
 <script>
 $(function () {
-
     $('body').tooltip({
         selector: '[rel=tooltip]'
     });
-
 
     $(document).on('mouseenter', 'span[rel=tooltip]', function () {
         var ele = $(this)
@@ -45,131 +44,96 @@ $(function () {
 {% endblock %}
 
 {% block css %}
-#infobox {
-    float:left;
-}
-#stops {
-    margin-left:300px;
-}
-#content {
-    margin-top: 40px;
-    width:590px;
-}
-.tooltip {
-    position: absolute;
-    z-index: 1030;
-    display: block;
-    font-size: 12px;
-    line-height: 1.4;
-    font-weight:normal;
-    opacity: 1;
-    filter: alpha(opacity=0);
-    visibility: visible;
-}
-.tooltip.in {
-    opacity: 0.8;
-    filter: alpha(opacity=80);
-}
-.tooltip.top {
-    padding: 5px 0;
-    margin-top: -3px;
-}
-.tooltip.right {
-    padding: 0 5px;
-    margin-left: 3px;
-}
-.tooltip.bottom {
-    padding: 5px 0;
-    margin-top: 3px;
-}
-.tooltip.left {
-    padding: 0 5px;
-    margin-left: -3px;
-}
-.tooltip-inner {
-    max-width: 200px;
-    padding: 8px;
-    color: #ffffff;
-    text-align: center;
-    text-decoration: none;
-    background-color: #000000;
-    -webkit-border-radius: 4px;
-    -moz-border-radius: 4px;
-    border-radius: 4px;
-}
-.tooltip-arrow {
-    position: absolute;
-    width: 0;
-    height: 0;
-    border-color: transparent;
-    border-style: solid;
-}
-.tooltip.top .tooltip-arrow {
-    bottom: 0;
-    left: 50%;
-    margin-left: -5px;
-    border-top-color: #000000;
-    border-width: 5px 5px 0;
-}
-.tooltip.right .tooltip-arrow {
-    top: 50%;
-    left: 0;
-    margin-top: -5px;
-    border-right-color: #000000;
-    border-width: 5px 5px 5px 0;
-}
-.tooltip.left .tooltip-arrow {
-    top: 50%;
-    right: 0;
-    margin-top: -5px;
-    border-left-color: #000000;
-    border-width: 5px 0 5px 5px;
-}
-.tooltip.bottom .tooltip-arrow {
-    top: 0;
-    left: 50%;
-    margin-left: -5px;
-    border-bottom-color: #000000;
-    border-width: 0 5px 5px;
-}
+    {{ block.super }}
+    <link href='https://api.mapbox.com/mapbox.js/v2.2.3/mapbox.css' rel='stylesheet' />
+    <link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.css' rel='stylesheet' />
+    <link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.Default.css' rel='stylesheet' />
+    <style>
+        #infobox {
+            float:left;
+        }
+        #stops {
+            margin-top: 6%;
+        }
+        #content, #map {
+            margin-top: 40px;
+            height:100%;
+        }
+        #map {
+            border: 1px dashed grey;
+            padding-bottom:45%;
+        }
+        .leaflet-popup-close-button {
+          display: none;
+        }
+    </style>
 {% endblock %}
 
 
 {% block body %}
     <div class="grid">
      <div class="row">
-        <div class="span5"></div>
-
-        <div id="content" class="span6">
+        <!-- <div class="span2"></div> -->
+        <div id="content" class="span4 offset2">
            <div id="infobox">
             <div class="tile bg-color-green" style="width:200px;height:auto;">
-            <div class="tile-content">
-
-            <b> Route : {{ route }} <br/>
-                From : {{ startstage }} <br/>
-                To : {{ endstage }} <br />
-            </b>
+                <div class="tile-content">
+                    <b> Route : {{ route }} <br/>
+                        From : {{ startstage }} <br/>
+                        To : {{ endstage }} <br />
+                    </b>
+                </div>
             </div>
-            </div>
-          </div>
+           </div>
 
-           <div id="stops">
+           <div id="stops" class="span4">
                 <b> Stops At: </b> <br /> <br />
                 {% for item in stops %}
                 <p> {{item.sequence}}. <span id="res" rel="tooltip" data-placement="right">{{item.stage}}</span> </p>
                 {% endfor %}
           </div>
-
         </div>
+        <div id="map" class="span10"></div>
 
+        <script src='https://api.mapbox.com/mapbox.js/v2.2.3/mapbox.js'></script>
+        <script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/leaflet.markercluster.js'></script>
 
-        </div>
+        <script type="text/javascript">
+        var static_url = "{{ STATIC_URL }}";
+        </script>
+        <script type="text/javascript" src="{{ STATIC_URL }}js/maps.js"></script>
+
+        <script>
+                L.mapbox.accessToken = 'pk.eyJ1IjoiZGhpcmFqdCIsImEiOiI1YTMxNzM4NDE2M2MxMDA0NTY0MGNmMWM0NzdiYzJhYyJ9.qR51ols0ubv4BrxG1_pVvw';
+
+                lat = 28.5828
+                lng = 77.2511
+
+                var indiagate = new L.LatLng(lat,lng);
+
+                // var mapboxlayer = L.tileLayer(Url,{
+			    //             maxZoom: 14,
+			    //             attribution: Attribution
+			    //       }),
+                //
+			    //     googlelayer = new L.Google('ROADMAP'),
+                //
+                //     BingAerialWithLabels = new L.TileLayer.Bing('AqOllaswadzkeAg1p8HrHnhXQnJZ2LSATfibDWbyHYi4UyI9wcFK6j-OFbo2Qkns', "AerialWithLabels",
+                //         {
+                //             maxZoom: 18,
+                //             attribution: ''
+                //     });
+
+                var map = L.mapbox.map('map', 'mapbox.streets',{
+                            zoomControl: false,
+                          })
+                          .setView([lat,lng], 13);
+
+                new L.Control.Zoom({ position: 'topleft' }).addTo(map);
+
+                L.control.layers(null,overlayMaps).addTo(map);
+           </script>
+
       </div>
     </div>
-{% endblock %}
-
-{% block share %}
-{% endblock %}
-
-{% block bottom_responsive_ad %}
 {% endblock %}

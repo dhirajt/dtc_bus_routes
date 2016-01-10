@@ -17,12 +17,12 @@
 {% endblock %}
 
 {% block js %}
+{{ block.super }}
 <script>
 $(function () {
     $('body').tooltip({
         selector: '[rel=tooltip]'
     });
-
 
     $(document).on('mouseenter', 'span[rel=tooltip]', function () {
         var ele = $(this)
@@ -44,22 +44,25 @@ $(function () {
 
 
 {% block css %}
-#infobox {
-    float:left;
-}
-#stops {
-    margin-left:300px;
-}
-#content {
-    margin-top: 40px;
-    width:590px;
-}
-.listview li {
-    width:350px;
-}
-.listview li div.badge{
-    left: 130px !important;
-}
+    {{ block.super }}
+    <style>
+        #infobox {
+            float:left;
+        }
+        #stops {
+            margin-left:300px;
+        }
+        #content {
+            margin-top: 40px;
+            width:590px;
+        }
+        .listview li {
+            width:350px;
+        }
+        .listview li div.badge{
+            left: 130px !important;
+        }
+    </style>
 {% endblock %}
 
 
@@ -67,11 +70,6 @@ $(function () {
     <div class="grid">
      <div class="row">
         <div class="span5"></div>
-
-
-
-
-
         <div id="content" class="span7">
            <div id="infobox">
             <div class="tile bg-color-green" style="width:200px;height:auto;">
@@ -116,11 +114,4 @@ $(function () {
         </div>
       </div>
     </div>
-{% endblock %}
-
-
-{% block share %}
-{% endblock %}
-
-{% block bottom_responsive_ad %}
 {% endblock %}

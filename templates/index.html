@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="target-densitydpi=device-dpi, width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name=viewport content="width=device-width, initial-scale=1">
     <meta name="author" content="Dhiraj Thakur">
 
     <link rel="canonical" href="http://www.dtcbusroutes.in{{ request.path }}" />
@@ -28,7 +28,7 @@
 
     {% block meta_tags %}
     <meta name="description" content="DTC Bus Routes makes it easier for you to commute in Delhi. It provides you the updated dtc bus routes and timings.">
-    <meta name="keywords" content="dtc, bus, delhi bus, bus routes, delhi bus route,  delhi bus service, dtc bus, dtc bus service, dtc routes, delhi buses, delhi bus list, delhi bus timings, delhi bus details, delhi bus rote details, delhi transport corporation, delhi bus banner, bus in delhi, bus for delhi, bus for south delhi, bus for north delhi, bus for east delhi, buses in delhi,  delhi bus details, delhi bus route finder, delhi bus route no, delhi bus details, delhi bus route chart, delhi bus route search">
+    <meta name="keywords" content="dtc, bus, delhi bus, bus routes, delhi bus route,  delhi bus service, dtc bus, dtc bus service, dtc routes, delhi buses, delhi bus list, delhi bus timings, delhi bus details, delhi bus route details, delhi transport corporation, delhi bus banner, bus in delhi, bus for delhi, bus for south delhi, bus for north delhi, bus for east delhi, buses in delhi,  delhi bus details, delhi bus route finder, delhi bus route no, delhi bus details, delhi bus route chart, delhi bus route search">
 
     <meta itemprop="name" content="DTC Bus Routes">
     <meta itemprop="description" content="DTC Bus Routes makes it easier for you to commute in Delhi. It provides you the updated dtc bus routes and timings.">
@@ -78,148 +78,253 @@
       "link":"http://www.whatarecookies.com/",
       "theme":"dark-top"};
     </script>
-    <script type="text/javascript" src="//s3.amazonaws.com/cc.silktide.com/cookieconsent.latest.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/1.0.9/cookieconsent.min.js"></script>
     <!-- End Cookie Consent plugin -->
-</head>
+    </head>
 
-<script type="text/javascript">
-  function func_dialog(message) {
-    $.Dialog({
-        'title': 'Oops!',
-            'content': message,
-            'buttons': {
-            'Ok': {
-                'action': function () {}
-            }
+    {% block css %}
+    <style>
+      .container {
+        height: 100%;
+        padding-top:10px;
+        padding-left:6%;
+      }
 
-        }
-    });
-  }
-</script>
-{% block js %}
+      html {
+        position: relative;
+        min-height: 100%;
+      }
 
-{% endblock %}
+      body {
+        margin: 0 0 80px; /* bottom = footer height */
+      }
 
-<style>
-  .container {
-    height: 100%;
-    padding-top:10px;
-    padding-left:6%;
-  }
+      #footer{
+        height: 65px;
+        width:100%;
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        background-color: rgb(228, 237, 245);
+     }
 
-  html {
-    position: relative;
-    min-height: 100%;
-  }
+      #footer a{
+        color: rgb(82, 83, 85);
+        text-decoration:none;
+      }
+      #footer a:hover{
+        text-decoration:underline;
+      }
 
-  body {
-    margin: 0 0 80px; /* bottom = footer height */
-  }
+      #share {
+        margin-top: 3%;
+        margin-bottom: 5%;
+        text-align:center;
+      }
 
-  #footer{
-    height: 65px;
-    width:100%;
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    background-color: rgb(228, 237, 245);
- }
+      .fb-like{
+        vertical-align: top;
+      }
 
-  #footer a{
-    color: rgb(82, 83, 85);
-    text-decoration:none;
-  }
-  #footer a:hover{
-    text-decoration:underline;
-  }
+      #twitter{
+        float:center;
+      }
 
-  #share {
-    margin-top: 3%;
-    margin-bottom: 5%;
-    text-align:center;
-  }
+      .tooltip {
+          position: absolute;
+          z-index: 1030;
+          display: block;
+          font-size: 12px;
+          line-height: 1.4;
+          font-weight:normal;
+          opacity: 1;
+          filter: alpha(opacity=0);
+          visibility: visible;
+      }
+      .tooltip.in {
+          opacity: 0.8;
+          filter: alpha(opacity=80);
+      }
+      .tooltip.top {
+          padding: 5px 0;
+          margin-top: -3px;
+      }
+      .tooltip.right {
+          padding: 0 5px;
+          margin-left: 3px;
+      }
+      .tooltip.bottom {
+          padding: 5px 0;
+          margin-top: 3px;
+      }
+      .tooltip.left {
+          padding: 0 5px;
+          margin-left: -3px;
+      }
+      .tooltip-inner {
+          max-width: 200px;
+          padding: 8px;
+          color: #ffffff;
+          text-align: center;
+          text-decoration: none;
+          background-color: #000000;
+          -webkit-border-radius: 4px;
+          -moz-border-radius: 4px;
+          border-radius: 4px;
+      }
+      .tooltip-arrow {
+          position: absolute;
+          width: 0;
+          height: 0;
+          border-color: transparent;
+          border-style: solid;
+      }
+      .tooltip.top .tooltip-arrow {
+          bottom: 0;
+          left: 50%;
+          margin-left: -5px;
+          border-top-color: #000000;
+          border-width: 5px 5px 0;
+      }
+      .tooltip.right .tooltip-arrow {
+          top: 50%;
+          left: 0;
+          margin-top: -5px;
+          border-right-color: #000000;
+          border-width: 5px 5px 5px 0;
+      }
+      .tooltip.left .tooltip-arrow {
+          top: 50%;
+          right: 0;
+          margin-top: -5px;
+          border-left-color: #000000;
+          border-width: 5px 0 5px 5px;
+      }
+      .tooltip.bottom .tooltip-arrow {
+          top: 0;
+          left: 50%;
+          margin-left: -5px;
+          border-bottom-color: #000000;
+          border-width: 0 5px 5px;
+      }
+      #ad_unit {
+          text-align: center;
+      }
+      #ad_pitch {
+          padding-bottom:5px;
+      }
+    </style>
+    {% endblock %}
 
-  .fb-like{
-    vertical-align: top;
-  }
+    <body class="modern-ui" onload=" ">
+        <script id="_webengage_script_tag" type="text/javascript">
+        var _weq = _weq || {};
+        _weq['webengage.licenseCode'] = '76aa07a';
+        _weq['webengage.widgetVersion'] = "4.0";
 
-  #twitter{
-    float:center;
-  }
-
-  {% block css %}
-
-
-
-  {% endblock %}
-
-</style>
-
-<body class="modern-ui" onload=" ">
-    <script id="_webengage_script_tag" type="text/javascript">
-    var _weq = _weq || {};
-    _weq['webengage.licenseCode'] = '76aa07a';
-    _weq['webengage.widgetVersion'] = "4.0";
-
-    (function(d){
-    var _we = d.createElement('script');
-    _we.type = 'text/javascript';
-    _we.async = true;
-    _we.src = (d.location.protocol == 'https:' ? "https://ssl.widgets.webengage.com" : "http://cdn.widgets.webengage.com") + "/js/widget/webengage-min-v-4.0.js";
-    var _sNode = d.getElementById('_webengage_script_tag');
-    _sNode.parentNode.insertBefore(_we, _sNode);
-    })(document);
-    </script>
-    <div class="page secondary">
-        <div class="page-header">
-            <div class="page-header-content">
-                <h1>DTC <a href="{% url 'home' %}"><span style="font-size:45px; color:#91DB39" class="icon-bus"></span></a>
-                Routes
-                </h1>
+        (function(d){
+        var _we = d.createElement('script');
+        _we.type = 'text/javascript';
+        _we.async = true;
+        _we.src = (d.location.protocol == 'https:' ? "https://ssl.widgets.webengage.com" : "http://cdn.widgets.webengage.com") + "/js/widget/webengage-min-v-4.0.js";
+        var _sNode = d.getElementById('_webengage_script_tag');
+        _sNode.parentNode.insertBefore(_we, _sNode);
+        })(document);
+        </script>
+        <div class="page secondary">
+            <div class="page-header">
+                <div class="page-header-content">
+                    <h1>DTC <a href="{% url 'home' %}"><span style="font-size:45px; color:#91DB39" class="icon-bus"></span></a>
+                    Routes
+                    </h1>
+                </div>
             </div>
+
+            {% block body %}
+
+            {% endblock %}
         </div>
 
-        {% block body %}
-
+        {% block share %}
+         <div id="share" class="span9 offset4">
+            <div id="fb-root"></div>
+            <div class="fb-like" data-href="https://www.facebook.com/dtcbusroutes" data-send="false" data-layout="button_count" data-width="100" data-show-faces="false" data-font="segoe ui"></div>
+            <a href="https://twitter.com/share" id="twitter" class="twitter-share-button" data-url="http://www.dtcbusroutes.in" data-text="DTC Bus Route finder" data-via="dhirajthakur92" data-hashtags="dtc,busroute" data-dnt="true">Tweet</a>
+        </div>
         {% endblock %}
-    </div>
 
-    {% block share %}
-     <div id="share" class="span9 offset4">
-          <div id="fb-root"></div>
-          <div class="fb-like" data-href="http://www.facebook.com/dtcbusroutes" data-send="false" data-layout="button_count" data-width="100" data-show-faces="false" data-font="segoe ui"></div>
-             <a href="https://twitter.com/share" id="twitter" class="twitter-share-button" data-url="http://dhirajthakur.pythonanywhere.com/" data-text="DTC Bus Route finder" data-via="dhirajthakur92" data-hashtags="dtc,busroute" data-dnt="true">Tweet</a>
+        {% block bottom_responsive_ad %}
+        <div id="ad_unit" class="span9 offset4">
+          <a href="#" id="ad_pitch">Why ads?</a>
+          <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+          <!-- Home Page Responsive -->
+          <ins class="adsbygoogle"
+          style="display:block"
+          data-ad-client="ca-pub-2660771687848747"
+          data-ad-slot="5824987163"
+          data-ad-format="auto"></ins>
+          <script>
+          (adsbygoogle = window.adsbygoogle || []).push({});
+          {% if debug %}
+          google_ad_test = "on";
+          {% endif %}
+          </script>
+        </div>
+        {% endblock %}
 
-    </div>
-    {% endblock %}
+        <div id="footer">
+          <div class="container offset6">
+          &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+          <a href="http://www.djangoproject.com/"><img src="{{ STATIC_URL }}images/djimg.gif" border="0" alt="A Django project." title="A Django project." /></a><br />
+           <a href="https://github.com/dhirajt/dtc_bus_routes/blob/master/LICENCE">License</a>
+           | <a href="https://github.com/dhirajt/dtc_bus_routes/blob/master/DISCLAIMER">Disclaimer</a> | <a href="https://github.com/dhirajt/dtc_bus_routes/issues">Bug Reports</a>
+          </div>
+        </div>
 
-    {% block bottom_responsive_ad %}
-    <div id="ad_unit" class="span9 offset4">
-      <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-      <!-- Home Page Responsive -->
-      <ins class="adsbygoogle"
-      style="display:block"
-      data-ad-client="ca-pub-2660771687848747"
-      data-ad-slot="5824987163"
-      data-ad-format="auto"></ins>
-      <script>
-      (adsbygoogle = window.adsbygoogle || []).push({});
-      {% if debug %}
-      google_ad_test = "on";
-      {% endif %}
-      </script>
-    </div>
-    {% endblock %}
+        {% block js %}
+        <script type="text/javascript">
+        function func_dialog(title,message) {
+            $.Dialog({
+                'title': title,
+                    'content': message,
+                    'buttons': {
+                    'Ok': {
+                        'action': function () {}
+                    }
 
-    <div id="footer">
-      <div class="container offset6">
-      &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
-      <a href="http://www.djangoproject.com/"><img src="{{ STATIC_URL }}images/djimg.gif" border="0" alt="A Django project." title="A Django project." /></a><br />
-       <a href="https://github.com/dhirajt/dtc_bus_routes/blob/master/LICENCE">License</a>
-       | <a href="https://github.com/dhirajt/dtc_bus_routes/blob/master/DISCLAIMER">Disclaimer</a> | <a href="https://github.com/dhirajt/dtc_bus_routes/issues">Bug Reports</a>
-      </div>
-    </div>
+                }
+            });
+        }
+        $("#ad_pitch").on( "click", function() {
+          func_dialog(
+              "Why ads?",
+              "Advertisements allow us to host this website. We use Google Ads. Google Ads <br />"+
+              "does not allow us to choose the ads shown on our website, but we can block <br />" +
+              "inappropriate ads. If you find an inappropriate ad, please note the name of the <br />"+
+              "product or website URL (better yet, provide us a screenshot), and send us the <br />"+
+              "information at <a href='mailto:admin@dtcbusroutes.in'>admin@dtcbusroutes.in</a>.")
+        });
 
+        !function (d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0],
+                p = /^http:/.test(d.location) ? 'http' : 'https';
+            if (!d.getElementById(id)) {
+                js = d.createElement(s);
+                js.id = id;
+                js.src = p + '://platform.twitter.com/widgets.js';
+                fjs.parentNode.insertBefore(js, fjs);
+            }
+        }(document, 'script', 'twitter-wjs');
+
+        (function (d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s);
+            js.id = id;
+            js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=508603022535540";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+        </script>
+        {% endblock %}
     </body>
-
 </html>
