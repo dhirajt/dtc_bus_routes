@@ -33,6 +33,11 @@
             return false;
         }
 
+        if (from === to) {
+            func_dialog("Oops!","Source and destination can't be same.<br />Please enter valid source and destination from suggestions.");
+            return false;
+        }
+
         var foundstart = $.inArray(from, stg) > -1;
         var foundend = $.inArray(to, stg) > -1;
 
