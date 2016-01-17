@@ -231,4 +231,5 @@ def indirect_route_finder(startstage=None,endstage=None):
 					'changeover':first_changeover
 				}
 				route_list.append(indirect_route)
+	route_list.sort(key=lambda item:len(item['start_stages']['stages'])+len(item['end_stages']['stages']))
 	return route_list
