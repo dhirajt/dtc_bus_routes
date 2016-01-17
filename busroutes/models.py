@@ -79,4 +79,4 @@ class StageSequence(models.Model):
         unique_together = (('route','stage','sequence'),)
 
     def __unicode__(self):
-        return str(self.route.id)+' | '+str(self.stage.id)+'('+str(self.sequence)+')'
+        return "Bus %s - %s. %s" % (self.route.name,str(self.sequence),str(self.stage.name))

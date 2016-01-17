@@ -75,7 +75,7 @@ def ajax_bus_number_search(request):
         buses = sorted(buses)
         if not buses:
             buses = list(Route.objects.filter(
-                is_active=True,name__istartswith=query).values_list('name',flat=True))
+                is_active=True,name__icontains=query).values_list('name',flat=True))
             if buses:
                 buses = sorted(buses)
                 rclient.sadd(query,*buses)
@@ -92,7 +92,7 @@ def ajax_stage_search(request):
         stages = rclient.smembers(query)
         stages = sorted(stages)
         if not stages:
-            stages = list(Stage.objects.filter(name__istartswith=query).values_list('name',flat=True))
+            stages = list(Stage.objects.filter(name__icontains=query).values_list('name',flat=True))
             if stages:
                 stages = sorted(stages)
                 rclient.sadd(query,*stages)
@@ -108,7 +108,7 @@ def bus_by_stages(request,source='',destination=''):
         startstage = Stage.objects.get(name_slug=source)
         endstage =  Stage.objects.get(name_slug=destination)
 
-        data_payload = payloadmaker(buses, source, destination)
+        data_payload = payloadmaker(buses, startstage, endstage)
         payload = {
             'startstage': startstage.name,
             'endstage': endstage.name,
@@ -147,8 +147,8 @@ def payloadmaker(buses, startstage, endstage):
         stops = list(StageSequence.objects.select_related().filter(
             route__name=bus.name).order_by('sequence'))
 
-        start_stage = [i for i in stops if i.stage.name_slug == startstage][0]
-        end_stage = [i for i in stops if i.stage.name_slug == endstage][0]
+        start_stage = [i for i in stops if i.stage.name_slug == startstage.name_slug][0]
+        end_stage = [i for i in stops if i.stage.name_slug == endstage.name_slug][0]
 
         x = stops.index(start_stage)
         y = stops.index(end_stage)
@@ -158,9 +158,12 @@ def payloadmaker(buses, startstage, endstage):
 
         stops = stops[x:y+1]
 
-        data[bus.name] = [it.stage.name for it in stops]
-        if data[bus.name][0] != startstage:
-            data[bus.name].reverse()
+        stagelist = [it.stage.name for it in stops]
+
+        if stagelist[0] != startstage.name:
+            stagelist.reverse()
+
+        data[bus.name] = stagelist
 
     shortest = min(data,key=lambda item:len(data[item]))
     buslist = [shortest] + [ i for i in data.keys() if i!=shortest ]
