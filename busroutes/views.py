@@ -105,16 +105,24 @@ def bus_by_stage(request,source='',destination=''):
             stages__name_slug=source).filter(stages__name_slug=destination)
 
     stages = list(Stage.objects.filter(name_slug__in=[source,destination]))
-    startstage,endstage = stages[0],stages[1]
 
-    if direct_buses.exists():
+    startstage = [item for item in stages if item.name_slug == source]
+    endstage = [item for item in stages if item.name_slug == destination]
+
+    if startstage:
+        startstage = startstage[0]
+    if endstage:
+        endstage = endstage[0]
+
+    payload = None
+    if startstage and endstage and direct_buses.exists():
         payload = payloadmaker(direct_buses, startstage, endstage)
         context = {
             'direct_routes':payload,
             'startstage': startstage.name,
             'endstage': endstage.name
         }
-    else:
+    elif startstage and endstage:
         payload = indirect_route_finder(startstage,endstage)
         context = {
             'indirect_routes':payload,
