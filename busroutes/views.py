@@ -116,7 +116,7 @@ def bus_by_stage(request,source='',destination=''):
 
     payload = None
     if startstage and endstage and direct_buses.exists():
-        payload = payloadmaker(direct_buses, startstage, endstage)
+        payload = direct_route_finder(direct_buses, startstage, endstage)
         context = {
             'direct_routes':payload,
             'startstage': startstage.name,
@@ -153,7 +153,7 @@ def search_by_stage(request):
     else:
         return render(request, "search_by_stage.html")
 
-def payloadmaker(buses, startstage, endstage):
+def direct_route_finder(buses, startstage, endstage):
     data = {}
     for bus in buses:
         stops = list(StageSequence.objects.select_related().filter(
@@ -176,10 +176,7 @@ def payloadmaker(buses, startstage, endstage):
             stagelist.reverse()
 
         data[bus.name] = stagelist
-
-    shortest = min(data,key=lambda item:len(data[item]))
-    buslist = [shortest] + [ i for i in data.keys() if i!=shortest ]
-    payload = [(bus,data[bus]) for bus in buslist]
+    payload = sorted(data.items(),key=lambda item:len(item[1]))
     return payload
 
 def indirect_route_finder(startstage=None,endstage=None):
