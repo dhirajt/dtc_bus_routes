@@ -4,25 +4,24 @@
 <head>
     <meta charset="utf-8">
     <meta name=viewport content="width=device-width, initial-scale=1">
-    <meta name="author" content="Dhiraj Thakur">
 
-    <link rel="canonical" href="http://www.dtcbusroutes.in{{ request.path }}" />
+    <link rel="canonical" href="{{ request.scheme}}://{{ request.META.HTTP_HOST }}{{ request.path }}" />
     <meta name="google-site-verification" content="E1z0_7E9gqi6Z3uV0k_41EiVwKOZxb7zXlORbrZw3ms" />
     <meta name="msvalidate.01" content="66641B4DCE41F4F43AC11DAE66F5693D" />
 
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="en_US" />
     <meta property="fb:admins" content="100000669078751" />
-    <meta property="og:url" content="http://www.dtcbusroutes.in{{ request.path }}" />
-    <meta property="og:image" content="http://www.dtcbusroutes.in{% static 'images/logo_meta.png' %}" />
+    <meta property="og:url" content="{{ request.scheme}}://{{ request.META.HTTP_HOST }}{{ request.path }}" />
+    <meta property="og:image" content="{{ request.scheme}}://{{ request.META.HTTP_HOST }}{% static 'images/logo_meta.png' %}" />
     <meta property="og:site_name" content="DTC Bus Routes" />
-    <meta property="og:see_also" content="http://www.dtcbusroutes.in/">
+    <meta property="og:see_also" content="{{ request.scheme}}://{{ request.META.HTTP_HOST }}">
 
-    <meta itemprop="image" content="http://www.dtcbusroutes.in{% static 'images/logo_meta.png' %}">
+    <meta itemprop="image" content="{{ request.scheme}}://{{ request.META.HTTP_HOST }}{% static 'images/logo_meta.png' %}">
 
     <meta name="twitter:card" content="summary">
-    <meta name="twitter:url" content="http://www.dtcbusroutes.in{{ request.path }}">
-    <meta name="twitter:image" content="http://www.dtcbusroutes.in{% static 'images/logo_meta.png' %}">
+    <meta name="twitter:url" content="{{ request.scheme}}://{{ request.META.HTTP_HOST }}{{ request.path }}">
+    <meta name="twitter:image" content="{{ request.scheme}}://{{ request.META.HTTP_HOST }}{% static 'images/logo_meta.png' %}">
 
     <title>{% block title %}DTC Bus Routes{% endblock %}</title>
 
@@ -275,7 +274,7 @@
         <div id="footer">
           <div class="container offset6">
           &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
-          <a href="http://www.djangoproject.com/"><img src="{{ STATIC_URL }}images/djimg.gif" border="0" alt="A Django project." title="A Django project." /></a><br />
+          <a href="https://www.djangoproject.com/"><img src="{{ STATIC_URL }}images/djimg.gif" border="0" alt="A Django project." title="A Django project." /></a><br />
            <a href="https://github.com/dhirajt/dtc_bus_routes/blob/master/LICENCE">License</a>
            | <a href="https://github.com/dhirajt/dtc_bus_routes/blob/master/DISCLAIMER">Disclaimer</a> | <a href="https://github.com/dhirajt/dtc_bus_routes/issues">Bug Reports</a>
           </div>
