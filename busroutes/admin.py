@@ -20,6 +20,18 @@ class StageSequenceAdmin(admin.ModelAdmin):
 
 class StageSequenceAdminInline(admin.StackedInline):
     model = StageSequence
+    min_num = 10
+
+    def get_queryset(self, request):
+        queryset = super(StageSequenceAdminInline, self).get_queryset(request)
+        queryset = queryset.select_related('stage','route')
+        return queryset
+    
+    def formfield_for_dbfield(self, db_field, **kwargs):
+        formfield = super(StageSequenceAdminInline, self).formfield_for_dbfield(db_field, **kwargs) 
+        if db_field.name == 'stage':
+            formfield.choices = formfield.choices
+        return formfield
 
 class RouteAdmin(admin.ModelAdmin):
     list_display = ( 'name', 'start_stage', 'end_stage','show_url')
@@ -42,8 +54,8 @@ class RouteAdmin(admin.ModelAdmin):
             instance.get_absolute_url())
         return mark_safe(response)
     show_url.short_description = "URL"
-
-
+    
 admin.site.register(Route,RouteAdmin)
 admin.site.register(Stage,StageAdmin)
 admin.site.register(StageSequence,StageSequenceAdmin)
+
