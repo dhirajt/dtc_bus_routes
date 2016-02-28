@@ -29,7 +29,7 @@ sitemaps = {
 handler500 = 'busroutes.views.server_error'
 
 urlpatterns = [
-    url(r'^api/v1/', include(api_urls)),
+    url(r'^api/', include(api_urls)),
     url(r'^admin/', include(admin.site.urls)),
 
     url(r'^$', TemplateView.as_view(template_name="home.html"), name='home'),

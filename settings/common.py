@@ -38,21 +38,37 @@ DJANGO_APPS = (
 )
 THIRD_PARTY_APPS = (
     'geoposition',
-    'rest_framework'
+    'rest_framework',
+    'rest_framework.authtoken',
 )
 
 # Apps specific for this project go here.
 LOCAL_APPS = (
     'busroutes',
     'api'
-    # Your stuff: custom apps go here
 )
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
 REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAdminUser',),
+    'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAuthenticated',),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+    ),
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 50,
+    'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.AcceptHeaderVersioning',
+    'DEFAULT_VERSION': 1.0,
+    'EXCEPTION_HANDLER': 'api.exceptions.custom_exception_handler',
+    'DEFAULT_THROTTLE_CLASSES': (
+        'rest_framework.throttling.AnonRateThrottle',
+        'rest_framework.throttling.UserRateThrottle'
+    ),
+    'DEFAULT_THROTTLE_RATES': {
+        'anon': '100/day',
+        'user': '3600/hour'
+    }
 }
 
 # MIDDLEWARE CONFIGURATION
@@ -211,6 +227,15 @@ AUTHENTICATION_BACKENDS = (
 # SLUGLIFIER
 AUTOSLUG_SLUGIFY_FUNCTION = 'slugify.slugify'
 
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379/5",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    }
+}
 
 # CACHE POOLS
 DEFAULT_REDIS_POOL = redis.ConnectionPool(host='localhost',port=6379,db=0)
