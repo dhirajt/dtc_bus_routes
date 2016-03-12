@@ -2,4 +2,4 @@ User-agent: *
 Disallow: /admin/
 Disallow: /ajax/
 
-sitemap: http://www.dtcbusroutes.in/sitemap.xml
+sitemap: https://www.dtcbusroutes.in/sitemap.xml

@@ -76,6 +76,7 @@ class StageSequence(models.Model):
         verbose_name = "Stage Sequence"
         verbose_name_plural = "Stage Sequences"
 
+        ordering = ['sequence']
         unique_together = (('route','stage','sequence'),)
 
     def __unicode__(self):

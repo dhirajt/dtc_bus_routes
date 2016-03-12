@@ -78,18 +78,21 @@ $(function () {
            <div id="infobox">
             <div class="tile bg-color-green" style="width:200px;height:auto;">
                 <div class="tile-content">
-                    <b> Route : {{ route }} <br/>
+                    <b itemscope itemtype="http://schema.org/BusTrip">
+                        Route : <span itemprop="busName busNumber">{{ route }}</span> <br/>
                         From : {{ startstage }} <br/>
                         To : {{ endstage }} <br />
                     </b>
                 </div>
             </div>
-           </div>
+            </div>
 
            <div id="stops" class="span4">
                 <b> Stops At: </b> <br /> <br />
                 {% for item in stops %}
-                <p> {{item.sequence}}. <span id="res" rel="tooltip" data-placement="right">{{item.stage}}</span> </p>
+                <p itemscope itemtype="http://schema.org/BusStop">
+                    {{item.sequence}}. <span id="res" rel="tooltip" data-placement="right" itemprop="name">{{item.stage}}</span>
+                </p>
                 {% endfor %}
           </div>
         </div>
@@ -132,8 +135,13 @@ $(function () {
                 new L.Control.Zoom({ position: 'topleft' }).addTo(map);
 
                 L.control.layers(null,overlayMaps).addTo(map);
-           </script>
-
-      </div>
+        </script>
     </div>
+</div>
+{% endblock %}
+
+{% block share %}
+{% endblock %}
+
+{% block bottom_responsive_ad %}
 {% endblock %}

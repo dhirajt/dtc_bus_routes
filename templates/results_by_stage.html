@@ -62,6 +62,9 @@ $(function () {
         .listview li div.badge{
             left: 130px !important;
         }
+        #changeoverh4 {
+            display: inline-block;
+        }
     </style>
 {% endblock %}
 
@@ -71,47 +74,81 @@ $(function () {
      <div class="row">
         <div class="span5"></div>
         <div id="content" class="span7">
-           <div id="infobox">
-            <div class="tile bg-color-green" style="width:200px;height:auto;">
-            <div class="tile-content">
+            <div id="infobox">
+                <div class="tile bg-color-green" style="width:200px;height:auto;">
+                <div class="tile-content">
 
-            <b> From : {{ startstage }} <br/>
-                To : {{ endstage }} <br />
-            </b>
+                <b> From : {{ startstage }} <br/>
+                    To : {{ endstage }} <br />
+                </b>
+                </div>
+                </div>
             </div>
-            </div>
-          </div>
 
-           <div id="stops">
-                       <ul class="listview">
-                         {% for bus,stoplist in data %}
-                         <li>
+            <div id="stops">
+                <ul class="listview">
+                {% if direct_routes %}
+                    {% for bus,stoplist in direct_routes %}
+                        <li>
                             {% if forloop.counter == 1 %}
-                            <div class="badge strech">
-                                Shortest route
-                            </div>
+                                <div class="badge strech">
+                                    Shortest route
+                                </div>
                             {% endif %}
-                            <div class="icon">
-                               <!-- <a href=""> -->
-                               <h4><span style="font-size:30px;" class="icon-bus"></span></h4>
 
+                            <div class="icon">
+                                <!-- <a href=""> -->
+                                <h4><span style="font-size:30px;" class="icon-bus"></span></h4>
                             </div>
 
                             <div class="data">
                                 <h4>{{ bus }}</h4>
                                 {% for stop in stoplist %}
-                                <span>{{ forloop.counter }}. {{ stop }}</span>
+                                    <span>{{ forloop.counter }}. {{ stop }}</span>
                                 {% endfor %}
                             </div>
                         </li>
-                        {% endfor %}
-                       </ul>
-          </div>
+                    {% endfor %}
+                {% else %}
+                    {% for route in indirect_routes %}
+                        <li>
+                            {% if forloop.counter == 1 %}
+                                <div class="badge strech">
+                                    Shortest route
+                                </div>
+                            {% endif %}
 
+                            <div class="icon">
+                                <h4><span style="font-size:30px;" class="icon-bus"></span></h4>
+                            </div>
+
+                            <div class="data">
+                                <h4>{{ route.start_stages.route.name }}</h4>
+                                {% for stop in route.start_stages.stages %}
+                                    <span>{{ forloop.counter }}. {{ stop.name }}</span>
+                                {% endfor %}
+                            </div>
+                            <br />
+                            <div class="data">
+                                <h4>{{ route.end_stages.route.name }}</h4>
+                                {% for stop in route.end_stages.stages %}
+                                    <span>{{ forloop.counter }}. {{ stop.name }}</span>
+                                {% endfor %}
+                            </div>
+                            <h4 id='changeoverh4'>Changeover</h4>: <span>{{ route.changeover.name }}</span>
+                        </li>
+                    {% endfor %}
+                {% endif %}
+                </ul>
+            </div>
         </div>
-
-
-        </div>
-      </div>
     </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block share %}
+{% endblock %}
+
+{% block bottom_responsive_ad %}
 {% endblock %}

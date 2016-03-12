@@ -1,6 +1,2 @@
-Django==1.8.3
-django-environ==0.3.0
-django-geoposition==0.1.5
-psycopg2==2.6.1
+-r common.txt
 newrelic==2.52.0.40
-redis==2.10.3
