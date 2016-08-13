@@ -3,6 +3,7 @@ from django.db import models
 from django.utils import timezone
 from django.core.urlresolvers import reverse
 
+from taggit.managers import TaggableManager
 from geoposition.fields import GeopositionField
 
 
@@ -10,7 +11,9 @@ class Stage(models.Model):
     name = models.CharField(max_length=64,unique=True)
     name_slug = models.SlugField(max_length=100)
     coordinates = GeopositionField()
+    uid = models.CharField(max_length=10,blank=True,default='') # any unique id
 
+    aliases = TaggableManager(verbose_name='aliases',blank=True)
     class Meta:
         verbose_name = "Stage"
         verbose_name_plural = "Stages"
@@ -40,14 +43,28 @@ class BusRouteTiming(models.Model):
 
 
 class Route(models.Model):
+    DIRECTION_CHOICES = (
+        ('U', 'Up'),
+        ('D', 'Down'),
+    )
+    ROUTE_TYPE_CHOICES = (
+        (1,'DTC'),
+        (2,'Cluster')
+    )
     name = models.CharField(max_length=64)
+    uid = models.CharField(max_length=10,blank=True,default='')
+
+    aliases = TaggableManager(verbose_name='aliases',blank=True)
+
     start_stage = models.ForeignKey(Stage, related_name='start_stage')
     end_stage = models.ForeignKey(Stage, related_name='end_stage')
-    direction = models.CharField(max_length=4)  # up or down
+    direction = models.CharField(max_length=1,choices=DIRECTION_CHOICES,default='U')
     ac_bus_available = models.BooleanField(default=False)
     last_modified = models.DateTimeField(auto_now=True)
     stages = models.ManyToManyField(
         Stage, through="StageSequence",through_fields=('route', 'stage'))
+    route_type = models.IntegerField(choices=ROUTE_TYPE_CHOICES,default=1)
+    frequency = models.IntegerField(default=-1)
     is_active = models.BooleanField(default=True)
 
     class Meta:

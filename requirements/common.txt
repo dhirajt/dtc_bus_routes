@@ -1,6 +1,10 @@
-Django==1.8.9
+Django==1.8.13
 django-environ==0.3.0
 django-geoposition==0.1.5
 psycopg2==2.6.1
-redis==2.10.3
+redis==2.10.5
 django-redis==4.2.0
+pycrypto==2.6.1
+django-taggit==0.20.2
+djangorestframework==3.4.0
+requests==2.10.0
