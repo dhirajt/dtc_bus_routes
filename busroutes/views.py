@@ -2,7 +2,7 @@
 import json
 import redis
 
-from django.http import HttpResponse, Http404, HttpResponseBadRequest
+from django.http import HttpResponse, Http404, HttpResponseBadRequest, JsonResponse
 from django.db.models import Prefetch
 from django.shortcuts import render, redirect
 from django.core.urlresolvers import reverse
@@ -80,7 +80,13 @@ def ajax_bus_number_search(request):
                 buses = sorted(buses)
                 rclient.sadd(query,*buses)
                 rclient.expire(query,6*60*60)
-    return HttpResponse("\n".join(buses))
+    json_response = {
+        'results': [{
+            'name': i
+        } for i in buses],
+        'success': True
+    }
+    return JsonResponse(json_response)
 
 def ajax_stage_search(request):
     if not request.is_ajax():
@@ -97,7 +103,13 @@ def ajax_stage_search(request):
                 stages = sorted(stages)
                 rclient.sadd(query,*stages)
                 rclient.expire(query,6*60*60)
-    return HttpResponse("\n".join(stages))
+    json_response = {
+        'results': [{
+            'name': i
+        } for i in stages],
+        'success': True
+    }
+    return JsonResponse(json_response)
 
 def bus_by_stage(request,source='',destination=''):
     direct_buses = Route.objects.filter(

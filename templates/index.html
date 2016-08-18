@@ -12,7 +12,7 @@
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="en_US" />
     <meta property="fb:admins" content="100000669078751" />
-    <meta property="og:url" content="{{ request.scheme}}://{{ request.META.HTTP_HOST }}{{ request.path }}" />
+    <meta property="og:url" content="{{ request.scheme }}://{{ request.META.HTTP_HOST }}{{ request.path }}" />
     <meta property="og:image" content="{{ request.scheme}}://{{ request.META.HTTP_HOST }}{% static 'images/logo_meta.png' %}" />
     <meta property="og:site_name" content="DTC Bus Routes" />
     <meta property="og:see_also" content="{{ request.scheme}}://{{ request.META.HTTP_HOST }}">
@@ -39,9 +39,11 @@
     <meta name="twitter:description" content="DTC Bus Routes makes it easier for you to commute in Delhi. It provides you the updated dtc bus routes and timings.">
     {% endblock %}
 
-    <link href="{{ STATIC_URL }}css/modern.css" rel="stylesheet">
-    <link href="{{ STATIC_URL }}css/modern-responsive.css" rel="stylesheet">
-    <link href="{{ STATIC_URL }}css/jquery.autocomplete.css" rel="stylesheet">
+
+	<link href="{{ STATIC_URL }}css/semantic/semantic.min.css" rel="stylesheet">
+	<link href="{{ STATIC_URL }}css/semantic/icon.min.css" rel="stylesheet">
+	<link href="{{ STATIC_URL }}css/semantic/search.min.css" rel="stylesheet">
+    <link href="{{ STATIC_URL }}css/proxima-nova.css" rel="stylesheet">
 
     <script>
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -68,212 +70,292 @@
 
     {% block css %}
     <style>
-      .container {
-        height: 100%;
-        padding-top:10px;
-        padding-left:6%;
-      }
+	html * {
+		font-family: Lato, Verdana, "Helvetica Neue" , Helvetica, sans-serif;
+	}
 
-      html {
-        position: relative;
-        min-height: 100%;
-      }
+    .ui.tabular.menu > .item {
+        cursor: pointer;
+    }
 
-      body {
-        margin: 0 0 80px; /* bottom = footer height */
-      }
+	.ui.menu.navbar {
+		width: 100% !important;
+		margin:0 0 0 0 !important;
+		border-radius: 0;
+		font-size: 14px;
+		border: none;
+	}
 
-      #footer{
-        height: 65px;
-        width:100%;
-        position: absolute;
-        left: 0;
-        bottom: 0;
-        background-color: rgb(228, 237, 245);
-     }
+	.ui.menu.navbar .item:before {
+		background: none !important;
+	}
 
-      #footer a{
-        color: rgb(82, 83, 85);
-        text-decoration:none;
-      }
-      #footer a:hover{
-        text-decoration:underline;
-      }
+	.navbar img {
+		width:2em;
+		vertical-align:middle;
+	}
 
-      #share {
-        margin-top: 3%;
-        margin-bottom: 5%;
-        text-align:center;
-      }
+	.brand {
+		font-weight: bold;
+	}
 
-      .fb-like{
-        vertical-align: top;
-      }
+	.brand-div {
+		display: table !important;
+		text-align: center;
+	}
 
-      #twitter{
-        float:center;
-      }
+	.navbar-dropdown-icon {
+		display: table-cell !important;
+	}
 
-      .tooltip {
-          position: absolute;
-          z-index: 1030;
-          display: block;
-          font-size: 12px;
-          line-height: 1.4;
-          font-weight:normal;
-          opacity: 1;
-          filter: alpha(opacity=0);
-          visibility: visible;
-      }
-      .tooltip.in {
-          opacity: 0.8;
-          filter: alpha(opacity=80);
-      }
-      .tooltip.top {
-          padding: 5px 0;
-          margin-top: -3px;
-      }
-      .tooltip.right {
-          padding: 0 5px;
-          margin-left: 3px;
-      }
-      .tooltip.bottom {
-          padding: 5px 0;
-          margin-top: 3px;
-      }
-      .tooltip.left {
-          padding: 0 5px;
-          margin-left: -3px;
-      }
-      .tooltip-inner {
-          max-width: 200px;
-          padding: 8px;
-          color: #ffffff;
-          text-align: center;
-          text-decoration: none;
-          background-color: #000000;
-          -webkit-border-radius: 4px;
-          -moz-border-radius: 4px;
-          border-radius: 4px;
-      }
-      .tooltip-arrow {
-          position: absolute;
-          width: 0;
-          height: 0;
-          border-color: transparent;
-          border-style: solid;
-      }
-      .tooltip.top .tooltip-arrow {
-          bottom: 0;
-          left: 50%;
-          margin-left: -5px;
-          border-top-color: #000000;
-          border-width: 5px 5px 0;
-      }
-      .tooltip.right .tooltip-arrow {
-          top: 50%;
-          left: 0;
-          margin-top: -5px;
-          border-right-color: #000000;
-          border-width: 5px 5px 5px 0;
-      }
-      .tooltip.left .tooltip-arrow {
-          top: 50%;
-          right: 0;
-          margin-top: -5px;
-          border-left-color: #000000;
-          border-width: 5px 0 5px 5px;
-      }
-      .tooltip.bottom .tooltip-arrow {
-          top: 0;
-          left: 50%;
-          margin-left: -5px;
-          border-bottom-color: #000000;
-          border-width: 0 5px 5px;
-      }
-      #ad_unit {
-          text-align: center;
-      }
-      #ad_pitch {
-          padding-bottom:15px;
-          display: inline-block;
-      }
+	.shareitem {
+		position: fixed;
+		height: auto;
+		padding-right: 10px;
+		display: inline-block;
+		max-width:inherit;
+	}
+
+	.no-margin-bottom {
+		margin-bottom: 0 !important;
+	}
+
+	@media only screen and (min-width: 767px) {
+		.navbar-dropdown-icon {
+			display: none !important;
+		}
+
+		.brand-div {
+			margin-left:1%;
+		}
+	}
+
+    .ui.search > .results {
+        width: 100%;
+    }
+
+	/* mobile view */
+	@media only screen and (max-width: 767px) {
+		.hidden {
+			display: none !important;
+			background: none !important;
+		}
+
+		.ui.menu.navbar .item:before {
+			background: rgba(34,36,38,.1) !important;
+		}
+	}
+
     </style>
     {% endblock %}
 
-    <body class="modern-ui" onload=" ">
+    <body>
         <script id="_webengage_script_tag" type="text/javascript">
         var webengage; !function(e,t,n){function o(e,t){e[t[t.length-1]]=function(){r.__queue.push([t.join("."),arguments])}}var i,s,r=e[n],g=" ",l="init options track screen onReady".split(g),a="feedback survey notification".split(g),c="options render clear abort".split(g),p="Open Close Submit Complete View Click".split(g),u="identify login logout setAttribute".split(g);if(!r||!r.__v){for(e[n]=r={__queue:[],__v:"5.0",user:{}},i=0;i<l.length;i++)o(r,[l[i]]);for(i=0;i<a.length;i++){for(r[a[i]]={},s=0;s<c.length;s++)o(r[a[i]],[a[i],c[s]]);for(s=0;s<p.length;s++)o(r[a[i]],[a[i],"on"+p[s]])}for(i=0;i<u.length;i++)o(r.user,["user",u[i]]);setTimeout(function(){var f=t.createElement("script"),d=t.getElementById("_webengage_script_tag");f.type="text/javascript",f.async=!0,f.src=("https:"==t.location.protocol?"https://ssl.widgets.webengage.com":"http://cdn.widgets.webengage.com")+"/js/widget/webengage-min-v-5.0.js",d.parentNode.insertBefore(f,d)})}}(window,document,"webengage");
 
         webengage.init("76aa07a");
         </script>
-        <div class="page secondary">
-            <div class="page-header">
-                <div class="page-header-content">
-                    <h1>DTC <a href="{% url 'home' %}"><span style="font-size:45px; color:#91DB39" class="icon-bus"></span></a>
-                    Routes
-                    </h1>
-                </div>
-            </div>
 
+		<div class="container">
+			<div class="ui stackable menu navbar">
+				<div class="item brand-div">
+					<a href="/">
+						<span class="brand">DTC</span><img src="{{ STATIC_URL }}images/logo_meta.png"><span class="brand">Routes</span>
+					</a>
+					<i class="content icon navbar-dropdown-icon"></i>
+				</div>
+				<a class="item stacked hidden"><i class="map outline icon"></i> Maps</a>
+				<a class="item stacked hidden"><i class="rupee icon"></i> Fares</a>
+				<a class="item stacked hidden"><i class="feed icon"></i> Status Updates</a>
+
+
+				<div class="right menu stacked hidden item">
+					<div id="fb-root"></div>
+					<div
+						class="fb-like shareitem"
+						data-href="https://www.facebook.com/dtcbusroutes"
+						data-send="false"
+						data-layout="button_count"
+						data-width="100"
+						data-show-faces="false"></div>
+					<div id="twittershare shareitem">
+						<a
+						href="https://twitter.com/intent/tweet"
+						id="twitter"
+						class="twitter-share-button"
+						data-url="https://www.dtcbusroutes.in"
+						data-text="DTC Bus Routes"
+						data-via="dhirajthakur92"
+						data-hashtags="dtc, busroute finder"
+						data-dnt="true">Tweet</a>
+					</div>
+				</div>
+			</div>
             {% block body %}
 
             {% endblock %}
-        </div>
 
-        {% block share %}
-         <div id="share" class="span9 offset4">
-            <div id="fb-root"></div>
-            <div class="fb-like" data-href="https://www.facebook.com/dtcbusroutes" data-send="false" data-layout="button_count" data-width="100" data-show-faces="false" data-font="segoe ui"></div>
-            <a href="https://twitter.com/share" id="twitter" class="twitter-share-button" data-url="http://www.dtcbusroutes.in" data-text="DTC Bus Route finder" data-via="dhirajthakur92" data-hashtags="dtc,busroute" data-dnt="true">Tweet</a>
-        </div>
-        {% endblock %}
+            {% block bottom_responsive_ad %}
+            <div id="ad_unit">
+              <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+              <!-- Home Page Responsive -->
+              <ins class="adsbygoogle"
+              style="display:block"
+              data-ad-client="ca-pub-2660771687848747"
+              data-ad-slot="5824987163"
+              data-ad-format="auto"></ins>
+              <script>
+              (adsbygoogle = window.adsbygoogle || []).push({});
+              {% if debug %}
+              google_ad_test = "on";
+              {% endif %}
+              </script>
+            </div>
+            {% endblock %}
+		</div>
 
-        {% block bottom_responsive_ad %}
-        <div id="ad_unit" class="span9 offset4">
-          <a href="#" id="ad_pitch">Why ads?</a>
-          <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-          <!-- Home Page Responsive -->
-          <ins class="adsbygoogle"
-          style="display:block"
-          data-ad-client="ca-pub-2660771687848747"
-          data-ad-slot="5824987163"
-          data-ad-format="auto"></ins>
-          <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
-          {% if debug %}
-          google_ad_test = "on";
-          {% endif %}
-          </script>
-        </div>
-        {% endblock %}
-
-        <div id="footer">
-          <div class="container offset6">
-          &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
-          <a href="https://www.djangoproject.com/"><img src="{{ STATIC_URL }}images/djimg.gif" border="0" alt="A Django project." title="A Django project." /></a><br />
-           <a href="https://github.com/dhirajt/dtc_bus_routes/blob/master/LICENCE">License</a>
-           | <a href="https://github.com/dhirajt/dtc_bus_routes/blob/master/DISCLAIMER">Disclaimer</a> | <a href="https://github.com/dhirajt/dtc_bus_routes/issues">Bug Reports</a>
-          </div>
-        </div>
-
-        <script type="text/javascript" src="{{ STATIC_URL }}js/jquery19.js"></script>
-        <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.mousewheel.js"></script>
-        <script type="text/javascript" src="{{ STATIC_URL }}js/tooltip.js"></script>
-        <script type="text/javascript" src="{{ STATIC_URL }}js/accordion.js"></script>
-        <!--<script type="text/javascript" src="{{ STATIC_URL }}js/dropdown.js"></script>
-        <script type="text/javascript" src="{{ STATIC_URL }}js/buttonset.js"></script>
-        <script type="text/javascript" src="{{ STATIC_URL }}js/carousel.js"></script>
-        <script type="text/javascript" src="{{ STATIC_URL }}js/input-control.js"></script>
-        <script type="text/javascript" src="{{ STATIC_URL }}js/pagecontrol.js"></script>
-        <script type="text/javascript" src="{{ STATIC_URL }}js/slider.js"></script>
-        <script type="text/javascript" src="{{ STATIC_URL }}js/tile-slider.js"></script>
-        <script type="text/javascript" src="{{ STATIC_URL }}js/tile-drag.js"></script>-->
-        <script type="text/javascript" src="{{ STATIC_URL }}js/dialog.js"></script>
-        <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.autocomplete.min.js"></script>
+        <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.js"></script>
+		<script type="text/javascript" src="{{ STATIC_URL }}js/semantic/semantic.min.js"></script>
+		<script type="text/javascript" src="{{ STATIC_URL }}js/semantic/search.min.js"></script>
+		<script async defer src="https://maps.googleapis.com/maps/api/js"></script>
 
         {% block js %}
         <script type="text/javascript">
+		$(document).ready(function() {
+			$('.navbar-dropdown-icon').on('click',function() {
+				$('.navbar > .stacked').toggleClass('hidden');
+			});
+
+			$('.ui.dropdown').dropdown();
+
+			$('.bussearch').search({
+				apiSettings: {
+				url: "{% url 'ajax_stage_search' %}?q={query}"
+				},
+				fields: {
+					results : 'results',
+					title   : 'name',
+				},
+				minCharacters : 1
+			});
+
+			$('.routesearch').search({
+				apiSettings: {
+				url: "{% url 'ajax_bus_number_search' %}?q={query}"
+				},
+				fields: {
+					results : 'results',
+					title   : 'name',
+				},
+				minCharacters : 1
+			});
+
+			$('.tabular.menu .item').tab();
+
+			function setMyLocation(map,position) {
+				var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+				var marker = new google.maps.Marker({
+					map: map,
+					position:latlng,
+					icon: {
+						url: "https://www.mapbox.com/bites/00281/img/icon_me.png",
+						scaledSize: new google.maps.Size(14, 14)
+					},
+					zoom: 15,
+				});
+				marker.setPosition(latlng);
+				map.setCenter(latlng);
+			}
+
+			function addYourLocationButton(map, marker) {
+				var controlDiv = document.createElement('div');
+
+				var firstChild = document.createElement('button');
+				firstChild.style.backgroundColor = '#fff';
+				firstChild.style.border = 'none';
+				firstChild.style.outline = 'none';
+				firstChild.style.width = '28px';
+				firstChild.style.height = '28px';
+				firstChild.style.borderRadius = '2px';
+				firstChild.style.boxShadow = '0 1px 4px rgba(0,0,0,0.3)';
+				firstChild.style.cursor = 'pointer';
+				firstChild.style.marginRight = '10px';
+				firstChild.style.padding = '0px';
+				firstChild.title = 'Your Location';
+				controlDiv.appendChild(firstChild);
+
+				var secondChild = document.createElement('div');
+				secondChild.style.margin = '5px';
+				secondChild.style.width = '18px';
+				secondChild.style.height = '18px';
+				secondChild.style.backgroundImage = 'url(https://maps.gstatic.com/tactile/mylocation/mylocation-sprite-1x.png)';
+				secondChild.style.backgroundSize = '180px 18px';
+				secondChild.style.backgroundPosition = '0px 0px';
+				secondChild.style.backgroundRepeat = 'no-repeat';
+				secondChild.id = 'you_location_img';
+				firstChild.appendChild(secondChild);
+
+				google.maps.event.addListener(map, 'dragend', function() {
+					$('#you_location_img').css('background-position', '0px 0px');
+				});
+
+				firstChild.addEventListener('click', function() {
+					var imgX = '0';
+					var animationInterval = setInterval(function(){
+						if(imgX == '-18') imgX = '0';
+						else imgX = '-18';
+						$('#you_location_img').css('background-position', imgX+'px 0px');
+					}, 500);
+
+					if(navigator.geolocation) {
+						navigator.geolocation.getCurrentPosition(function(position) {
+							setMyLocation(map,position);
+							clearInterval(animationInterval);
+							$('#you_location_img').css('background-position', '-144px 0px');
+						});
+					}
+					else{
+						clearInterval(animationInterval);
+						$('#you_location_img').css('background-position', '0px 0px');
+					}
+				});
+
+				controlDiv.index = 1;
+				map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(controlDiv);
+			}
+
+			var mapDiv = document.getElementById('map');
+			var map = new google.maps.Map(mapDiv, {
+				center: {lat: 28.6129, lng: 77.2295},
+				zoom: 14,
+				scaleControl: true,
+				streetViewControl: true,
+				streetViewControlOptions: {
+					position: google.maps.ControlPosition.TOP_RIGHT
+				},
+				mapTypeControl: true,
+				mapTypeControlOptions: {
+					style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
+					position: google.maps.ControlPosition.TOP_RIGHT
+				},
+				fullscreenControl: true
+			});
+
+            var transitLayer = new google.maps.TransitLayer();
+            transitLayer.setMap(map);
+
+            // var trafficLayer = new google.maps.TrafficLayer();
+            // trafficLayer.setMap(map);
+
+			addYourLocationButton(map);
+
+			if (navigator.geolocation) {
+				navigator.geolocation.getCurrentPosition(function(position) {
+					setMyLocation(map,position);
+				});
+			}
+		});
+
         function func_dialog(title,message) {
             $.Dialog({
                 'title': title,
