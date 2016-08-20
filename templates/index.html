@@ -49,25 +49,13 @@
     ga('send', 'pageview');
     </script>
 
-    <!-- Begin Cookie Consent plugin by Silktide - http://silktide.com/cookieconsent -->
-    <script type="text/javascript">
-    window.cookieconsent_options = {
-      "message":"To give you the best possible experience, this site uses cookies. Continuing to use this site means you agree to our use of cookies. To know more about cookies",
-      "dismiss":"Got it!",
-      "learnMore":"click here.",
-      "link":"http://www.whatarecookies.com/",
-      "theme":"dark-top"};
-    </script>
-    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/1.0.9/cookieconsent.min.js"></script>
-    <!-- End Cookie Consent plugin -->
+    {% block css_includes %}
+    <link href="{{ STATIC_URL }}css/semantic/semantic.min.css" rel="stylesheet">
+    {% endblock %}
     </head>
 
     {% block css %}
     <style>
-	html * {
-		font-family: Lato, Verdana, "Helvetica Neue" , Helvetica, sans-serif;
-	}
-
     .ui.tabular.menu > .item {
         cursor: pointer;
     }
@@ -83,6 +71,14 @@
 	.ui.menu.navbar .item:before {
 		background: none !important;
 	}
+
+    .ui.search > .results {
+        width:100%;
+    }
+
+    .cc_container .cc_container--open {
+        font-size: 14px !important;
+    }
 
 	.navbar img {
 		width:2em;
@@ -123,10 +119,6 @@
 			margin-left:1%;
 		}
 	}
-
-    .ui.search > .results {
-        width: 100%;
-    }
 
 	/* mobile view */
 	@media only screen and (max-width: 767px) {
@@ -188,33 +180,10 @@
             {% block body %}
 
             {% endblock %}
-
-            {% block bottom_responsive_ad %}
-            <div id="ad_unit">
-              <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-              <!-- Home Page Responsive -->
-              <ins class="adsbygoogle"
-              style="display:block"
-              data-ad-client="ca-pub-2660771687848747"
-              data-ad-slot="5824987163"
-              data-ad-format="auto"></ins>
-              <script>
-              (adsbygoogle = window.adsbygoogle || []).push({});
-              {% if debug %}
-              google_ad_test = "on";
-              {% endif %}
-              </script>
-            </div>
-            {% endblock %}
 		</div>
 
-        <link href="{{ STATIC_URL }}css/semantic/semantic.min.css" rel="stylesheet">
-        <link href="{{ STATIC_URL }}css/semantic/icon.min.css" rel="stylesheet">
-        <link href="{{ STATIC_URL }}css/semantic/search.min.css" rel="stylesheet">
-
-        <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.js"></script>
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 		<script type="text/javascript" src="{{ STATIC_URL }}js/semantic/semantic.min.js"></script>
-		<script type="text/javascript" src="{{ STATIC_URL }}js/semantic/search.min.js"></script>
 		<script async defer src="https://maps.googleapis.com/maps/api/js"></script>
 
         {% block js %}
@@ -225,30 +194,6 @@
 			});
 
 			$('.ui.dropdown').dropdown();
-
-			$('.bussearch').search({
-				apiSettings: {
-				url: "{% url 'ajax_stage_search' %}?q={query}"
-				},
-				fields: {
-					results : 'results',
-					title   : 'name',
-				},
-				minCharacters : 1
-			});
-
-			$('.routesearch').search({
-				apiSettings: {
-				url: "{% url 'ajax_bus_number_search' %}?q={query}"
-				},
-				fields: {
-					results : 'results',
-					title   : 'name',
-				},
-				minCharacters : 1
-			});
-
-			$('.tabular.menu .item').tab();
 
 			function setMyLocation(map,position) {
 				var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
@@ -351,31 +296,14 @@
 				navigator.geolocation.getCurrentPosition(function(position) {
 					setMyLocation(map,position);
 				});
-			}
+			} else {
+                console.log("Geolocation is not supported! Get a new browser!! >:(")
+            }
 		});
+        </script>
+        {% endblock %}
 
-        function func_dialog(title,message) {
-            $.Dialog({
-                'title': title,
-                    'content': message,
-                    'buttons': {
-                    'Ok': {
-                        'action': function () {}
-                    }
-
-                }
-            });
-        }
-        $("#ad_pitch").on( "click", function() {
-          func_dialog(
-              "Why ads?",
-              "Advertisements allow us to host this website. We use Google Ads. Google Ads <br />"+
-              "does not allow us to choose the ads shown on our website, but we can block <br />" +
-              "inappropriate ads. If you find an inappropriate ad, please note the name of the <br />"+
-              "product or website URL (better yet, provide us a screenshot), and send us the <br />"+
-              "information at <a href='mailto:admin@dtcbusroutes.in'>admin@dtcbusroutes.in</a>.")
-        });
-
+        <script type="text/javascript">
         !function (d, s, id) {
             var js, fjs = d.getElementsByTagName(s)[0],
                 p = /^http:/.test(d.location) ? 'http' : 'https';
@@ -395,7 +323,17 @@
             js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=508603022535540";
             fjs.parentNode.insertBefore(js, fjs);
         }(document, 'script', 'facebook-jssdk'));
+
+
+        // Begin Cookie Consent plugin by Silktide - http://silktide.com/cookieconsent
+        window.cookieconsent_options = {
+          "message":"To give you the best possible experience, this site uses cookies. Continuing to use this site means you agree to our use of cookies. To know more about cookies",
+          "dismiss":"Got it!",
+          "learnMore":"click here.",
+          "link":"http://www.whatarecookies.com/",
+          "theme":"light-floating"};
         </script>
-        {% endblock %}
+        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/1.0.9/cookieconsent.min.js"></script>
+        <!-- End Cookie Consent plugin -->
     </body>
 </html>
