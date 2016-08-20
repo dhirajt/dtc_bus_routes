@@ -15,8 +15,7 @@
     }
 
     .journeyforms {
-        box-shadow: none !important;
-        border: none !important;
+        padding: 10px;
     }
 
     #tabbedForms {
@@ -60,44 +59,42 @@
                         <div class="item" data-tab="tab-route-details">Route Details</div>
                     </div>
                     <div class="ui tab bottom attached active segment" data-tab="tab-trip-planner">
-                        <form class="ui form segment journeyforms">
+                        <form class="ui form journeyforms">
                             <p>Get buses between two stops.</p>
                             <div class="field">
                                 <label>From</label>
-                                <div class="ui search focus bussearch">
+                                <div class="ui search focus stagesearch">
                                     <div class="ui icon input">
-                                        <input class="prompt" type="text" placeholder="Source e.g. Badarpur Border">
+                                        <input class="prompt" type="text" name="stage1" placeholder="Source e.g. Badarpur Border" autocomplete="off">
                                         <i class="marker icon"></i>
                                     </div>
                                 </div>
                             </div>
                             <div class="field">
                                 <label>To</label>
-                                <div class="ui search focus bussearch">
+                                <div class="ui search focus stagesearch">
                                     <div class="ui icon input">
-                                        <input class="prompt" type="text" placeholder="Destination e.g. ISBT">
+                                        <input class="prompt" type="text" name="stage2" placeholder="Destination e.g. ISBT" autocomplete="off">
                                         <i class="marker icon"></i>
                                     </div>
                                 </div>
                             </div>
                             <div class="ui blue submit button">Search</div>
-                            <div class="ui error message"></div>
                         </form>
                     </div>
                     <div class="ui tab bottom attached segment" data-tab="tab-route-details">
-                        <form class="ui form segment journeyforms">
+                        <form class="ui form journeyforms">
                             <p>Get all bus stops on a route.</p>
                             <div class="field">
                                 <label>Route Name</label>
                                 <div class="ui search focus routesearch">
                                     <div class="ui icon input">
-                                        <input class="prompt" type="text" placeholder="Route e.g. 182A">
+                                        <input class="prompt" type="text" name="bus1" placeholder="Route name or bus number e.g. 182A" autocomplete="off">
                                         <i class="bus icon"></i>
                                     </div>
                                 </div>
                             </div>
                             <div class="ui blue submit button">Search</div>
-                            <div class="ui error message"></div>
                         </form>
                     </div>
                 </div>
@@ -126,9 +123,15 @@
 
 <script type="text/javascript">
 $(document).ready(function() {
-    $('.bussearch').search({
+    $('.stagesearch').search({
         apiSettings: {
-        url: "{% url 'ajax_stage_search' %}?q={query}"
+            url: "{% url 'ajax_stage_search' %}?q={query}",
+            onResponse: function (response){
+                $.each(response.results, function(index, item) {
+                  var name   = item.name || 'Unknown';
+                  cached_stages.push(name.trim());
+                });
+            }
         },
         fields: {
             results : 'results',
@@ -139,7 +142,13 @@ $(document).ready(function() {
 
     $('.routesearch').search({
         apiSettings: {
-        url: "{% url 'ajax_bus_number_search' %}?q={query}"
+            url: "{% url 'ajax_bus_number_search' %}?q={query}",
+            onResponse: function (response){
+                $.each(response.results, function(index, item) {
+                  var name = item.name || "Unknown";
+                  cached_routes.push(name.trim());
+                });
+            }
         },
         fields: {
             results : 'results',
@@ -149,6 +158,64 @@ $(document).ready(function() {
     });
 
     $('.tabular.menu .item').tab();
+
+
+    $.fn.form.settings.rules.stageValid = function(value) {
+        console.log("stageValid called with "+value);
+        console.log($.inArray(value,cached_stages) >= 0);
+        return $.inArray(value,cached_stages) >= 0;
+    };
+
+    $.fn.form.settings.rules.routeValid = function(value) {
+        console.log("routeValid called");
+        return $.inArray(value,cached_routes) >= 0;
+    };
+
+    $('.ui.form')
+      .form({
+        inline: true,
+        fields: {
+              stage1: {
+                identifier: 'stage1',
+                rules: [
+                  {
+                    type   : 'empty',
+                    prompt : 'Please enter source stop.'
+                },
+                  {
+                    type   : 'stageValid[value]',
+                    prompt : 'Please select a stop from dropdown.'
+                  }
+                ]
+              },
+              stage2: {
+                identifier: 'stage2',
+                rules: [
+                  {
+                    type   : 'empty',
+                    prompt : 'Please enter destination stop.'
+                },
+                  {
+                    type   : 'stageValid[value]',
+                    prompt : 'Please select a stop from dropdown.'
+                  }
+                ]
+              },
+              bus1: {
+                identifier: 'bus1',
+                rules: [
+                  {
+                    type   : 'empty',
+                    prompt : 'Please enter a bus number or route name.'
+                },
+                {
+                  type   : 'routeValid[value]',
+                  prompt : 'Please enter a bus number or route name from dropdown.'
+                }
+              ]
+            }
+        }
+    });
 });
 </script>
 {% endblock %}

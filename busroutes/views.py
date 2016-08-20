@@ -71,14 +71,12 @@ def ajax_bus_number_search(request):
 
     if query:
         rclient = redis.StrictRedis(connection_pool=settings.BUS_REDIS_POOL)
-        buses = rclient.smembers(query)
-        buses = sorted(buses)
+        buses = rclient.lrange(query,0,-1)
         if not buses:
             buses = list(Route.objects.filter(
-                is_active=True,name__icontains=query).values_list('name',flat=True))
+                is_active=True,name__istartswith=query).values_list('name',flat=True))
             if buses:
-                buses = sorted(buses)
-                rclient.sadd(query,*buses)
+                rclient.lpush(query,*buses)
                 rclient.expire(query,6*60*60)
     json_response = {
         'results': [{
@@ -95,13 +93,11 @@ def ajax_stage_search(request):
     stages = []
     if query:
         rclient = redis.StrictRedis(connection_pool=settings.STAGE_REDIS_POOL)
-        stages = rclient.smembers(query)
-        stages = sorted(stages)
+        stages = rclient.lrange(query,0,-1)
         if not stages:
-            stages = list(Stage.objects.filter(name__icontains=query).values_list('name',flat=True))
+            stages = list(Stage.objects.filter(name__istartswith=query).values_list('name',flat=True))
             if stages:
-                stages = sorted(stages)
-                rclient.sadd(query,*stages)
+                rclient.lpush(query,*stages)
                 rclient.expire(query,6*60*60)
     json_response = {
         'results': [{
