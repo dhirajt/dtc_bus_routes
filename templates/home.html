@@ -8,10 +8,12 @@
     .homepagesegment {
         margin-top: 0 !important;
         margin-bottom: 0 !important;
+        height:75%;
     }
 
     #map {
-        height: 450px;
+        height: 100%;
+        padding: 0px;
     }
 
     .journeyforms {
@@ -24,6 +26,10 @@
         left: 2%;
         width:450px;
         z-index: 1000;
+    }
+
+    #ad_unit {
+        height: 25%;
     }
 
     /* mobile view */
@@ -161,55 +167,50 @@ $(document).ready(function() {
 
 
     $.fn.form.settings.rules.stageValid = function(value) {
-        console.log("stageValid called with "+value);
-        console.log($.inArray(value,cached_stages) >= 0);
         return $.inArray(value,cached_stages) >= 0;
     };
 
     $.fn.form.settings.rules.routeValid = function(value) {
-        console.log("routeValid called");
         return $.inArray(value,cached_routes) >= 0;
     };
 
     $('.ui.form')
       .form({
+        on: 'submit',
         inline: true,
         fields: {
               stage1: {
-                identifier: 'stage1',
                 rules: [
                   {
                     type   : 'empty',
                     prompt : 'Please enter source stop.'
                 },
                   {
-                    type   : 'stageValid[value]',
+                    type   : 'stageValid',
                     prompt : 'Please select a stop from dropdown.'
                   }
                 ]
               },
               stage2: {
-                identifier: 'stage2',
                 rules: [
                   {
                     type   : 'empty',
                     prompt : 'Please enter destination stop.'
                 },
                   {
-                    type   : 'stageValid[value]',
+                    type   : 'stageValid',
                     prompt : 'Please select a stop from dropdown.'
                   }
                 ]
               },
               bus1: {
-                identifier: 'bus1',
                 rules: [
                   {
                     type   : 'empty',
                     prompt : 'Please enter a bus number or route name.'
                 },
                 {
-                  type   : 'routeValid[value]',
+                  type   : 'routeValid',
                   prompt : 'Please enter a bus number or route name from dropdown.'
                 }
               ]
