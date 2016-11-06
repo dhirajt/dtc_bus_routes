@@ -43,21 +43,6 @@
     <link href="{{ STATIC_URL }}css/modern-responsive.css" rel="stylesheet">
     <link href="{{ STATIC_URL }}css/jquery.autocomplete.css" rel="stylesheet">
 
-    <script type="text/javascript" src="{{ STATIC_URL }}js/jquery19.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.mousewheel.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}js/tooltip.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}js/accordion.js"></script>
-    <!--<script type="text/javascript" src="{{ STATIC_URL }}js/dropdown.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}js/buttonset.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}js/carousel.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}js/input-control.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}js/pagecontrol.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}js/slider.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}js/tile-slider.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}js/tile-drag.js"></script>-->
-    <script type="text/javascript" src="{{ STATIC_URL }}js/dialog.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.autocomplete.min.js"></script>
-
     <script>
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
     (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -210,25 +195,17 @@
           text-align: center;
       }
       #ad_pitch {
-          padding-bottom:5px;
+          padding-bottom:15px;
+          display: inline-block;
       }
     </style>
     {% endblock %}
 
     <body class="modern-ui" onload=" ">
         <script id="_webengage_script_tag" type="text/javascript">
-        var _weq = _weq || {};
-        _weq['webengage.licenseCode'] = '76aa07a';
-        _weq['webengage.widgetVersion'] = "4.0";
+        var webengage; !function(e,t,n){function o(e,t){e[t[t.length-1]]=function(){r.__queue.push([t.join("."),arguments])}}var i,s,r=e[n],g=" ",l="init options track screen onReady".split(g),a="feedback survey notification".split(g),c="options render clear abort".split(g),p="Open Close Submit Complete View Click".split(g),u="identify login logout setAttribute".split(g);if(!r||!r.__v){for(e[n]=r={__queue:[],__v:"5.0",user:{}},i=0;i<l.length;i++)o(r,[l[i]]);for(i=0;i<a.length;i++){for(r[a[i]]={},s=0;s<c.length;s++)o(r[a[i]],[a[i],c[s]]);for(s=0;s<p.length;s++)o(r[a[i]],[a[i],"on"+p[s]])}for(i=0;i<u.length;i++)o(r.user,["user",u[i]]);setTimeout(function(){var f=t.createElement("script"),d=t.getElementById("_webengage_script_tag");f.type="text/javascript",f.async=!0,f.src=("https:"==t.location.protocol?"https://ssl.widgets.webengage.com":"http://cdn.widgets.webengage.com")+"/js/widget/webengage-min-v-5.0.js",d.parentNode.insertBefore(f,d)})}}(window,document,"webengage");
 
-        (function(d){
-        var _we = d.createElement('script');
-        _we.type = 'text/javascript';
-        _we.async = true;
-        _we.src = (d.location.protocol == 'https:' ? "https://ssl.widgets.webengage.com" : "http://cdn.widgets.webengage.com") + "/js/widget/webengage-min-v-4.0.js";
-        var _sNode = d.getElementById('_webengage_script_tag');
-        _sNode.parentNode.insertBefore(_we, _sNode);
-        })(document);
+        webengage.init("76aa07a");
         </script>
         <div class="page secondary">
             <div class="page-header">
@@ -279,6 +256,21 @@
            | <a href="https://github.com/dhirajt/dtc_bus_routes/blob/master/DISCLAIMER">Disclaimer</a> | <a href="https://github.com/dhirajt/dtc_bus_routes/issues">Bug Reports</a>
           </div>
         </div>
+
+        <script type="text/javascript" src="{{ STATIC_URL }}js/jquery19.js"></script>
+        <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.mousewheel.js"></script>
+        <script type="text/javascript" src="{{ STATIC_URL }}js/tooltip.js"></script>
+        <script type="text/javascript" src="{{ STATIC_URL }}js/accordion.js"></script>
+        <!--<script type="text/javascript" src="{{ STATIC_URL }}js/dropdown.js"></script>
+        <script type="text/javascript" src="{{ STATIC_URL }}js/buttonset.js"></script>
+        <script type="text/javascript" src="{{ STATIC_URL }}js/carousel.js"></script>
+        <script type="text/javascript" src="{{ STATIC_URL }}js/input-control.js"></script>
+        <script type="text/javascript" src="{{ STATIC_URL }}js/pagecontrol.js"></script>
+        <script type="text/javascript" src="{{ STATIC_URL }}js/slider.js"></script>
+        <script type="text/javascript" src="{{ STATIC_URL }}js/tile-slider.js"></script>
+        <script type="text/javascript" src="{{ STATIC_URL }}js/tile-drag.js"></script>-->
+        <script type="text/javascript" src="{{ STATIC_URL }}js/dialog.js"></script>
+        <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.autocomplete.min.js"></script>
 
         {% block js %}
         <script type="text/javascript">
