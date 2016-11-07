@@ -10,4 +10,7 @@ urlpatterns = [
     url(r'^routes/$', views.route_list, name='route_list'),
     url(r'^route/(?P<pk>[0-9]+)/$', views.route_details, name='route_details'),
     url(r'^search/route/$', views.route_search, name='route_search'),
+
+    url(r'^stage/eta/$', views.stage_eta, name='stage_eta'),
+    url(r'^route/eta/$', views.route_eta, name='route_eta'),
 ]
