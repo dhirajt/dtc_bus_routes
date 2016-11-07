@@ -44,7 +44,17 @@ def get_final_endpoint(endpoint_name='',payload=''):
 
     url = BASE_ENDPOINT + aescrypt.encryptB64URLSafe(
         KEY, ';'.join([endpoint_path+aid,payload]))
-    return url
+
+    rclient = redis.StrictRedis(connection_pool=settings.API_CACHE_REDIS_POOL)
+    proxies = {}
+    proxy_list = rclient.lrange('proxies', 0, -1)
+    if proxy_list:
+        if 'http' in proxy_list[0]:
+            proxies['http'] = proxy_list[0]
+        elif 'https' in proxy_list[0]:
+            proxies['https'] = proxy_list[0]
+
+    return url, proxies
 
 def get_endpoint_headers():
     headers = {
@@ -188,7 +198,6 @@ def route_search(request):
     }
     return BusRoutesStandardResponse(response_data)
 
-
 @api_view(['GET'])
 def stage_eta(request):
     """
@@ -216,11 +225,11 @@ def stage_eta(request):
     if cached_eta_list:
         eta_list = json.loads(cached_eta_list)
     else:
-        url = get_final_endpoint(
+        url, proxies = get_final_endpoint(
             endpoint_name='stage_eta',payload=stage_id)
         headers = get_endpoint_headers()
 
-        response = requests.get(url)
+        response = requests.get(url, proxies=proxies)
 
         if response.ok:
             response_json_text = aescrypt.decryptB64(KEY,response.text)
@@ -304,11 +313,11 @@ def route_eta(request):
     if cached_data:
         data = json.loads(cached_data)['eta_list']
     else:
-        url = get_final_endpoint(
+        url, proxies = get_final_endpoint(
             endpoint_name='route_eta',payload=route_id)
         headers = get_endpoint_headers()
 
-        response = requests.get(url)
+        response = requests.get(url, proxies=proxies)
 
         if response.ok:
             response_json_text = aescrypt.decryptB64(KEY,response.text)
@@ -382,7 +391,6 @@ def route_eta(request):
         context={'request': request, 'eta_list':eta_serializer})
 
     return BusRoutesStandardResponse(serializer.data)
-
 
 @api_view(('GET',))
 @permission_classes((AllowAny, ))
