@@ -16,10 +16,6 @@
   <meta name="twitter:description" content="DTC Bus Routes | Route {{ route }} | {{ startstage }} to {{ endstage }} lists all stages/stops on route/bus {{ route }}. It tells you all the stops the bus goes with maps. It also tells you timings of the bus.">
 {% endblock %}
 
-{% block js %}
-{{ block.super }}
-{% endblock %}
-
 {% block css %}
     {{ block.super }}
     <link href='https://api.mapbox.com/mapbox.js/v2.2.3/mapbox.css' rel='stylesheet' />
@@ -72,146 +68,150 @@
           </div>
         </div>
         <div id="map" class="span10"></div>
+     </div>
+    </div>
+{% endblock %}
 
-        <script src='https://api.mapbox.com/mapbox.js/v2.2.3/mapbox.js'></script>
-        <script src='{{ STATIC_URL }}js/mapbox.match.min.js'></script>
+{% block js %}
+{{ block.super }}
 
-        <script type="text/javascript">
-        var static_url = "{{ STATIC_URL }}";
-        </script>
-        <script type="text/javascript" src="{{ STATIC_URL }}js/maps.js"></script>
+<script src='https://api.mapbox.com/mapbox.js/v2.2.3/mapbox.js'></script>
+<script src='{{ STATIC_URL }}js/mapbox.match.min.js'></script>
 
-        <script>
-                L.mapbox.accessToken = 'pk.eyJ1IjoiZGhpcmFqdCIsImEiOiI1YTMxNzM4NDE2M2MxMDA0NTY0MGNmMWM0NzdiYzJhYyJ9.qR51ols0ubv4BrxG1_pVvw';
+<script type="text/javascript">
+var static_url = "{{ STATIC_URL }}";
+</script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/maps.js"></script>
 
-                var bus_route_geojson = {
-                    "type": "FeatureCollection",
-                    "features": [{
-                        "type": "Feature",
-                        "properties": {
-                            "coordTimes":[],
-                            'marker-size': 'medium',
-                            'marker-symbol': 'bus',
-                            'marker-color': '#00a300'
-                        },
-                        "geometry": {
-                            type: 'LineString',
-                            coordinates: []
-                        }
-                    }]
-                };
+<script>
+        L.mapbox.accessToken = 'pk.eyJ1IjoiZGhpcmFqdCIsImEiOiI1YTMxNzM4NDE2M2MxMDA0NTY0MGNmMWM0NzdiYzJhYyJ9.qR51ols0ubv4BrxG1_pVvw';
 
-                var bus_stops_geojson = [];
+        var bus_route_geojson = {
+            "type": "FeatureCollection",
+            "features": [{
+                "type": "Feature",
+                "properties": {
+                    "coordTimes":[],
+                    'marker-size': 'medium',
+                    'marker-symbol': 'bus',
+                    'marker-color': '#00a300'
+                },
+                "geometry": {
+                    type: 'LineString',
+                    coordinates: []
+                }
+            }]
+        };
 
-                {% for item in stops %}
-                    {% if not item.coordinates.longitude == 0 and not item.stage.coordinates.latitude == 0 %}
-                    bus_route_geojson.features[0].geometry.coordinates.push([
+        var bus_stops_geojson = [];
+
+        {% for item in stops %}
+            {% if not item.coordinates.longitude == 0 and not item.stage.coordinates.latitude == 0 %}
+            bus_route_geojson.features[0].geometry.coordinates.push([
+                {{item.stage.coordinates.longitude}},
+                {{item.stage.coordinates.latitude}}
+            ]);
+            bus_route_geojson.features[0].properties.coordTimes.push(
+                new Date().getTime()
+            );
+            bus_stops_geojson.push({
+                "type": "Feature",
+                "geometry": {
+                    "type": "Point",
+                    "coordinates":[
                         {{item.stage.coordinates.longitude}},
                         {{item.stage.coordinates.latitude}}
-                    ]);
-                    bus_route_geojson.features[0].properties.coordTimes.push(
-                        new Date().getTime()
-                    );
-                    bus_stops_geojson.push({
-                        "type": "Feature",
-                        "geometry": {
-                            "type": "Point",
-                            "coordinates":[
-                                {{item.stage.coordinates.longitude}},
-                                {{item.stage.coordinates.latitude}}
-                            ]
-                        },
-                        "properties": {
-                            "title": "{{ item.stage.name }}",
-                            "marker-size": "medium",
-                            "marker-symbol": "{{ forloop.counter }}",
-                            "marker-color": "#00a300",
-                        }
-                    })
-                    {% endif %}
-                {% endfor %}
-
-                lat = null;
-                lng = null;
-
-                var middle = bus_stops_geojson[Math.round((bus_stops_geojson.length - 1) / 2)];
-                if (middle == null || middle == undefined) {
-                    lat = 28.6129;
-                    lng = 77.2295;
-                } else {
-                    lat = middle.geometry.coordinates[1];
-                    lng = middle.geometry.coordinates[0];
+                    ]
+                },
+                "properties": {
+                    "title": "{{ item.stage.name }}",
+                    "marker-size": "medium",
+                    "marker-symbol": "{{ forloop.counter }}",
+                    "marker-color": "#00a300",
                 }
+            })
+            {% endif %}
+        {% endfor %}
 
-                var map = L.mapbox.map('map', 'mapbox.streets',{
-                            zoomControl: false,
-                          })
-                          .setView([lat,lng], 12);
+        lat = null;
+        lng = null;
 
-                new L.Control.Zoom({ position: 'topleft' }).addTo(map);
+        var middle = bus_stops_geojson[Math.round((bus_stops_geojson.length - 1) / 2)];
+        if (middle == null || middle == undefined) {
+            lat = 28.6129;
+            lng = 77.2295;
+        } else {
+            lat = middle.geometry.coordinates[1];
+            lng = middle.geometry.coordinates[0];
+        }
 
-                L.control.layers(null,overlayMaps).addTo(map);
+        var map = L.mapbox.map('map', 'mapbox.streets',{
+                    zoomControl: false,
+                  })
+                  .setView([lat,lng], 12);
 
+        new L.Control.Zoom({ position: 'topleft' }).addTo(map);
 
-                L.geoJson(bus_route_geojson).addTo(map);
-
-
-                var bus_stop_layer = L.mapbox.featureLayer().setGeoJSON(
-                    bus_stops_geojson).addTo(map);
-
-                bus_stop_layer.on('click', function(e) {
-                    map.setView(e.latlng);
-                });
-
-                L.mapbox.mapmatching(bus_route_geojson, {
-                  profile: "driving",
-                  minimumDistance: 10,
-                  gpsPrecision: 20
-                }, function(err, match) {
-                  if (err) { console.log(err); return; }
-                  if (match.getGeoJSON()["code"] === "NoMatch") {
-                      console.log("Couldn't snap route to road! [NoMatch]")
-                  } else {
-                      match.addTo(map);
-                  }
-                });
-                map.scrollWheelZoom.disable();
+        L.control.layers(null,overlayMaps).addTo(map);
 
 
-                $(document).ready(function (){
-                    $('body').tooltip({
-                        selector: '[rel=tooltip]'
+        L.geoJson(bus_route_geojson).addTo(map);
+
+
+        var bus_stop_layer = L.mapbox.featureLayer().setGeoJSON(
+            bus_stops_geojson).addTo(map);
+
+        bus_stop_layer.on('click', function(e) {
+            map.setView(e.latlng);
+        });
+
+        L.mapbox.mapmatching(bus_route_geojson, {
+          profile: "driving",
+          minimumDistance: 10,
+          gpsPrecision: 20
+        }, function(err, match) {
+          if (err) { console.log(err); return; }
+          if (match.getGeoJSON()["code"] === "NoMatch") {
+              console.log("Couldn't snap route to road! [NoMatch]")
+          } else {
+              match.addTo(map);
+          }
+        });
+        map.scrollWheelZoom.disable();
+
+
+        $(document).ready(function (){
+            $('body').tooltip({
+                selector: '[rel=tooltip]'
+            });
+
+            $(document).on('mouseenter', 'span[rel=tooltip]', function () {
+                var ele = $(this),
+                    index = ele.data().index,
+                    stage = $(this).html(),
+                    originaltitle = ele.attr('data-original-title');
+
+                if (originaltitle === "" || originaltitle === undefined) {
+                    $.get("{% url 'ajax_buses_from_here' %}?q=" + encodeURIComponent(stage),
+
+                    function (response) {
+                        ele.attr("data-original-title", response);
                     });
+                }
+                $(this).tooltip('show');
 
-                    $(document).on('mouseenter', 'span[rel=tooltip]', function () {
-                        var ele = $(this),
-                            index = ele.data().index,
-                            stage = $(this).html(),
-                            originaltitle = ele.attr('data-original-title');
+                var coordinates = bus_stops_geojson[index].geometry.coordinates;
+                coordinates = [].concat(coordinates).reverse();
 
-                        if (originaltitle === "" || originaltitle === undefined) {
-                            $.get("{% url 'ajax_buses_from_here' %}?q=" + encodeURIComponent(stage),
+                var marker = new L.LatLng(coordinates[0],coordinates[1]);
+                map.setView(marker,12);
+            });
 
-                            function (response) {
-                                ele.attr("data-original-title", response);
-                            });
-                        }
-                        $(this).tooltip('show');
-
-                        var coordinates = bus_stops_geojson[index].geometry.coordinates;
-                        coordinates = [].concat(coordinates).reverse();
-
-                        var marker = new L.LatLng(coordinates[0],coordinates[1]);
-                        map.setView(marker,12);
-                    });
-
-                    $(document).on('mouseleave', 'span[rel=tooltip]', function () {
-                        $(this).tooltip('hide');
-                    });
-                });
-        </script>
-    </div>
-</div>
+            $(document).on('mouseleave', 'span[rel=tooltip]', function () {
+                $(this).tooltip('hide');
+            });
+        });
+</script>
 {% endblock %}
 
 {% block share %}
