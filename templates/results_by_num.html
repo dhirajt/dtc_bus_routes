@@ -200,7 +200,7 @@ var static_url = "{{ STATIC_URL }}";
                 }
                 $(this).tooltip('show');
 
-                var coordinates = bus_stops_geojson[index].geometry.coordinates;
+                var coordinates = bus_stops_geojson[index-1].geometry.coordinates;
                 coordinates = [].concat(coordinates).reverse();
 
                 var marker = new L.LatLng(coordinates[0],coordinates[1]);
