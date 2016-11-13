@@ -150,11 +150,10 @@ var static_url = "{{ STATIC_URL }}";
                   })
                   .setView([lat,lng], 12);
 
-        L.mapbox.styleLayer('mapbox://styles/mapbox/streets-v10').addTo(map);
+        L.mapbox.styleLayer('mapbox://styles/mapbox/streets-v9').addTo(map);
         new L.Control.Zoom({ position: 'topleft' }).addTo(map);
 
         L.control.layers(null,overlayMaps).addTo(map);
-
 
         L.geoJson(bus_route_geojson).addTo(map);
 
@@ -165,6 +164,14 @@ var static_url = "{{ STATIC_URL }}";
         bus_stop_layer.on('click', function(e) {
             map.setView(e.latlng);
         });
+
+        var allStageMarkers = {};
+        bus_stop_layer.eachLayer(function(layer) {
+            if (layer.feature.properties["marker-symbol"]) {
+                allStageMarkers[layer.feature.properties["marker-symbol"]] = layer;
+            }
+        });
+
 
         L.mapbox.mapmatching(bus_route_geojson, {
           profile: "driving",
@@ -206,9 +213,13 @@ var static_url = "{{ STATIC_URL }}";
 
                 var marker = new L.LatLng(coordinates[0],coordinates[1]);
                 map.setView(marker,12);
+
+                allStageMarkers[index].openPopup();
             });
 
             $(document).on('mouseleave', 'span[rel=tooltip]', function () {
+                var index = ele.data().index;
+                allStageMarkers[index].closePopup();
                 $(this).tooltip('hide');
             });
         });
