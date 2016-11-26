@@ -17,8 +17,13 @@ def server_error(request):
 def search_by_num(request):
     if request.GET:
         busno = request.GET['bus']
+        route_type = 1
+        if ' - Cluster' in busno:
+            route_type = 2
+            busno = busno.split(' - ')[0]
+
         try:
-            obj = Route.objects.get(name=busno,is_active=True)
+            obj = Route.objects.get(name=busno,is_active=True,route_type=route_type)
         except ObjectDoesNotExist:
             obj = None
 
@@ -67,20 +72,21 @@ def ajax_bus_number_search(request):
     if not request.is_ajax():
         return HttpResponseBadRequest
     query = request.GET.get('q','')
-    buses = []
+    bus_names = []
 
     if query:
         rclient = redis.StrictRedis(connection_pool=settings.BUS_REDIS_POOL)
-        buses = rclient.smembers(query)
-        buses = sorted(buses)
-        if not buses:
+        bus_names = rclient.smembers(query)
+        bus_names = sorted(bus_names)
+        if not bus_names:
             buses = list(Route.objects.filter(
-                is_active=True,name__icontains=query).values_list('name',flat=True))
-            if buses:
-                buses = sorted(buses)
-                rclient.sadd(query,*buses)
+                is_active=True,name__icontains=query).values_list('name','route_type'))
+            bus_names = [item[0] if item[1] == 1 else item[0] + ' - Cluster' for item in buses]
+            if bus_names:
+                bus_names = sorted(bus_names)
+                rclient.sadd(query,*bus_names)
                 rclient.expire(query,6*60*60)
-    return HttpResponse("\n".join(buses))
+    return HttpResponse("\n".join(bus_names))
 
 def ajax_stage_search(request):
     if not request.is_ajax():

@@ -47,7 +47,11 @@
         <!-- <div class="span2"></div> -->
         <div id="content" class="span4 offset2">
            <div id="infobox">
+            {% if route.route_type == 2 %}
+            <div class="tile bg-color-orange" style="width:200px;height:auto;">
+            {% else %}
             <div class="tile bg-color-green" style="width:200px;height:auto;">
+            {% endif %}
                 <div class="tile-content">
                     <b itemscope itemtype="http://schema.org/BusTrip">
                         Route : <span itemprop="busName busNumber">{{ route }}</span> <br/>
@@ -94,7 +98,11 @@ var static_url = "{{ STATIC_URL }}";
                     "coordTimes":[],
                     'marker-size': 'large',
                     'marker-symbol': 'bus',
-                    'marker-color': '#00a300'
+                    {% if route.route_type == 2 %}
+                    "marker-color": "#e3a21a"
+                    {% else %}
+                    "marker-color": "#00a300"
+                    {% endif %}
                 },
                 "geometry": {
                     type: 'LineString',
@@ -127,7 +135,11 @@ var static_url = "{{ STATIC_URL }}";
                     "title": "{{ item.stage.name }}",
                     "marker-size": "medium",
                     "marker-symbol": "{{ forloop.counter }}",
+                    {% if route.route_type == 2 %}
+                    "marker-color": "#e3a21a",
+                    {% else %}
                     "marker-color": "#00a300",
+                    {% endif %}
                 }
             })
             {% endif %}
@@ -148,7 +160,7 @@ var static_url = "{{ STATIC_URL }}";
         var map = L.mapbox.map('map', null, {
                     zoomControl: false,
                   })
-                  .setView([lat,lng], 12);
+                  .setView([lat,lng], 11);
 
         L.mapbox.styleLayer('mapbox://styles/mapbox/streets-v9').addTo(map);
         new L.Control.Zoom({ position: 'topleft' }).addTo(map);
@@ -185,7 +197,6 @@ var static_url = "{{ STATIC_URL }}";
               match.addTo(map);
           }
         });
-        map.scrollWheelZoom.disable();
 
 
         $(document).ready(function (){

@@ -8,7 +8,7 @@ from geoposition.fields import GeopositionField
 
 
 class Stage(models.Model):
-    name = models.CharField(max_length=64,unique=True)
+    name = models.CharField(max_length=64)
     name_slug = models.SlugField(max_length=100)
     coordinates = GeopositionField()
     uid = models.CharField(max_length=10,blank=True,default='') # any unique id
@@ -52,7 +52,7 @@ class Route(models.Model):
         (2,'Cluster')
     )
     name = models.CharField(max_length=64)
-    uid = models.CharField(max_length=10,blank=True,default='')
+    uid = models.CharField(max_length=50,blank=True,default='')
 
     aliases = TaggableManager(verbose_name='aliases',blank=True)
 
@@ -71,7 +71,10 @@ class Route(models.Model):
         verbose_name = "Route"
         verbose_name_plural = "Routes"
 
-        unique_together = (('name','direction'),('name','start_stage','end_stage'),)
+        unique_together = (
+            ('name','direction','route_type'),
+            ('name', 'direction', 'start_stage','end_stage', 'route_type'),
+        )
 
     def get_absolute_url(self):
         return reverse('bus_by_id',kwargs={
@@ -81,7 +84,7 @@ class Route(models.Model):
         })
 
     def __unicode__(self):
-        return self.name
+        return self.name + ' - ' + self.get_route_type_display()
 
 
 class StageSequence(models.Model):
