@@ -10,8 +10,8 @@ from aesencryption import AesCrypt256
 
 from collections import OrderedDict
 from serializers import (StageBasicSerializer, StageAdvancedSerializer,
-    RouteBasicSerializer, RouteAdvancedSerializer, StageETASerializer,
-    StageETAListSerializer, RouteStageETAListSerializer)
+    RouteBasicSerializer, RouteAdvancedETASerializer, StageETASerializer,
+    StageETAListSerializer, VehicleSerializer, RouteAdvancedSerializer)
 
 from rest_framework.request import Request
 from rest_framework.exceptions import NotFound, ParseError
@@ -97,7 +97,7 @@ def stage_list(request):
     """
     Returns all the stages in bus route database.
     """
-    stages = Stage.objects.all()
+    stages = Stage.objects.all().order_by('pk')
     response = get_paginated_response(
         stages,
         request,
@@ -116,8 +116,7 @@ def stage_details(request,pk):
         raise NotFound()
 
     serializer = StageAdvancedSerializer(
-        [stage],
-        many=True,
+        stage,
         context={'request': request})
     return BusRoutesStandardResponse(serializer.data)
 
@@ -148,7 +147,7 @@ def route_list(request):
     """
     Returns all the routes in bus route database.
     """
-    stages = Route.objects.select_related('start_stage','end_stage').all()
+    stages = Route.objects.select_related('start_stage','end_stage').all().order_by('pk')
     response = get_paginated_response(
         stages,
         request,
@@ -160,16 +159,25 @@ def route_details(request,pk):
     """
     Returns all the stages in bus route database.
     """
-    routes = Route.objects.filter(
-            pk=pk,is_active=True).select_related('start_stage','end_stage').prefetch_related(
-                Prefetch('stages',queryset=Stage.objects.all().order_by('stagesequence__sequence')))
+    # routes = Route.objects.filter(
+    #         pk=pk,is_active=True).select_related('start_stage','end_stage').prefetch_related(
+    #             Prefetch('stages',queryset=Stage.objects.all().order_by('stagesequence__sequence')))
 
-    if not routes:
+    # if not routes:
+    #     raise NotFound()
+
+    # serializer = RouteAdvancedSerializer(
+    #     routes,
+    #     many=True,
+    #     context={'request': request})
+
+    try:
+        route = Route.objects.get(pk=pk,is_active=True)
+    except Route.DoesNotExist:
         raise NotFound()
 
     serializer = RouteAdvancedSerializer(
-        routes,
-        many=True,
+        route,
         context={'request': request})
 
     return BusRoutesStandardResponse(serializer.data)
@@ -267,7 +275,9 @@ def stage_eta(request):
                         'latitude': latitude,
                         'longitude': longitude
                     })
-    rclient.setex('stage_eta:'+stage_id, 30, json.dumps(eta_list))
+    if eta_list:
+        rclient.setex('stage_eta:'+stage_id, 30, json.dumps(eta_list))
+
     eta_serializer = StageETAListSerializer(
         eta_list,
         many=True,
@@ -311,7 +321,7 @@ def route_eta(request):
 
     data = {}
     if cached_data:
-        data = json.loads(cached_data)['eta_list']
+        data = json.loads(cached_data)
     else:
         url, proxies = get_final_endpoint(
             endpoint_name='route_eta',payload=route_id)
@@ -326,7 +336,7 @@ def route_eta(request):
             except ValueError:
                 response_json = ''
 
-            vehicle_list = {}
+            vehicle_list = []
             eta_list = []
 
             if response_json and response_json['vehicleList']:
@@ -340,12 +350,13 @@ def route_eta(request):
                         if 'available' in seat_availability:
                             seat_availability = 'Available'
 
-                        vehicle_list[vehicle_number] = {
+                        vehicle_list.append({
                             'location': location,
                             'latitude': item['latitude'],
                             'longitude': item['longitude'],
-                            'seat_availability': seat_availability
-                        }
+                            'seat_availability': seat_availability,
+                            'vehicle_number': vehicle_number
+                        })
 
             if response_json and response_json['allBusStops']:
                 for item in response_json['allBusStops']:
@@ -360,7 +371,7 @@ def route_eta(request):
                     latitude = item['latitude']
                     longitude = item['longitude']
 
-                    eta_minutes = []
+                    eta_minutes = None
 
                     name_split = item['Name'].strip().split('\n',1)
                     if len(name_split) > 1:
@@ -371,24 +382,35 @@ def route_eta(request):
                         'passengers': passengers,
                         'eta_minutes': eta_minutes,
                         'seat_availability':seat_availability,
-                        'latitude': latitude,
-                        'longitude': longitude
+                        # 'latitude': latitude,
+                        # 'longitude': longitude,
+                        'name': name_split[0]
                     })
+
             data['vehicle_list'] = vehicle_list
             data['eta_list'] = eta_list
 
     if any(data.values()):
         rclient.setex('route_eta:'+route_id, 30, json.dumps(data))
 
-    eta_serializer = RouteStageETAListSerializer(
-        eta_list,
+    vehicle_serializer = VehicleSerializer(
+        data['vehicle_list'],
         many=True,
         context={'request': request})
 
-    serializer = StageETASerializer(
-        stages,
-        many=True,
-        context={'request': request, 'eta_list':eta_serializer})
+    serializer = RouteAdvancedETASerializer(
+        route,
+        context={'request': request, 'vehicle_list':vehicle_serializer})
+
+    final_serialized_data = serializer.data
+    if final_serialized_data and final_serialized_data["stages"]:
+        zipped_data = zip(final_serialized_data["stages"],data['eta_list'])
+
+        if zipped_data:
+            for index,item in enumerate(final_serialized_data["stages"]):
+                if zipped_data[index][1]:
+                    final_serialized_data["stages"][index] = OrderedDict(
+                        final_serialized_data["stages"][index].items()+zipped_data[index][1].items())
 
     return BusRoutesStandardResponse(serializer.data)
 
