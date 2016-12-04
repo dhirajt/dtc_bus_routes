@@ -60,8 +60,8 @@ def bus_by_id(request,bus_id=None,source='',destination=''):
         raise Http404
 
 def ajax_buses_from_here(request):
-    stop = request.GET.get('q')
-    obj = Stage.objects.get(name=stop)
+    stop_id = request.GET.get('id')
+    obj = Stage.objects.get(id=stop_id)
     route_names = list(obj.route_set.filter(is_active=True).values_list('name',flat=True))
     route_names = sorted(route_names)
     route_list = '<b>Buses from here :</b> <br/>'+(

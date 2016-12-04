@@ -49,7 +49,7 @@ class Route(models.Model):
     )
     ROUTE_TYPE_CHOICES = (
         (1,'DTC'),
-        (2,'Cluster')
+        (2,'Delhi Transit')
     )
     name = models.CharField(max_length=64)
     uid = models.CharField(max_length=50,blank=True,default='')

@@ -54,7 +54,8 @@
             {% endif %}
                 <div class="tile-content">
                     <b itemscope itemtype="http://schema.org/BusTrip">
-                        Route : <span itemprop="busName busNumber">{{ route }}</span> <br/>
+                        Route : <span itemprop="busName busNumber">{{ route.name }}</span> <br/>
+                        Operator: {{ route.get_route_type_display }} <br/>
                         From : {{ startstage }} <br/>
                         To : {{ endstage }} <br />
                     </b>
@@ -66,7 +67,7 @@
                 <b> Stops At: </b> <br /> <br />
                 {% for item in stops %}
                 <p itemscope itemtype="http://schema.org/BusStop">
-                    {{item.sequence}}. <span id="res" rel="tooltip" data-placement="right" itemprop="name" data-index="{{item.sequence}}">{{item.stage}}</span>
+                    {{item.sequence}}. <span id="res" rel="tooltip" data-placement="right" data-id="{{item.stage.id}}" itemprop="name" data-index="{{item.sequence}}">{{item.stage}}</span>
                 </p>
                 {% endfor %}
           </div>
@@ -207,11 +208,11 @@ var static_url = "{{ STATIC_URL }}";
             $(document).on('mouseenter', 'span[rel=tooltip]', function () {
                 var ele = $(this),
                     index = ele.data().index,
-                    stage = $(this).html(),
+                    id = ele.data().id,
                     originaltitle = ele.attr('data-original-title');
 
                 if (originaltitle === "" || originaltitle === undefined) {
-                    $.get("{% url 'ajax_buses_from_here' %}?q=" + encodeURIComponent(stage),
+                    $.get("{% url 'ajax_buses_from_here' %}?id=" + encodeURIComponent(id),
 
                     function (response) {
                         ele.attr("data-original-title", response);
@@ -229,6 +230,7 @@ var static_url = "{{ STATIC_URL }}";
             });
 
             $(document).on('mouseleave', 'span[rel=tooltip]', function () {
+                var ele = $(this);
                 var index = ele.data().index;
                 allStageMarkers[index].closePopup();
                 $(this).tooltip('hide');
