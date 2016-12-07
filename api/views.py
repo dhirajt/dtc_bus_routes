@@ -49,10 +49,7 @@ def get_final_endpoint(endpoint_name='',payload=''):
     proxies = {}
     proxy_list = rclient.lrange('proxies', 0, -1)
     if proxy_list:
-        if 'http' in proxy_list[0]:
-            proxies['http'] = proxy_list[0]
-        elif 'https' in proxy_list[0]:
-            proxies['https'] = proxy_list[0]
+        proxies['http'] = proxy_list[0]
 
     return url, proxies
 
