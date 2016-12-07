@@ -67,7 +67,7 @@
                 <b> Stops At: </b> <br /> <br />
                 {% for item in stops %}
                 <p itemscope itemtype="http://schema.org/BusStop">
-                    {{item.sequence}}. <span id="res" rel="tooltip" data-placement="right" data-id="{{item.stage.id}}" itemprop="name" data-index="{{item.sequence}}">{{item.stage}}</span>
+                    {{item.sequence}}. <span id="res" rel="tooltip" data-placement="right" data-id="{{item.stage.id}}" itemprop="name" data-index="{{item.sequence}}">{{item.stage}} <span id="eta{{item.stage.id}}"></span></span>
                 </p>
                 {% endfor %}
           </div>
@@ -161,7 +161,7 @@ var static_url = "{{ STATIC_URL }}";
         var map = L.mapbox.map('map', null, {
                     zoomControl: false,
                   })
-                  .setView([lat,lng], 11);
+                  .setView([lat,lng], 12);
 
         L.mapbox.styleLayer('mapbox://styles/mapbox/streets-v9').addTo(map);
         new L.Control.Zoom({ position: 'topleft' }).addTo(map);
@@ -224,7 +224,7 @@ var static_url = "{{ STATIC_URL }}";
                 coordinates = [].concat(coordinates).reverse();
 
                 var marker = new L.LatLng(coordinates[0],coordinates[1]);
-                map.setView(marker,12);
+                map.setView(marker);
 
                 allStageMarkers[index].openPopup();
             });
@@ -235,6 +235,82 @@ var static_url = "{{ STATIC_URL }}";
                 allStageMarkers[index].closePopup();
                 $(this).tooltip('hide');
             });
+
+
+            {% if route.route_type == 2 %}
+            var realtime_bus_markers = {}
+
+            // L.marker([0, 0], {
+            //   icon: L.mapbox.marker.icon({
+            //     'marker-color': '#f86767'
+            //   })
+            // }).addTo(map);
+
+            tick();
+            function tick() {
+
+                $.ajax({
+                    'type': 'GET',
+                    'url': "{% url 'route_eta' %}?route_id={{route.id}}",
+                    'cache': false,
+                    'dataType': 'json',
+
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader("Authorization", "Token {{ access_token }}");
+                    }
+                }).done(function(data) {
+                    // update eta
+                    if (data["data"]["stages"]) {
+                        for(var i=0; i<data["data"]["stages"].length; ++i) {
+                            stage = data["data"]["stages"][i]
+                            if (stage["eta_minutes"]) {
+                                var eta_string = "(ETA: "+stage["eta_minutes"].join()+" minutes)"
+                                $("#eta"+stage["id"]).text(eta_string)
+                            }
+                        }
+                    }
+
+                    // populate vehicle data
+                    if (data["data"]["vehicle_list"]) {
+                        for(var i=0; i<data["data"]["vehicle_list"].length; ++i){
+                            vehicle = data["data"]["vehicle_list"][i];
+
+                            if (realtime_bus_markers[vehicle["vehicle_number"]] == null || realtime_bus_markers[vehicle["vehicle_number"]] === undefined) {
+                                var marker =  L.marker(
+                                    [vehicle["latitude"],vehicle["longitude"]], {
+                                  icon: L.mapbox.marker.icon({
+                                    'marker-color': '#548cba',
+                                    "marker-size": "large",
+                                    "marker-symbol": "bus",
+                                })}).addTo(map);
+
+                                marker.bindPopup(
+                                    "<b>"+vehicle["vehicle_number"]+"</b><br/>"+
+                                    "Location: "+vehicle["location"]+"<br />"+
+                                    "Seat Availability: "+vehicle["seat_availability"]).openPopup();
+
+                                realtime_bus_markers[vehicle["vehicle_number"]] = marker;
+                            } else {
+                                var marker = realtime_bus_markers[vehicle["vehicle_number"]]
+
+                                marker.setLatLng(L.latLng(
+                                    vehicle["latitude"],
+                                    vehicle["longitude"]));
+
+                                marker.setPopupContent(
+                                    "<b>"+vehicle["vehicle_number"]+"</b><br/>"+
+                                    "Location: "+vehicle["location"]+"<br />"+
+                                    "Seat Availability: "+vehicle["seat_availability"]).openPopup();
+                            }
+                        }
+                    }
+                }).fail(function() {
+                    console.log("realtime bus fetch failed!")
+                })
+
+                setTimeout(tick, 30000);
+            }
+            {% endif %}
         });
 </script>
 {% endblock %}

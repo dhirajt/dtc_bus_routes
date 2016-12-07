@@ -50,12 +50,16 @@ def bus_by_id(request,bus_id=None,source='',destination=''):
     if source!=source_stage or destination!=destination_stage:
         return redirect('bus_by_id',bus_id=bus_id,source=source_stage,destination=destination_stage)
 
+    rclient = redis.StrictRedis(connection_pool=settings.API_CACHE_REDIS_POOL)
+    access_token = rclient.get('access_token')
+
     if stops:
         return render(request, "results_by_num.html",
                           {"stops": stops,
                            "startstage": stops[0].stage,
                            "endstage": stops[len(stops)-1].stage,
-                           "route": stops[0].route})
+                           "route": stops[0].route,
+                           "access_token": access_token})
     else :
         raise Http404
 
