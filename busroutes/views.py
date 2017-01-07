@@ -246,3 +246,6 @@ def indirect_route_finder(startstage=None,endstage=None):
 				route_list.append(indirect_route)
 	route_list.sort(key=lambda item:len(item['start_stages']['stages'])+len(item['end_stages']['stages']))
 	return route_list
+
+def status_updates(request):
+    return render(request, "status_updates.html")

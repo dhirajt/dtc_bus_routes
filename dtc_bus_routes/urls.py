@@ -44,6 +44,8 @@ urlpatterns = [
     url(r'^ajax/bus/search/$','busroutes.views.ajax_bus_number_search',name='ajax_bus_number_search'),
     url(r'^ajax/stage/search/$','busroutes.views.ajax_stage_search',name='ajax_stage_search'),
 
+    url(r'^status/updates/$','busroutes.views.status_updates',name='status_updates'),
+
     url(r'^sitemap\.xml$', sitemap, {'sitemaps': sitemaps},
         name='django.contrib.sitemaps.views.sitemap')
 ]

@@ -1,0 +1,165 @@
+{% extends "index.html" %}
+
+{% block title %}{{ block.super }} | Status Updates{% endblock %}
+
+{% block meta_tags %}
+  <meta name="description" content="DTC Bus Routes | Status Updates Find relevant updates from system.">
+  <meta name="keywords" content="dtc, bus, delhi bus, bus routes, delhi bus route,  delhi bus service, dtc bus, dtc bus service, dtc routes, delhi buses, delhi bus list, delhi bus timings, delhi bus details, delhi bus rote details, delhi transport corporation, delhi bus banner, bus in delhi, bus for delhi, bus for south delhi, bus for north delhi, bus for east delhi, buses in delhi,  delhi bus details, delhi bus route finder, delhi bus route no, delhi bus details, delhi bus route chart, delhi bus route search, delhi bus search by stops, dtc stops, delhi bus stops">
+
+  <meta itemprop="name" content="DTC Bus Routes | Status Updates">
+  <meta itemprop="description" content="Find relevant updates from system.">
+
+  <meta property="og:title" content="DTC Bus Routes | Status Updates" />
+  <meta property="og:description" content="Find relevant updates from system." />
+
+  <meta name="twitter:title" content="DTC Bus Routes | Status Updates">
+  <meta name="twitter:description" content="Find relevant updates from system.">
+{% endblock %}
+
+{% block css %}
+{{ block.super }}
+
+<style>
+    body {
+        background-color: #f5f8fa;
+    }
+
+    .mainContent {
+        margin-top: 10px;
+    }
+
+    .ui.message.guidelines {
+        font-size: 13px;
+    }
+
+    .ui.segment.updateSegment {
+        padding: 20px;
+    }
+
+    .ui.feed.update {
+        margin-bottom: 20px;
+    }
+
+    .ui.feed >.event>.content .meta .thumbsup:hover .icon {
+        color: #91DB39;
+    }
+
+    .ui.feed >.event>.content .meta .thumbsdown:hover .icon {
+        color: #FF2733;
+    }
+
+</style>
+{% endblock %}
+
+
+{% block body %}
+    {{ block.super }}
+    <div class="ui text container mainContent">
+        <div class="ui attached icon info message tiny">
+            <i class="announcement icon"></i>
+            <div class="content">
+                <b>Status Updates</b>
+            </div>
+        </div>
+        <div class="ui attached info message guidelines">
+          <i class="close icon"></i>
+          <div class="header">
+            Guidelines
+          </div>
+          <ul class="list">
+            <li>Use legible and appropriate language for updates.</li>
+            <li>If the update is an incident, add a location with your update.</li>
+            <li>Upvote/Downvote status updates which are helpful/not helpful and flag inappropriate updates.</li>
+          </ul>
+        </div>
+        <div class="ui attached segment updateSegment clearing">
+            <div class="ui form">
+              <div class="field">
+                <textarea rows="2"></textarea>
+              </div>
+              <div class="inline fields">
+                <label>What's the update type?</label>
+                <div class="field">
+                  <div class="ui radio checkbox">
+                    <input type="radio" name="fruit" tabindex="0" class="hidden">
+                    <label>Announcement</label>
+                  </div>
+                </div>
+                <div class="field">
+                  <div class="ui radio checkbox">
+                    <input type="radio" name="fruit" tabindex="0" class="hidden">
+                    <label>Incident</label>
+                  </div>
+                </div>
+              </div>
+              <div class="ui small blue submit button right floated">Submit</div>
+            </div>
+        </div>
+        <div class="ui update feed attached segment">
+          <div class="event">
+            <div class="label">
+              <i class="announcement icon"></i>
+            </div>
+            <div class="content">
+              <div class="summary">
+                <a class="user">
+                  Captain Planet
+                </a> posted an announcement
+                <div class="date">
+                  1 Hour Ago
+                </div>
+              </div>
+              <div class="extra text">
+                Road blocked around India Gate.
+              </div>
+              <div class="meta">
+                <a class="thumbsup">
+                  <i class="thumbs up icon"></i> 4
+                </a>
+                <a class="thumbsdown">
+                  <i class="thumbs down icon"></i> 4
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="event">
+            <div class="label">
+              <i class="warning sign icon"></i>
+            </div>
+            <div class="content">
+              <div class="summary">
+                <a>Jason Segel</a> posted about an incident
+                <div class="date">
+                  3 days ago
+                </div>
+              </div>
+              <div class="extra text">
+                Accident at Badarpur Border
+              </div>
+              <div class="meta">
+                <a class="thumbsup">
+                  <i class="thumbs up icon"></i> 4
+                </a>
+                <a class="thumbsdown">
+                  <i class="thumbs down icon"></i> 4
+                </a>
+              </div>
+          </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block js_includes %}{% endblock %}
+
+{% block js %}
+<script type="text/javascript">
+    $(document).ready(function (){
+        $('.message .close')
+            .on('click', function() {
+            $(this).closest('.message').transition('fade');
+        });
+        $('.ui.checkbox').checkbox();
+    });
+</script>
+{% endblock %}
