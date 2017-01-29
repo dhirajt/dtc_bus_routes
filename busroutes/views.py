@@ -14,6 +14,65 @@ from models import Stage, Route, StageSequence
 def server_error(request):
     return render(request,template_name="500.html")
 
+def home(request):
+    busno = request.GET.get('bus','').strip()
+
+    source = request.GET.get('source','').strip()
+    destination = request.GET.get('destination','').strip()
+
+    if request.GET:
+        if busno:
+            try:
+                route = Route.objects.get(name=busno,is_active=True)
+            except Route.DoesNotExist:
+                route = None
+
+            if route:
+                return redirect(
+                    'bus_by_id',
+                    bus_id=route.id,
+                    source=route.start_stage.name_slug,
+                    destination=route.end_stage.name_slug)
+            else:
+                error_message = {
+                    "header" : 'Invalid route name "%s"' % busno,
+                    "message": "Choose an option from dropdown."
+                }
+                return render(request, "home.html", {"route_error": error_message})
+        else:
+            source_stage = None
+            destination_stage = None
+
+            try:
+                source_stage = Stage.objects.get(name=source)
+            except Stage.DoesNotExist:
+                source_stage = None
+
+            try:
+                destination_stage = Stage.objects.get(name=destination)
+            except Stage.DoesNotExist:
+                destination_stage = None
+
+            if source_stage and destination_stage:
+                return redirect('bus_by_stage',source=source_stage.name_slug,
+                    destination=destination_stage.name_slug)
+            else:
+                header = ""
+                if not source_stage:
+                    header = 'Invalid source "%s"' % source
+
+                if not destination_stage:
+                    header = 'Invalid destination "%s"' % destination
+
+                error_message = {
+                    "header" : header,
+                    "message": "Choose an option from dropdown."
+                }
+                return render(
+                    request, "home.html", {"stage_error": error_message})
+    else:
+        return render(request, "home.html")
+
 def search_by_num(request):
     if request.GET:
         busno = request.GET['bus']

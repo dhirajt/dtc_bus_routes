@@ -32,7 +32,7 @@ urlpatterns = [
     url(r'^api/', include(api_urls)),
     url(r'^admin/', include(admin.site.urls)),
 
-    url(r'^$', TemplateView.as_view(template_name="home.html"), name='home'),
+    url(r'^$', 'busroutes.views.home', name='home'),
     url(r'^robots\.txt$', TemplateView.as_view(template_name='robots.txt', content_type='text/plain'), name='robots'),
 
     url(r'^bus/route/search/$','busroutes.views.search_by_stage',name='search_by_stage'),

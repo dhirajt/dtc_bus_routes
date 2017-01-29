@@ -61,17 +61,30 @@
             <div id="tabbedForms" class="ui raised card">
                 <div class="content">
                     <div class="ui top attached tabular menu">
+                        {% if route_error %}
+                        <div class="item" data-tab="tab-trip-planner">Trip Planner</div>
+                        {% else %}
                         <div class="item active" data-tab="tab-trip-planner">Trip Planner</div>
+                        {% endif %}
+
+                        {% if route_error %}
+                        <div class="item active" data-tab="tab-route-details">Route Details</div>
+                        {% else %}
                         <div class="item" data-tab="tab-route-details">Route Details</div>
+                        {% endif %}
                     </div>
-                    <div class="ui tab bottom attached active segment" data-tab="tab-trip-planner">
+                    {% if route_error %}
+                        <div class="ui tab bottom attached segment" data-tab="tab-trip-planner">
+                    {% else %}
+                        <div class="ui tab bottom attached segment active" data-tab="tab-trip-planner">
+                    {% endif %}
                         <form class="ui form journeyforms">
                             <p>Get buses between two stops.</p>
                             <div class="field">
                                 <label>From</label>
                                 <div class="ui search focus stagesearch">
                                     <div class="ui icon input">
-                                        <input class="prompt" type="text" name="stage1" placeholder="Source e.g. Badarpur Border" autocomplete="off">
+                                        <input class="prompt" type="text" name="source" placeholder="Source e.g. Badarpur Border" autocomplete="off">
                                         <i class="marker icon"></i>
                                     </div>
                                 </div>
@@ -80,27 +93,46 @@
                                 <label>To</label>
                                 <div class="ui search focus stagesearch">
                                     <div class="ui icon input">
-                                        <input class="prompt" type="text" name="stage2" placeholder="Destination e.g. ISBT" autocomplete="off">
+                                        <input class="prompt" type="text" name="destination" placeholder="Destination e.g. ISBT" autocomplete="off">
                                         <i class="marker icon"></i>
                                     </div>
                                 </div>
                             </div>
                             <div class="ui blue submit button">Search</div>
+                            {% if stage_error %}
+                            <div class="ui error message busError tiny visible">
+                                <i class="close icon"></i>
+                                <div class="header">{{ stage_error.header }}</div>
+                                <p class="message">{{ stage_error.message }}</p>
+                            </div>
+                            {% endif %}
                         </form>
                     </div>
-                    <div class="ui tab bottom attached segment" data-tab="tab-route-details">
+                    {% if route_error %}
+                        <div class="ui tab bottom attached segment active" data-tab="tab-route-details">
+                    {% else %}
+                        <div class="ui tab bottom attached segment" data-tab="tab-route-details">
+                    {% endif %}
                         <form class="ui form journeyforms">
                             <p>Get all bus stops on a route.</p>
                             <div class="field">
                                 <label>Route Name</label>
                                 <div class="ui search focus routesearch">
                                     <div class="ui icon input">
-                                        <input class="prompt" type="text" name="bus1" placeholder="Route name or bus number e.g. 182A" autocomplete="off">
+                                        <input class="prompt" type="text" name="bus" placeholder="Route name or bus number e.g. 182A" autocomplete="off">
                                         <i class="bus icon"></i>
                                     </div>
                                 </div>
                             </div>
                             <div class="ui blue submit button">Search</div>
+
+                            {% if route_error %}
+                            <div class="ui error message busError tiny visible">
+                                <i class="close icon"></i>
+                                <div class="header">{{ route_error.header }}</div>
+                                <p class="message">{{ route_error.message }}</p>
+                            </div>
+                            {% endif %}
                         </form>
                     </div>
                 </div>
@@ -179,7 +211,7 @@ $(document).ready(function() {
         on: 'submit',
         inline: true,
         fields: {
-              stage1: {
+              source: {
                 rules: [
                   {
                     type   : 'empty',
@@ -191,7 +223,7 @@ $(document).ready(function() {
                   }
                 ]
               },
-              stage2: {
+              destination: {
                 rules: [
                   {
                     type   : 'empty',
@@ -203,7 +235,7 @@ $(document).ready(function() {
                   }
                 ]
               },
-              bus1: {
+              bus: {
                 rules: [
                   {
                     type   : 'empty',
@@ -216,6 +248,11 @@ $(document).ready(function() {
               ]
             }
         }
+    });
+
+    // message close action
+    $('.message .close').on('click', function() {
+        $(this).closest('.message').transition('fade');
     });
 });
 </script>
