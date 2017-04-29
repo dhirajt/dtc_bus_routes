@@ -40,6 +40,7 @@ THIRD_PARTY_APPS = (
     'geoposition',
     'rest_framework',
     'rest_framework.authtoken',
+    'taggit'
 )
 
 # Apps specific for this project go here.
@@ -241,7 +242,7 @@ CACHES = {
 DEFAULT_REDIS_POOL = redis.ConnectionPool(host='localhost',port=6379,db=0)
 BUS_REDIS_POOL = redis.ConnectionPool(host='localhost',port=6379,db=1)
 STAGE_REDIS_POOL = redis.ConnectionPool(host='localhost',port=6379,db=2)
-
+API_CACHE_REDIS_POOL = redis.ConnectionPool(host='localhost',port=6379,db=3)
 
 # LOGGING CONFIGURATION
 # ------------------------------------------------------------------------------

@@ -76,8 +76,13 @@ def home(request):
 def search_by_num(request):
     if request.GET:
         busno = request.GET['bus']
+        route_type = 1
+        if ' - Cluster' in busno:
+            route_type = 2
+            busno = busno.split(' - ')[0]
+
         try:
-            obj = Route.objects.get(name=busno,is_active=True)
+            obj = Route.objects.get(name=busno,is_active=True,route_type=route_type)
         except ObjectDoesNotExist:
             obj = None
 
@@ -104,18 +109,22 @@ def bus_by_id(request,bus_id=None,source='',destination=''):
     if source!=source_stage or destination!=destination_stage:
         return redirect('bus_by_id',bus_id=bus_id,source=source_stage,destination=destination_stage)
 
+    rclient = redis.StrictRedis(connection_pool=settings.API_CACHE_REDIS_POOL)
+    access_token = rclient.get('access_token')
+
     if stops:
         return render(request, "results_by_num.html",
                           {"stops": stops,
                            "startstage": stops[0].stage,
                            "endstage": stops[len(stops)-1].stage,
-                           "route": stops[0].route})
+                           "route": stops[0].route,
+                           "access_token": access_token})
     else :
         raise Http404
 
 def ajax_buses_from_here(request):
-    stop = request.GET.get('q')
-    obj = Stage.objects.get(name=stop)
+    stop_id = request.GET.get('id')
+    obj = Stage.objects.get(id=stop_id)
     route_names = list(obj.route_set.filter(is_active=True).values_list('name',flat=True))
     route_names = sorted(route_names)
     route_list = '<b>Buses from here :</b> <br/>'+(
@@ -126,7 +135,7 @@ def ajax_bus_number_search(request):
     if not request.is_ajax():
         return HttpResponseBadRequest
     query = request.GET.get('q','')
-    buses = []
+    bus_names = []
 
     if query:
         rclient = redis.StrictRedis(connection_pool=settings.BUS_REDIS_POOL)
