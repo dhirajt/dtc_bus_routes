@@ -23,6 +23,7 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
    integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
    crossorigin=""/>
+   <link rel="stylesheet" href="https://cdn.maptiler.com/mapbox-gl-js/v0.53.0/mapbox-gl.css" />
     <style>
         #infobox {
             float:left;
@@ -86,6 +87,8 @@
 <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"
    integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
    crossorigin=""></script>
+<script src="https://cdn.maptiler.com/mapbox-gl-js/v0.53.0/mapbox-gl.js"></script>
+<script src="https://cdn.maptiler.com/mapbox-gl-leaflet/latest/leaflet-mapbox-gl.js"></script>
 
 <script type="text/javascript">
 var static_url = "{{ STATIC_URL }}";
@@ -184,11 +187,16 @@ var static_url = "{{ STATIC_URL }}";
         }
 
         var map = L.map('map').setView([lat, lng], 12);
-        var openstreetmap = L.tileLayer(
-            'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a>',
-        })
-        openstreetmap.addTo(map);
+        // var openstreetmap = L.tileLayer(
+        //     'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        //         attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a>',
+        // })
+        // openstreetmap.addTo(map);
+        var gl = L.mapboxGL({
+            attribution: '<a href="https://www.maptiler.com/copyright/" target="_blank">© MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">© OpenStreetMap contributors</a>',
+            accessToken: 'not-needed',
+            style: 'https://api.maptiler.com/maps/streets/style.json?key=5nG2rAE49EnkLpvV60VK'
+        }).addTo(map);
         L.control.layers(null,overlayMaps).addTo(map);
 
         function onEachFeature(feature, layer) {
