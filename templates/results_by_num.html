@@ -18,7 +18,11 @@
 
 {% block css %}
     {{ block.super }}
-    <link href='https://api.mapbox.com/mapbox.js/v2.4.0/mapbox.css' rel='stylesheet' />
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/leaflet.awesome-markers.css">
+    <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/1.5.2/css/ionicons.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
+   integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+   crossorigin=""/>
     <style>
         #infobox {
             float:left;
@@ -79,17 +83,34 @@
 
 {% block js %}
 {{ block.super }}
-
-<script src='https://api.mapbox.com/mapbox.js/v2.4.0/mapbox.js'></script>
-<script src='{{ STATIC_URL }}js/mapbox.match.min.js'></script>
+<script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"
+   integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
+   crossorigin=""></script>
 
 <script type="text/javascript">
 var static_url = "{{ STATIC_URL }}";
 </script>
 <script type="text/javascript" src="{{ STATIC_URL }}js/maps.js"></script>
-
+<script type="text/javascript" src="{{ STATIC_URL }}js/leaflet.awesome-markers.min.js"></script>
 <script>
-        L.mapbox.accessToken = 'pk.eyJ1IjoiZGhpcmFqdCIsImEiOiI1YTMxNzM4NDE2M2MxMDA0NTY0MGNmMWM0NzdiYzJhYyJ9.qR51ols0ubv4BrxG1_pVvw';
+        var stopMarker = L.AwesomeMarkers.icon({
+            icon: 'bus',
+            prefix: 'icon',
+            {% if route.route_type == 2 %}
+            markerColor: 'orange'
+            {% else %}
+            markerColor: 'green'
+            {% endif %}
+        });
+
+        var liveBusMarker = L.AwesomeMarkers.icon({
+            icon: 'bus',
+            prefix: 'fa',
+            markerColor: 'blue'
+        });
+
+
+        L.AwesomeMarkers.Icon.prototype.options.prefix = 'ion';
 
         var bus_route_geojson = {
             "type": "FeatureCollection",
@@ -100,9 +121,11 @@ var static_url = "{{ STATIC_URL }}";
                     'marker-size': 'large',
                     'marker-symbol': 'bus',
                     {% if route.route_type == 2 %}
-                    "marker-color": "#e3a21a"
+                    "marker-color": "#e3a21a",
+                    "color": "#e3a21a"
                     {% else %}
-                    "marker-color": "#00a300"
+                    "marker-color": "#00a300",
+                    "color": "#00a300"
                     {% endif %}
                 },
                 "geometry": {
@@ -138,11 +161,13 @@ var static_url = "{{ STATIC_URL }}";
                     "marker-symbol": "{{ forloop.counter }}",
                     {% if route.route_type == 2 %}
                     "marker-color": "#e3a21a",
+                    "color": "#e3a21a"
                     {% else %}
                     "marker-color": "#00a300",
+                    "color": "#00a300"
                     {% endif %}
                 }
-            })
+            });
             {% endif %}
         {% endfor %}
 
@@ -158,21 +183,30 @@ var static_url = "{{ STATIC_URL }}";
             lng = middle.geometry.coordinates[0];
         }
 
-        var map = L.mapbox.map('map', null, {
-                    zoomControl: false,
-                  })
-                  .setView([lat,lng], 12);
-
-        L.mapbox.styleLayer('mapbox://styles/mapbox/streets-v9').addTo(map);
-        new L.Control.Zoom({ position: 'topleft' }).addTo(map);
-
+        var map = L.map('map').setView([lat, lng], 12);
+        var openstreetmap = L.tileLayer(
+            'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a>',
+        })
+        openstreetmap.addTo(map);
         L.control.layers(null,overlayMaps).addTo(map);
 
-        L.geoJson(bus_route_geojson).addTo(map);
+        function onEachFeature(feature, layer) {
+            var popupContent = "";
 
+            if (feature.properties && feature.properties.title) {
+                popupContent += feature.properties.title;
+                layer.bindPopup(popupContent);
+            }
+        }
 
-        var bus_stop_layer = L.mapbox.featureLayer().setGeoJSON(
-            bus_stops_geojson).addTo(map);
+        bus_route_geojson.features.push(...bus_stops_geojson);
+        var bus_stop_layer = L.geoJson(bus_route_geojson, {
+            onEachFeature: onEachFeature,
+            pointToLayer: function (feature, latlng) {
+                return L.marker(latlng, {icon: stopMarker});
+            }
+        }).addTo(map);
 
         bus_stop_layer.on('click', function(e) {
             map.setView(e.latlng);
@@ -184,21 +218,6 @@ var static_url = "{{ STATIC_URL }}";
                 allStageMarkers[layer.feature.properties["marker-symbol"]] = layer;
             }
         });
-
-
-        L.mapbox.mapmatching(bus_route_geojson, {
-          profile: "driving",
-          minimumDistance: 10,
-          gpsPrecision: 20
-        }, function(err, match) {
-          if (err) { console.log(err); return; }
-          if (match.getGeoJSON()["code"] === "NoMatch") {
-              console.log("Couldn't snap route to road! [NoMatch]")
-          } else {
-              match.addTo(map);
-          }
-        });
-
 
         $(document).ready(function (){
             $('body').tooltip({
@@ -239,12 +258,6 @@ var static_url = "{{ STATIC_URL }}";
 
             {% if route.route_type == 2 %}
             var realtime_bus_markers = {}
-
-            // L.marker([0, 0], {
-            //   icon: L.mapbox.marker.icon({
-            //     'marker-color': '#f86767'
-            //   })
-            // }).addTo(map);
 
             tick();
             function tick() {
