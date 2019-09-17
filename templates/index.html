@@ -83,6 +83,10 @@
         margin: 0 0 80px; /* bottom = footer height */
       }
 
+      #header {
+        left: 80px;
+      }
+
       #footer{
         height: 65px;
         width:100%;
@@ -191,12 +195,26 @@
           border-bottom-color: #000000;
           border-width: 0 5px 5px;
       }
+
       #ad_unit {
           text-align: center;
       }
+
       #ad_pitch {
           padding-bottom:15px;
           display: inline-block;
+      }
+
+      @media (max-width: 480px) {
+        #header {
+          left: 0px;
+        }
+      }
+
+      @media (max-width: 979px) and (min-width: 768px) {
+          #header {
+            left: 62px;
+          }
       }
     </style>
     {% endblock %}
@@ -210,7 +228,7 @@
         <div class="page secondary">
             <div class="page-header">
                 <div class="page-header-content">
-                    <h1>DTC <a href="{% url 'home' %}"><span style="font-size:45px; color:#91DB39" class="icon-bus"></span></a>
+                    <h1 id="header">DTC <a href="{% url 'home' %}"><span style="font-size:45px; color:#91DB39" class="icon-bus"></span></a>
                     Routes
                     </h1>
                 </div>
