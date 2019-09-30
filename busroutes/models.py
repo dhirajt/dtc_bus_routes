@@ -14,9 +14,16 @@ class Stage(models.Model):
     uid = models.CharField(max_length=10,blank=True,default='') # any unique id
 
     aliases = TaggableManager(verbose_name='aliases',blank=True)
+    
     class Meta:
         verbose_name = "Stage"
         verbose_name_plural = "Stages"
+
+    def get_absolute_url(self):
+        return reverse('bus_by_id', kwargs={
+            'stop_id' : self.id,
+            'stop_name ':self.name_slug
+        })
 
     @property
     def latitude(self):

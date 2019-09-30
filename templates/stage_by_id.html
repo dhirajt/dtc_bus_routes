@@ -1,0 +1,123 @@
+{% extends "index.html" %}
+
+{% block title %}{{ block.super }} | Stop {{ stage }} | {{ routes | length }} Buses {% endblock %}
+
+{% block meta_tags %}
+  <meta name="description" content="DTC Bus Routes | Stop {{ stage }} | {{ routes | length }} Buses lists all the buses that stop on {{ stage }}. {{ routes | length }} stop at this bus stop.">
+
+  <meta name="keywords" content="dtc, bus, delhi bus, bus routes, delhi bus route,  delhi bus service, dtc bus, dtc bus service, dtc routes, delhi buses, delhi bus list, delhi bus timings, delhi bus details, delhi bus rote details, delhi transport corporation, delhi bus banner, bus in delhi, bus for delhi, bus for south delhi, bus for north delhi, bus for east delhi, buses in delhi,  delhi bus details, delhi bus route finder, delhi bus route no, delhi bus details, delhi bus route chart, delhi bus route search, dtc route {{ stage }}, delhi bus route {{ stage }}, dtc {{ stage }}">
+
+  <meta itemprop="name" content="DTC Bus Routes | Stop {{ stage }} | {{ routes | length }} Buses">
+  <meta itemprop="description" content="DTC Bus Routes | Stop {{ stage }} | {{ routes | length }} Buses lists all the buses that stop on {{ stage }}. {{ routes | length }} stop at this bus stop.">
+
+  <meta property="og:title" content="DTC Bus Routes | Stop {{ stage }} | {{ routes | length }} Buses" />
+  <meta property="og:description" content="DTC Bus Routes | Stop {{ stage }} | {{ routes | length }} Buses lists all the buses that stop on {{ stage }}. {{ routes | length }} stop at this bus stop." />
+
+  <meta name="twitter:title" content="DTC Bus Routes | Stop {{ stage }} | {{ routes | length }} Buses">
+  <meta name="twitter:description" content="DTC Bus Routes | Stop {{ stage }} | {{ routes | length }} Buses lists all the buses that stop on {{ stage }}. {{ routes | length }} stop at this bus stop.">
+{% endblock %}
+
+{% block css %}
+    {{ block.super }}
+    <style>
+        #infobox {
+            float:left;
+            width: 100%;
+        }
+        #stops {
+            margin-top: 2%;
+            height: 480px;
+            overflow-y:auto;
+        }
+        #content, #map {
+            margin-top: 40px;
+            height:100%;
+        }
+        #map {
+            border: 1px dashed grey;
+            height: 596px;
+        }
+        .leaflet-popup-close-button {
+          display: none;
+        }
+
+        #vertical_ad {
+            margin-top: 40px !important;
+            margin-bottom: 5px !important;
+        }
+
+        @media (max-width: 480px) {
+            #content {
+                margin-top: 40px;
+                height:100%;
+            }
+
+            #map {
+                margin-top: 5px;
+                height: 250px;
+            }
+        }
+
+        @media (max-width: 1200px) and (min-width: 768px) {
+            #content, #map {
+                margin-top: 40px;
+                height:100%;
+                left: 80px;
+            }
+        }
+    </style>
+{% endblock %}
+
+
+{% block body %}
+    <div class="grid">
+     <div class="row">
+        <div id="content" class="span4 offset1">
+           <div id="infobox">
+            <div class="tile bg-color-blueDark" style="width:100%;height:auto;">
+                <div class="tile-content">
+                    <b itemscope itemtype="http://schema.org/BusTrip">
+                        Stage : <span itemprop="busName busNumber">{{ stage.name }}</span> <br/>
+                        Total Buses : {{ routes | length }}
+                    </b>
+                </div>
+            </div>
+           </div>
+           <div id="stops" class="span4">
+                <b> Buses From Here: </b> <br /> <br />
+                {% for item in routes %}
+                <p>
+                    {{ forloop.counter }}. <span id="res" rel="tooltip" data-placement="right" data-id="{{item.stage.id}}" itemprop="name" data-index="{{ forloop.counter }}"><a href="{% url 'bus_by_id' item.id item.start_stage_slug item.end_stage_slug %}">{{item.name}} {{ item.start_stage_name }} to {{ item.end_stage_name }}</a><span id="eta{{item.stage.id}}"></span></span>
+                </p>
+                {% endfor %}
+           </div>
+        </div>
+        <div id="vertical_ad" class="span11 offset1">       
+            <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+            <!-- StageHorizontal -->
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-2660771687848747"
+                 data-ad-slot="5461682265"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true"></ins>
+            <script>
+                 (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        </div>
+     </div>
+    </div>
+{% endblock %}
+
+{% block js %}
+{{ block.super }}
+<script type="text/javascript">
+var static_url = "{{ STATIC_URL }}";
+</script>
+{% endblock %}
+
+{% block share %}
+{% endblock %}
+
+{% block bottom_responsive_ad %}
+{% endblock %}

@@ -38,7 +38,7 @@ urlpatterns = [
 
     url(r'^bus/route/search/$','busroutes.views.search_by_stage',name='search_by_stage'),
     url(r'^bus/search/$','busroutes.views.search_by_num',name='search_by_num'),
-  # url(r'stage/(?P<stageid>\d+)/$','buroutes.views.stage_by_id',name='stage_by_id')   #not implemented yet
+    url(r'^bus/stop/(?P<stop_id>\d+)/(?P<stop_name>.+)/$','busroutes.views.stage_by_id',name='stage_by_id'),
     url(r'^bus/route/(?P<bus_id>\d+)/(?P<source>.+)/to/(?P<destination>.+)/$','busroutes.views.bus_by_id',name='bus_by_id'),
     url(r'^bus/routes/from/(?P<source>.+)/to/(?P<destination>.+)/$','busroutes.views.bus_by_stage',name='bus_by_stage'),
     url(r'^ajax/buses/from/here/$','busroutes.views.ajax_buses_from_here',name='ajax_buses_from_here'),

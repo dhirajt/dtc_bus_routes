@@ -63,6 +63,43 @@ def bus_by_id(request,bus_id=None,source='',destination=''):
     else :
         raise Http404
 
+def stage_by_id(request, stop_id=None, stop_name=''):
+    stage = Stage.objects.get(id=stop_id)
+    if not stage:
+        raise Http404
+
+    if stop_name != stage.name_slug:
+        return redirect('bus_by_id', bus_id=stop_id, stop_name=stop_name_slug)
+
+    rclient = redis.StrictRedis(connection_pool=settings.API_CACHE_REDIS_POOL)
+    access_token = rclient.get('access_token')
+
+    routes = stage.route_set.prefetch_related(
+        Prefetch('stages', queryset=Stage.objects.only('name'))).all()
+    stages = [list(route.stages.only('name')) for route in routes]
+    route_values = list(routes.values_list(
+        'id', 'name', 'start_stage__name', 'end_stage__name', 'start_stage__name_slug', 'end_stage__name_slug'))
+
+    payload = []
+    for index, route in enumerate(route_values):
+        payload.append({
+            'id': route[0],
+            'name': route[1],
+            'start_stage_name': route[2],
+            'end_stage_name': route[3],
+            'start_stage_slug': route[4],
+            'end_stage_slug': route[5],
+            'stages': stages[index] 
+        })
+
+    if routes:
+        return render(request, "stage_by_id.html", {
+            "routes": payload,
+            "stage": stage
+        })
+    else :
+        raise Http404
+
 def ajax_buses_from_here(request):
     stop_id = request.GET.get('id')
     obj = Stage.objects.get(id=stop_id)

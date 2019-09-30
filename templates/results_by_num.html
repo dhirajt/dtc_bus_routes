@@ -26,6 +26,7 @@
     <style>
         #infobox {
             float:left;
+            width: 100%;
         }
         #stops {
             margin-top: 2%;
@@ -39,6 +40,7 @@
         #map {
             border: 1px dashed grey;
             height: 596px;
+            margin-right: 20px;
         }
         .leaflet-popup-close-button {
           display: none;
@@ -79,9 +81,9 @@
         <div id="content" class="span4 offset1">
            <div id="infobox">
             {% if route.route_type == 2 %}
-            <div class="tile bg-color-orange" style="width:200px;height:auto;">
+            <div class="tile bg-color-orange" style="width:100%;height:auto;">
             {% else %}
-            <div class="tile bg-color-green" style="width:200px;height:auto;">
+            <div class="tile bg-color-green" style="width:100%;height:auto;">
             {% endif %}
                 <div class="tile-content">
                     <b itemscope itemtype="http://schema.org/BusTrip">
@@ -99,13 +101,13 @@
                 <b> Stops At: </b> <br /> <br />
                 {% for item in stops %}
                 <p itemscope itemtype="http://schema.org/BusStop">
-                    {{item.sequence}}. <span id="res" rel="tooltip" data-placement="right" data-id="{{item.stage.id}}" itemprop="name" data-index="{{item.sequence}}">{{item.stage}} <span id="eta{{item.stage.id}}"></span></span>
+                    {{item.sequence}}. <a href="{% url 'stage_by_id' item.stage.id item.stage.name_slug %}"><span id="res" rel="tooltip" data-placement="right" data-id="{{item.stage.id}}" itemprop="name" data-index="{{item.sequence}}">{{item.stage}} <span id="eta{{item.stage.id}}"></span></span></a>
                 </p>
                 {% endfor %}
           </div>
         </div>
         <div id="map" class="span10"></div>
-        <div id="vertical_ad" class="span3 offset1">
+        <div id="vertical_ad" class="span3">
             <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
             <!-- RoutePageVertical -->
             <ins class="adsbygoogle"
