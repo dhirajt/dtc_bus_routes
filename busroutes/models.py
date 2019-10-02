@@ -11,7 +11,8 @@ class Stage(models.Model):
     name = models.CharField(max_length=64)
     name_slug = models.SlugField(max_length=100)
     coordinates = GeopositionField()
-    uid = models.CharField(max_length=10,blank=True,default='') # any unique id
+    uid = models.CharField(max_length=10,blank=True,default='')
+    last_modified = models.DateTimeField(auto_now=True)
 
     aliases = TaggableManager(verbose_name='aliases',blank=True)
     
@@ -20,9 +21,9 @@ class Stage(models.Model):
         verbose_name_plural = "Stages"
 
     def get_absolute_url(self):
-        return reverse('bus_by_id', kwargs={
+        return reverse('stage_by_id', kwargs={
             'stop_id' : self.id,
-            'stop_name ':self.name_slug
+            'stop_name':self.name_slug
         })
 
     @property

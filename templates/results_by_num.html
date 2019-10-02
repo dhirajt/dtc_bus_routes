@@ -79,6 +79,7 @@
      <div class="row">
         <!-- <div class="span2"></div> -->
         <div id="content" class="span4 offset1">
+           {% if not route.is_active %}
            <div class="infobox notices">
                 <div class="bg-color-red">
                     <a href="#" class="close"></a>
@@ -87,6 +88,7 @@
                     <div class="notice-text">This route has either been discontinued or is not availble temporarily.</div>
                 </div>
            </div>
+           {% endif %}
            <div class="infobox">
                 {% if route.route_type == 2 %}
                 <div class="tile bg-color-orange" style="width:100%;height:auto;">
