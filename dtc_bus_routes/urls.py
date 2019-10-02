@@ -19,10 +19,11 @@ from django.views.generic import TemplateView
 from django.contrib.sitemaps.views import sitemap
 
 from api import urls as api_urls
-from sitemaps import RouteSitemap, StaticViewSitemap
+from sitemaps import RouteSitemap, StageSitemap, StaticViewSitemap
 
 sitemaps = {
     'routes': RouteSitemap,
+    'stages': StageSitemap,
     'page_urls': StaticViewSitemap
 }
 

@@ -1,5 +1,6 @@
 User-agent: *
 Disallow: /admin/
 Disallow: /ajax/
+Disallow: /api/
 
 sitemap: https://www.dtcbusroutes.in/sitemap.xml

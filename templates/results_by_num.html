@@ -24,7 +24,7 @@
    integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
    crossorigin=""/>
     <style>
-        #infobox {
+        .infobox {
             float:left;
             width: 100%;
         }
@@ -79,32 +79,40 @@
      <div class="row">
         <!-- <div class="span2"></div> -->
         <div id="content" class="span4 offset1">
-           <div id="infobox">
-            {% if route.route_type == 2 %}
-            <div class="tile bg-color-orange" style="width:100%;height:auto;">
-            {% else %}
-            <div class="tile bg-color-green" style="width:100%;height:auto;">
-            {% endif %}
-                <div class="tile-content">
-                    <b itemscope itemtype="http://schema.org/BusTrip">
-                        Route : <span itemprop="busName busNumber">{{ route.name }}</span> <br/>
-                        Operator: {{ route.get_route_type_display }} <br/>
-                        From : {{ startstage }} <br/>
-                        To : {{ endstage }} <br />
-                        Total Stops : {{ stops | length }}
-                    </b>
+           <div class="infobox notices">
+                <div class="bg-color-red">
+                    <a href="#" class="close"></a>
+                    <div class="notice-image"><img src="{{ STATIC_URL }}css/images/danger.png"></div>
+                    <div class="notice-header fg-color-white">Inactive Route</div>
+                    <div class="notice-text">This route has either been discontinued or is not availble temporarily.</div>
+                </div>
+           </div>
+           <div class="infobox">
+                {% if route.route_type == 2 %}
+                <div class="tile bg-color-orange" style="width:100%;height:auto;">
+                {% else %}
+                <div class="tile bg-color-green" style="width:100%;height:auto;">
+                {% endif %}
+                    <div class="tile-content">
+                        <b itemscope itemtype="http://schema.org/BusTrip">
+                            Route : <span itemprop="busName busNumber">{{ route.name }}</span> <br/>
+                            Operator: {{ route.get_route_type_display }} <br/>
+                            From : {{ startstage }} <br/>
+                            To : {{ endstage }} <br />
+                            Total Stops : {{ stops | length }}
+                        </b>
+                    </div>
                 </div>
             </div>
-            </div>
 
-           <div id="stops" class="span4">
+            <div id="stops" class="span4">
                 <b> Stops At: </b> <br /> <br />
                 {% for item in stops %}
                 <p itemscope itemtype="http://schema.org/BusStop">
                     {{item.sequence}}. <a href="{% url 'stage_by_id' item.stage.id item.stage.name_slug %}"><span id="res" rel="tooltip" data-placement="right" data-id="{{item.stage.id}}" itemprop="name" data-index="{{item.sequence}}">{{item.stage}} <span id="eta{{item.stage.id}}"></span></span></a>
                 </p>
                 {% endfor %}
-          </div>
+            </div>
         </div>
         <div id="map" class="span10"></div>
         <div id="vertical_ad" class="span3">

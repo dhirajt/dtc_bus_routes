@@ -23,7 +23,7 @@ def search_by_num(request):
             busno = busno.split(' - ')[0]
 
         try:
-            obj = Route.objects.get(name=busno,is_active=True,route_type=route_type)
+            obj = Route.objects.get(name=busno,route_type=route_type)
         except ObjectDoesNotExist:
             obj = None
 
@@ -39,8 +39,7 @@ def search_by_num(request):
 
 
 def bus_by_id(request,bus_id=None,source='',destination=''):
-    stops = list(StageSequence.objects.select_related().filter(
-                 route__is_active=True,route=bus_id).order_by('sequence'))
+    stops = list(StageSequence.objects.select_related().filter(route=bus_id).order_by('sequence'))
     if not stops:
         raise Http404
 
@@ -120,8 +119,7 @@ def ajax_bus_number_search(request):
         bus_names = rclient.smembers(query)
         bus_names = sorted(bus_names)
         if not bus_names:
-            buses = list(Route.objects.filter(
-                is_active=True,name__icontains=query).values_list('name','route_type'))
+            buses = list(Route.objects.filter(name__icontains=query).values_list('name','route_type'))
             bus_names = [item[0] if item[1] == 1 else item[0] + ' - Cluster' for item in buses]
             if bus_names:
                 bus_names = sorted(bus_names)

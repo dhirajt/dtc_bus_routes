@@ -1,6 +1,6 @@
 {% extends "index.html" %}
 
-{% block title %}{{ block.super }} | Stop {{ stage }} | {{ routes | length }} Buses {% endblock %}
+{% block title %}{{ block.super }} | Stop {{ stage }} | {{ routes | length }} Buses from {{ stage }}{% endblock %}
 
 {% block meta_tags %}
   <meta name="description" content="DTC Bus Routes | Stop {{ stage }} | {{ routes | length }} Buses lists all the buses that stop on {{ stage }}. {{ routes | length }} stop at this bus stop.">
@@ -87,7 +87,7 @@
                 <b> Buses From Here: </b> <br /> <br />
                 {% for item in routes %}
                 <p>
-                    {{ forloop.counter }}. <span id="res" rel="tooltip" data-placement="right" data-id="{{item.stage.id}}" itemprop="name" data-index="{{ forloop.counter }}"><a href="{% url 'bus_by_id' item.id item.start_stage_slug item.end_stage_slug %}">{{item.name}} {{ item.start_stage_name }} to {{ item.end_stage_name }}</a><span id="eta{{item.stage.id}}"></span></span>
+                    {{ forloop.counter }}. <span id="res" rel="tooltip" data-placement="right" data-id="{{item.stage.id}}" itemprop="name" data-index="{{ forloop.counter }}"><a href="{% url 'bus_by_id' item.id item.start_stage_slug item.end_stage_slug %}">{{item.name}} ({{ item.start_stage_name }} to {{ item.end_stage_name }})</a><span id="eta{{item.stage.id}}"></span></span>
                 </p>
                 {% endfor %}
            </div>
