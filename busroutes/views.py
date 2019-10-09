@@ -96,8 +96,6 @@ def stage_by_id(request, stop_id=None, stop_name=''):
             "routes": payload,
             "stage": stage
         })
-    else :
-        raise Http404
 
 def ajax_buses_from_here(request):
     stop_id = request.GET.get('id')
