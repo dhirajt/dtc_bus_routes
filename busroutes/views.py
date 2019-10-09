@@ -91,11 +91,10 @@ def stage_by_id(request, stop_id=None, stop_name=''):
             'stages': stages[index] 
         })
 
-    if routes:
-        return render(request, "stage_by_id.html", {
-            "routes": payload,
-            "stage": stage
-        })
+    return render(request, "stage_by_id.html", {
+        "routes": payload,
+        "stage": stage
+    })
 
 def ajax_buses_from_here(request):
     stop_id = request.GET.get('id')
