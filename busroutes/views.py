@@ -68,7 +68,7 @@ def stage_by_id(request, stop_id=None, stop_name=''):
         raise Http404
 
     if stop_name != stage.name_slug:
-        return redirect('bus_by_id', bus_id=stop_id, stop_name=stop_name_slug)
+        return redirect('bus_by_id', bus_id=stop_id, stop_name=stage.name_slug)
 
     rclient = redis.StrictRedis(connection_pool=settings.API_CACHE_REDIS_POOL)
     access_token = rclient.get('access_token')
