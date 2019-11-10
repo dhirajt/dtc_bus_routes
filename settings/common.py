@@ -35,6 +35,9 @@ DJANGO_APPS = (
 
     # Admin
     'django.contrib.admin',
+
+    # For map related things
+    # 'django.contrib.gis',
 )
 THIRD_PARTY_APPS = (
     'geoposition',
@@ -48,6 +51,8 @@ LOCAL_APPS = (
     'busroutes',
     'api'
 )
+
+GEOPOSITION_GOOGLE_MAPS_API_KEY=env('GEOPOSITION_GOOGLE_MAPS_API_KEY')
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -74,7 +79,7 @@ REST_FRAMEWORK = {
 
 # MIDDLEWARE CONFIGURATION
 # ------------------------------------------------------------------------------
-MIDDLEWARE_CLASSES = (
+MIDDLEWARE = (
     # Make sure djangosecure.middleware.SecurityMiddleware is listed first
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -82,13 +87,15 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
 )
 
 # MIGRATIONS CONFIGURATION
 # ------------------------------------------------------------------------------
-MIGRATION_MODULES = {
-    'sites': 'dtc_bus_routes.contrib.sites.migrations'
-}
+# MIGRATION_MODULES = {
+#     'sites': 'dtc_bus_routes.contrib.sites.migrations'
+# }
 
 # DEBUG
 # ------------------------------------------------------------------------------

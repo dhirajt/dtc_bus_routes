@@ -5,11 +5,11 @@ import redis
 from django.http import HttpResponse, Http404, HttpResponseBadRequest
 from django.db.models import Prefetch
 from django.shortcuts import render, redirect
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 
-from models import Stage, Route, StageSequence
+from .models import Stage, Route, StageSequence
 
 def server_error(request):
     return render(request,template_name="500.html")

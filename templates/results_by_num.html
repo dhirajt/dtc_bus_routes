@@ -99,8 +99,8 @@
                         <b itemscope itemtype="http://schema.org/BusTrip">
                             Route : <span itemprop="busName busNumber">{{ route.name }}</span> <br/>
                             Operator: {{ route.get_route_type_display }} <br/>
-                            From : {{ startstage }} <br/>
-                            To : {{ endstage }} <br />
+                            From : {{ startstage.name }} <br/>
+                            To : {{ endstage.name }} <br />
                             Total Stops : {{ stops | length }}
                         </b>
                     </div>
@@ -111,7 +111,7 @@
                 <b> Stops At: </b> <br /> <br />
                 {% for item in stops %}
                 <p itemscope itemtype="http://schema.org/BusStop">
-                    {{item.sequence}}. <a href="{% url 'stage_by_id' item.stage.id item.stage.name_slug %}"><span id="res" rel="tooltip" data-placement="right" data-id="{{item.stage.id}}" itemprop="name" data-index="{{item.sequence}}">{{item.stage}} <span id="eta{{item.stage.id}}"></span></span></a>
+                    {{item.sequence}}. <a href="{% url 'stage_by_id' item.stage.id item.stage.name_slug %}"><span id="res" rel="tooltip" data-placement="right" data-id="{{item.stage.id}}" itemprop="name" data-index="{{item.sequence}}">{{item.stage.name}} <span id="eta{{item.stage.id}}"></span></span></a>
                 </p>
                 {% endfor %}
             </div>

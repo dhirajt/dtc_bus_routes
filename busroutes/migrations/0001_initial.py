@@ -53,8 +53,8 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('sequence', models.IntegerField()),
-                ('route', models.ForeignKey(to='busroutes.Route')),
-                ('stage', models.ForeignKey(to='busroutes.Stage')),
+                ('route', models.ForeignKey(to='busroutes.Route', on_delete=models.DO_NOTHING)),
+                ('stage', models.ForeignKey(to='busroutes.Stage', on_delete=models.DO_NOTHING)),
             ],
             options={
                 'verbose_name': 'Stage Sequence',
@@ -64,7 +64,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='route',
             name='end_stage',
-            field=models.ForeignKey(related_name='end_stage', to='busroutes.Stage'),
+            field=models.ForeignKey(related_name='end_stage', to='busroutes.Stage', on_delete=models.DO_NOTHING),
         ),
         migrations.AddField(
             model_name='route',
@@ -74,12 +74,12 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='route',
             name='start_stage',
-            field=models.ForeignKey(related_name='start_stage', to='busroutes.Stage'),
+            field=models.ForeignKey(related_name='start_stage', to='busroutes.Stage', on_delete=models.DO_NOTHING),
         ),
         migrations.AddField(
             model_name='busroutetiming',
             name='route',
-            field=models.ForeignKey(to='busroutes.Route'),
+            field=models.ForeignKey(to='busroutes.Route', on_delete=models.DO_NOTHING),
         ),
         migrations.AlterUniqueTogether(
             name='stagesequence',

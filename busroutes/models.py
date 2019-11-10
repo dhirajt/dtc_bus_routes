@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.db import models
 from django.utils import timezone
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 
 from taggit.managers import TaggableManager
 from geoposition.fields import GeopositionField
@@ -39,7 +39,7 @@ class Stage(models.Model):
 
 
 class BusRouteTiming(models.Model):
-    route = models.ForeignKey('Route')
+    route = models.ForeignKey('Route', on_delete=models.DO_NOTHING)
     time = models.TimeField()
     is_ac = models.BooleanField()  # is air-conditioned
 
@@ -64,8 +64,8 @@ class Route(models.Model):
 
     aliases = TaggableManager(verbose_name='aliases',blank=True)
 
-    start_stage = models.ForeignKey(Stage, related_name='start_stage')
-    end_stage = models.ForeignKey(Stage, related_name='end_stage')
+    start_stage = models.ForeignKey(Stage, related_name='start_stage', on_delete=models.DO_NOTHING)
+    end_stage = models.ForeignKey(Stage, related_name='end_stage', on_delete=models.DO_NOTHING)
     direction = models.CharField(max_length=1,choices=DIRECTION_CHOICES,default='U')
     ac_bus_available = models.BooleanField(default=False)
     last_modified = models.DateTimeField(auto_now=True)
@@ -96,8 +96,8 @@ class Route(models.Model):
 
 
 class StageSequence(models.Model):
-    route = models.ForeignKey(Route)
-    stage = models.ForeignKey(Stage)
+    route = models.ForeignKey(Route, on_delete=models.DO_NOTHING)
+    stage = models.ForeignKey(Stage, on_delete=models.DO_NOTHING)
     sequence = models.IntegerField()
 
     class Meta:
