@@ -407,9 +407,9 @@ def route_eta(request):
             for index,item in enumerate(final_serialized_data["stages"]):
                 if zipped_data[index][1]:
                     final_serialized_data["stages"][index] = OrderedDict(
-                        final_serialized_data["stages"][index].items()+zipped_data[index][1].items())
+                        list(final_serialized_data["stages"][index].items())+list(zipped_data[index][1].items()))
 
-    return BusRoutesStandardResponse(serializer.data)
+    return BusRoutesStandardResponse(final_serialized_data)
 
 @api_view(('GET',))
 @permission_classes((AllowAny, ))
