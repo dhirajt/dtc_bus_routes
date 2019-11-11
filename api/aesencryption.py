@@ -61,7 +61,7 @@ class AesCrypt256:
         @rtype: string
         """
         iv = uuid.uuid4().hex[:16]
-        key = hashlib.sha256(key).hexdigest()[:self.KEY_SIZE]
+        key = hashlib.sha256(key.encode('utf-8')).hexdigest()[:self.KEY_SIZE]
         cipher = AES.new(key, AES.MODE_CBC, iv)
         encrypted_value = cipher.encrypt(self.pkcs5_pad(value))
         return encrypted_value, iv
@@ -74,7 +74,7 @@ class AesCrypt256:
         @type value: string
         @rtype: string
         """
-        key = hashlib.sha256(key).hexdigest()[:self.KEY_SIZE]
+        key = hashlib.sha256(key.encode('utf-8')).hexdigest()[:self.KEY_SIZE]
         cipher = AES.new(key,AES.MODE_CBC,iv)
         return self.pkcs5_unpad(cipher.decrypt(value))
 
