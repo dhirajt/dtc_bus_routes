@@ -343,12 +343,7 @@ var static_url = "{{ STATIC_URL }}";
 
                             if (realtime_bus_markers[vehicle["vehicle_number"]] == null || realtime_bus_markers[vehicle["vehicle_number"]] === undefined) {
                                 var marker =  L.marker(
-                                    [vehicle["latitude"],vehicle["longitude"]], {
-                                  icon: L.mapbox.marker.icon({
-                                    'marker-color': '#548cba',
-                                    "marker-size": "large",
-                                    "marker-symbol": "bus",
-                                })}).addTo(map);
+                                    [vehicle["latitude"],vehicle["longitude"]], liveBusMarker).addTo(map);
 
                                 marker.bindPopup(
                                     "<b>"+vehicle["vehicle_number"]+"</b><br/>"+
