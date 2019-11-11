@@ -372,8 +372,8 @@ def route_eta(request):
 
                     name_split = item['Name'].strip().split('\n',1)
                     if len(name_split) > 1:
-                        eta_minutes = map(
-                            int,re.findall('(\d+)',name_split[1]))
+                        eta_minutes = list(map(
+                            int,re.findall('(\d+)',name_split[1])))
 
                     eta_list.append({
                         'passengers': passengers,
