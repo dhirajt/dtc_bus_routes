@@ -114,7 +114,7 @@ def ajax_bus_number_search(request):
     if query:
         rclient = redis.StrictRedis(connection_pool=settings.BUS_REDIS_POOL)
         bus_names = rclient.smembers(query)
-        bus_names = sorted(bus_names)
+        bus_names = list(map(bytes.decode, sorted(bus_names)))
         if not bus_names:
             buses = list(Route.objects.filter(name__icontains=query).values_list('name','route_type'))
             bus_names = [item[0] if item[1] == 1 else item[0] + ' - Cluster' for item in buses]
@@ -132,7 +132,7 @@ def ajax_stage_search(request):
     if query:
         rclient = redis.StrictRedis(connection_pool=settings.STAGE_REDIS_POOL)
         stages = rclient.smembers(query)
-        stages = sorted(stages)
+        stages = list(map(bytes.decode, sorted(stages)))
         if not stages:
             stages = list(Stage.objects.filter(name__icontains=query).values_list('name',flat=True))
             if stages:
