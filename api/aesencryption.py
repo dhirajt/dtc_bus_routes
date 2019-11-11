@@ -87,7 +87,7 @@ class AesCrypt256:
         @rtype: string
         """
         encrypted_value,iv = self.encrypt(key, value)
-        return base64.b64encode(encrypted_value) + iv
+        return base64.b64encode(encrypted_value).decode('utf-8') + iv
 
     def encryptB64URLSafe(self, key, value):
         """Encrypt and return in base64
@@ -98,8 +98,8 @@ class AesCrypt256:
         @rtype: string
         """
         encrypted_val,iv = self.encrypt(key, value)
-        final_string = base64.b64encode(encrypted_val)+iv
-        return urllib.quote_plus(final_string)
+        final_string = base64.b64encode(encrypted_val).decode('utf-8')+iv
+        return urllib.parse.quote_plus(final_string)
 
     def decryptB64(self, key, value):
         """decrypt from base64

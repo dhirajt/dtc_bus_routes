@@ -50,7 +50,7 @@ def bus_by_id(request,bus_id=None,source='',destination=''):
         return redirect('bus_by_id',bus_id=bus_id,source=source_stage,destination=destination_stage)
 
     rclient = redis.StrictRedis(connection_pool=settings.API_CACHE_REDIS_POOL)
-    access_token = rclient.get('access_token').decode('utf-8')
+    access_token = (rclient.get('access_token') or b'').decode('utf-8')
 
     if stops:
         return render(request, "results_by_num.html",
@@ -71,7 +71,7 @@ def stage_by_id(request, stop_id=None, stop_name=''):
         return redirect('bus_by_id', bus_id=stop_id, stop_name=stage.name_slug)
 
     rclient = redis.StrictRedis(connection_pool=settings.API_CACHE_REDIS_POOL)
-    access_token = rclient.get('access_token').decode('utf-8')
+    access_token = (rclient.get('access_token') or b'').decode('utf-8')
 
     routes = stage.route_set.prefetch_related(
         Prefetch('stages', queryset=Stage.objects.only('name'))).all()
