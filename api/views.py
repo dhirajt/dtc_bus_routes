@@ -94,7 +94,6 @@ def stage_list(request):
     """
     Returns all the stages in bus route database.
     """
-    import pdb; pdb.set_trace()
     stages = Stage.objects.all().order_by('pk')
     response = get_paginated_response(
         stages,
