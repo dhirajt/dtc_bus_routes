@@ -122,7 +122,7 @@ def ajax_bus_number_search(request):
                 bus_names = sorted(bus_names)
                 rclient.sadd(query,*bus_names)
                 rclient.expire(query,6*60*60)
-    return HttpResponse("\n".join(bus_names))
+    return HttpResponse("\n".join(map(bytes.decode, bus_names)))
 
 def ajax_stage_search(request):
     if not request.is_ajax():
@@ -139,7 +139,7 @@ def ajax_stage_search(request):
                 stages = sorted(stages)
                 rclient.sadd(query,*stages)
                 rclient.expire(query,6*60*60)
-    return HttpResponse("\n".join(stages))
+    return HttpResponse("\n".join(map(bytes.decode,stages)))
 
 def bus_by_stage(request,source='',destination=''):
     direct_buses = Route.objects.filter(

@@ -1,2 +1,2 @@
 -r common.txt
-newrelic==2.52.0.40
+newrelic==5.2.2.130
