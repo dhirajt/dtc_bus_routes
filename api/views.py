@@ -401,7 +401,7 @@ def route_eta(request):
 
     final_serialized_data = serializer.data
     if final_serialized_data and final_serialized_data["stages"]:
-        zipped_data = zip(final_serialized_data["stages"],data['eta_list'])
+        zipped_data = list(zip(final_serialized_data["stages"],data['eta_list']))
 
         if zipped_data:
             for index,item in enumerate(final_serialized_data["stages"]):
