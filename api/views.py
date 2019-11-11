@@ -405,7 +405,7 @@ def route_eta(request):
 
         if zipped_data:
             for index,item in enumerate(final_serialized_data["stages"]):
-                if zipped_data[index][1]:
+                if len(zipped_data[index]) > 1:
                     final_serialized_data["stages"][index] = OrderedDict(
                         list(final_serialized_data["stages"][index].items())+list(zipped_data[index][1].items()))
 
