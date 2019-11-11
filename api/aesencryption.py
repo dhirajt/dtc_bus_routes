@@ -50,7 +50,7 @@ class AesCrypt256:
         @type s: string
         @rtype: string
         """
-        return s[0:-ord(s[-1])]
+        return s[0:-s[-1]]
 
     def encrypt(self, key, value):
         """Encrypt value by key
