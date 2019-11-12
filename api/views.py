@@ -11,10 +11,11 @@ from .aesencryption import AesCrypt256
 from collections import OrderedDict
 from .serializers import (StageBasicSerializer, StageAdvancedSerializer,
     RouteBasicSerializer, RouteAdvancedETASerializer, StageETASerializer,
-    StageETAListSerializer, VehicleSerializer, RouteAdvancedSerializer)
+    StageETAListSerializer, VehicleSerializer, RouteAdvancedSerializer,
+    NearbyRouteSearializer)
 
 from rest_framework.request import Request
-from rest_framework.exceptions import NotFound, ParseError
+from rest_framework.exceptions import NotFound, ParseError, ValidationError
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
@@ -25,8 +26,10 @@ from rest_framework.settings import api_settings
 from django.db.models import Q
 from django.db.models import Prefetch
 
+from django.contrib.gis.geos import Polygon, Point
+
 from django.conf import settings
-from busroutes.models import Stage, Route
+from busroutes.models import Stage, Route, StageSequence
 from .responses import BusRoutesStandardResponse
 
 
@@ -94,11 +97,25 @@ def stage_list(request):
     """
     Returns all the stages in bus route database.
     """
-    stages = Stage.objects.all().order_by('pk')
+    viewportne = request.query_params.get('viewportne', None)
+    viewportsw = request.query_params.get('viewportsw', None)
+    filter_expression = Q()
+
+    if viewportsw and viewportne:
+        ne_latlng = list(map(float, viewportne.strip().split(',')))
+        sw_latlng = list(map(float, viewportsw.strip().split(',')))
+
+        polygon = Polygon.from_bbox((
+            min(ne_latlng[1], sw_latlng[1]),min(ne_latlng[0], sw_latlng[0]),
+            max(ne_latlng[1], sw_latlng[1]),max(ne_latlng[0], sw_latlng[0])))
+
+        filter_expression.add(Q(location__contained=polygon), Q.AND)
+
+    stages = Stage.objects.filter(filter_expression).order_by('pk')
     response = get_paginated_response(
         stages,
         request,
-        StageBasicSerializer)
+        StageAdvancedSerializer)
     return response
 
 
@@ -150,6 +167,68 @@ def route_list(request):
         request,
         RouteBasicSerializer)
     return response
+
+@api_view(['GET'])
+def nearby_route(request):
+    """
+    Returns all the routes in the nearby area.
+    """
+    viewportne = request.query_params.get('viewportne', None)
+    viewportsw = request.query_params.get('viewportsw', None)
+    location = request.query_params.get('location', None)
+    filter_expression = Q()
+
+    if not viewportsw or not viewportne:
+        raise ValidationError('Both viewportsw and viewportne must be sent to get nearby routes.')
+
+    if location:
+        lat, lng = location.strip().split(',')
+        location = Point(float(lng.strip()), float(lat.strip()), srid=4326)
+
+    ne_latlng = list(map(float, viewportne.strip().split(',')))
+    sw_latlng = list(map(float, viewportsw.strip().split(',')))
+
+    polygon = Polygon.from_bbox((
+        min(ne_latlng[1], sw_latlng[1]),min(ne_latlng[0], sw_latlng[0]),
+        max(ne_latlng[1], sw_latlng[1]),max(ne_latlng[0], sw_latlng[0])))
+
+    route_sequences = list(StageSequence.objects.filter(
+        stage__location__contained=polygon).values('stage__location', 'stage__name', 'stage__id', 'route__name', 'route__id'))
+
+    location_distance_map = {}
+    nearby_routes = []
+    for route_seq in route_sequences:
+        coordinates = route_seq['stage__location'].coords
+        if coordinates not in location_distance_map and location:
+            location_distance_map[coordinates] = route_seq['stage__location'].distance(location) * 1000
+
+        nearby_routes.append({
+            'route': route_seq['route__name'],
+            'route_id': route_seq['route__id'],
+            'stage': route_seq['stage__name'],
+            'stage_id': route_seq['stage__id'],
+            'longitude': coordinates[0],
+            'latitude': coordinates[1],
+            'distance': location_distance_map.get(coordinates)
+        })
+
+    serializer = NearbyRouteSearializer(nearby_routes, many=True, context={'request': request})
+    return BusRoutesStandardResponse(serializer.data)
+
+    #     filter_expression.add(Q(stage__location__contained=polygon), Q.AND)
+
+    # stages = Stage.objects.filter(filter_expression).order_by('pk')
+    # response = get_paginated_response(
+    #     stages,
+    #     request,
+    #     StageAdvancedSerializer)
+    # return response
+    # stages = Route.objects.select_related('start_stage','end_stage').all().order_by('pk')
+    # response = get_paginated_response(
+    #     stages,
+    #     request,
+    #     RouteBasicSerializer)
+    # return response
 
 @api_view(['GET'])
 def route_details(request,pk):
@@ -414,6 +493,7 @@ def route_eta(request):
 @api_view(('GET',))
 @permission_classes((AllowAny, ))
 def api_root(request, format=None):
+    import pdb; pdb.set_trace()
     return Response(OrderedDict([
         ('stages', reverse('stage_list', request=request, format=format)),
         ('stage', reverse('stage_details', request=request, kwargs={'pk':1}, format=format)),
@@ -423,4 +503,5 @@ def api_root(request, format=None):
         ('route_search', reverse('route_search', request=request, format=format)),
         ('stage_eta', reverse('stage_eta', request=request, format=format)),
         ('route_eta', reverse('route_eta', request=request, format=format)),
+        ('nearby_route', reverse('nearby_route', request=request, format=format))
     ]))

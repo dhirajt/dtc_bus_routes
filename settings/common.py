@@ -37,7 +37,7 @@ DJANGO_APPS = (
     'django.contrib.admin',
 
     # For map related things
-    # 'django.contrib.gis',
+    'django.contrib.gis',
 )
 THIRD_PARTY_APPS = (
     'geoposition',
@@ -128,7 +128,7 @@ MANAGERS = ADMINS
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#databases
 DATABASES = {
     # Raises ImproperlyConfigured exception if DATABASE_URL not in os.environ
-    'default': env.db("DATABASE_URL", default="postgres:///dtc_bus_routes"),
+    'default': env.db("DATABASE_URL", default="postgres:///dtc_bus_routes", engine='django.contrib.gis.db.backends.postgis'),
 }
 DATABASES['default']['ATOMIC_REQUESTS'] = True
 

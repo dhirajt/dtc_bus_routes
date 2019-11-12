@@ -93,3 +93,17 @@ class RouteAdvancedETASerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Route
         fields = ('id', 'name', 'frequency', 'url', 'start_stage','end_stage','stages', 'vehicle_list')
+
+
+class NearbyRouteSearializer(serializers.Serializer):
+    route = serializers.CharField(max_length=100)
+    route_id = serializers.IntegerField()
+
+    stage = serializers.CharField(max_length=100)
+    stage_id = serializers.IntegerField()
+
+    longitude = serializers.FloatField()
+    latitude = serializers.FloatField()
+
+    distance = serializers.DecimalField(max_digits=10, decimal_places=3, coerce_to_string=False, allow_null=True)
+    # distance = serializers.FloatField(allow_null=True)

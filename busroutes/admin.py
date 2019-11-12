@@ -1,14 +1,15 @@
 # -*- coding: utf-8 -*-
 from django.contrib import admin
+from django.contrib.gis.admin import OSMGeoAdmin
 from django.utils.safestring import mark_safe
 from django.urls import reverse
 
 from busroutes.models import Route, Stage, StageSequence
 
 
-class StageAdmin(admin.ModelAdmin):
-    list_display = ('name','name_slug','coordinates')
-    search_fields = ['name', 'name_slug', 'coordinates']
+class StageAdmin(OSMGeoAdmin):
+    list_display = ('name','name_slug','coordinates', 'location')
+    search_fields = ['name', 'name_slug', 'coordinates', 'location']
     prepopulated_fields = {'name_slug': ('name',)}
 
     ordering = ('name',)
