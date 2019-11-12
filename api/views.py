@@ -215,21 +215,6 @@ def nearby_route(request):
     serializer = NearbyRouteSearializer(nearby_routes, many=True, context={'request': request})
     return BusRoutesStandardResponse(serializer.data)
 
-    #     filter_expression.add(Q(stage__location__contained=polygon), Q.AND)
-
-    # stages = Stage.objects.filter(filter_expression).order_by('pk')
-    # response = get_paginated_response(
-    #     stages,
-    #     request,
-    #     StageAdvancedSerializer)
-    # return response
-    # stages = Route.objects.select_related('start_stage','end_stage').all().order_by('pk')
-    # response = get_paginated_response(
-    #     stages,
-    #     request,
-    #     RouteBasicSerializer)
-    # return response
-
 @api_view(['GET'])
 def route_details(request,pk):
     """
@@ -493,7 +478,6 @@ def route_eta(request):
 @api_view(('GET',))
 @permission_classes((AllowAny, ))
 def api_root(request, format=None):
-    import pdb; pdb.set_trace()
     return Response(OrderedDict([
         ('stages', reverse('stage_list', request=request, format=format)),
         ('stage', reverse('stage_details', request=request, kwargs={'pk':1}, format=format)),
