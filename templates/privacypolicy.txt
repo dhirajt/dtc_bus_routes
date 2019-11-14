@@ -1,0 +1,50 @@
+Welcome to our Privacy Policy
+
+Your privacy is critically important to us.
+
+This Privacy Policy applies to DTC Bus Routes, DTC Bus Routes mobile applications (hereinafter, "us", "we", or "https://www.dtcbusroutes.in"). We respect your privacy and are committed to protecting personally identifiable information you may provide us through the website or through our mobile applications. We have adopted this privacy policy ("Privacy Policy") to explain what information may be collected on our Website, how we use this information, and under what circumstances we may disclose the information to third parties. This Privacy Policy applies only to information we collect through the website and our mobile applications and does not apply to our collection of information from other sources. This privacy policy sets forth the general rules and policies governing your use of our Website.
+
+Website Visitors
+================
+Like most website operators, we collect non-personally-identifying information of the sort that web browsers and servers typically make available, such as the browser type, language preference, referring site, the date and time of each visitor request etc. Our purpose in collecting non-personally identifying information is to better understand how DTC Bus Routes's visitors use its website. 
+
+We also collect potentially personally-identifying information for logged in users, the details of which are in the following sections. We don't disclose personally-identifying information to third parties.
+
+Gathering of Personally-Identifying Information
+===============================================
+Certain visitors to our websites and application choose to interact with us in ways that requires us to gather personally-identifying information. The amount and type of information that we gathers depend on the nature of the interaction. For example, we ask visitors who sign up to authenticate with Google to provide their name, email address and authentication tokens.
+
+Security
+========
+The security of your Personally-Identifying Information is important to us, but remember that no method of transmission over the Internet, or method of electronic storage is 100% secure. While we strive to use commercially acceptable means to protect your Personally-Identifying Information, we cannot guarantee its absolute security.
+
+Advertisements
+==============
+Ads appearing on our website may be delivered to users by advertising partners, who may set cookies. These cookies allow the ad server to recognize your computer each time they send you an online advertisement to compile information about you or others who use your computer. This information allows ad networks to, among other things, deliver targeted advertisements that they believe will be of most interest to you. This Privacy Policy covers the use of cookies by us and does not cover the use of cookies by any advertisers.
+
+Links To External Sites
+=======================
+Our Service may contain links to external sites that are not operated by us. If you click on a third party link, you will be directed to that third party's site. We strongly advise you to review the Privacy Policy and Terms and Conditions of every site you visit. We have no control over, and assume no responsibility for the content, privacy policies or practices of any third party sites, products or services.
+
+Aggregated Statistics
+=====================
+We may collect statistics about the behavior of visitors to our website or mobile applications. We may display this information publicly or provide it to others. However, we do not disclose your personally-identifying information.
+
+
+Cookies
+=======
+To enrich and perfect your online experience, our website and mobile applications may use "Cookies", similar technologies and services provided by others to display personalized content, appropriate advertising and store your preferences on your computer.
+
+A cookie is a string of information that a website stores on a visitor's computer, and that the visitor's browser provides to the website each time the visitor returns. We use cookies to identify and track visitors, their usage of our website, mobile applications and access preferences. Our visitors who do not wish to have cookies placed on their computers should set their browsers to refuse cookies before using our websites or mobile applications, with the drawback that certain features of our website may not function properly without the aid of cookies.
+
+By continuing to navigate our website without changing your cookie settings, you hereby acknowledge and agree to our use of cookies.
+
+
+Privacy Policy Changes
+======================
+Although most changes are likely to be minor, we may change this privacy policy from time to time, and in our sole discretion. We encourage visitors to frequently check this page for any changes to our privacy policy. Your continued use of this site after any change in this privacy policy will constitute your acceptance of such change.
+
+
+Contact Us
+==========
+We can be reached at admin@dtcbusroutes.in for any questions or concerns.
