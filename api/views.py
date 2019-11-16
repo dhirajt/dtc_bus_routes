@@ -193,7 +193,8 @@ def nearby_route(request):
         max(ne_latlng[1], sw_latlng[1]),max(ne_latlng[0], sw_latlng[0])))
 
     route_sequences = list(StageSequence.objects.filter(
-        stage__location__contained=polygon).values('stage__location', 'stage__name', 'stage__id', 'route__name', 'route__id', 'route__route_type'))
+        stage__location__contained=polygon).values('stage__location', 'stage__name', 'stage__id', 
+            'route__name', 'route__id', 'route__route_type', 'route__start_stage__name', 'route__end_stage__name'))
 
     nearby_routes = {}
     nearby_stages = {}
@@ -213,6 +214,8 @@ def nearby_route(request):
             nearby_routes[route_seq['route__id']] = {
                 'route': route_seq['route__name'],
                 'route_id': route_seq['route__id'],
+                'start_stage': route_seq['route__start_stage__name'],
+                'end_stage': route_seq['route__end_stage__name'],
                 'route_type': route_types[route_seq['route__route_type']],
                 'stages': []
             }

@@ -112,6 +112,9 @@ class NearbyRouteSearializer(serializers.Serializer):
     route = serializers.CharField(max_length=100)
     route_id = serializers.IntegerField()
 
+    start_stage = serializers.CharField(max_length=100)
+    end_stage = serializers.CharField(max_length=100)
+
     route_type = serializers.CharField(max_length=100)
 
     stages = StageListSerializer()

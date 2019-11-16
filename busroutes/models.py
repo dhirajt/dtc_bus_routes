@@ -37,7 +37,7 @@ class Stage(models.Model):
     def longitude(self):
         return self.location.x
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 
@@ -94,8 +94,8 @@ class Route(models.Model):
             'destination':self.end_stage.name_slug
         })
 
-    def __unicode__(self):
-        return self.name + ' - ' + self.get_route_type_display()
+    def __str__(self):
+        return self.name
 
 
 class StageSequence(models.Model):
@@ -110,5 +110,5 @@ class StageSequence(models.Model):
         ordering = ['sequence']
         unique_together = (('route','stage','sequence'),)
 
-    def __unicode__(self):
+    def __str__(self):
         return "Bus %s - %s. %s" % (self.route.name,str(self.sequence),str(self.stage.name))
