@@ -1,20 +1,20 @@
 {% extends "index.html" %}
 
-{% block title %}{{ block.super }} | Stop {{ stage }} | {{ routes | length }} Buses from {{ stage }}{% endblock %}
+{% block title %}{{ block.super }} | Stop {{ stage.name }} | {{ routes | length }} Buses from {{ stage.name }}{% endblock %}
 
 {% block meta_tags %}
-  <meta name="description" content="DTC Bus Routes | Stop {{ stage }} | {{ routes | length }} Buses lists all the buses that stop on {{ stage }}. {{ routes | length }} stop at this bus stop.">
+  <meta name="description" content="DTC Bus Routes | Stop {{ stage.name }} | {{ routes | length }} Buses lists all the buses that stop on {{ stage.name }}. {{ routes | length }} stop at this bus stop.">
 
-  <meta name="keywords" content="dtc, bus, delhi bus, bus routes, delhi bus route,  delhi bus service, dtc bus, dtc bus service, dtc routes, delhi buses, delhi bus list, delhi bus timings, delhi bus details, delhi bus rote details, delhi transport corporation, delhi bus banner, bus in delhi, bus for delhi, bus for south delhi, bus for north delhi, bus for east delhi, buses in delhi,  delhi bus details, delhi bus route finder, delhi bus route no, delhi bus details, delhi bus route chart, delhi bus route search, dtc route {{ stage }}, delhi bus route {{ stage }}, dtc {{ stage }}">
+  <meta name="keywords" content="dtc, bus, delhi bus, bus routes, delhi bus route,  delhi bus service, dtc bus, dtc bus service, dtc routes, delhi buses, delhi bus list, delhi bus timings, delhi bus details, delhi bus rote details, delhi transport corporation, delhi bus banner, bus in delhi, bus for delhi, bus for south delhi, bus for north delhi, bus for east delhi, buses in delhi,  delhi bus details, delhi bus route finder, delhi bus route no, delhi bus details, delhi bus route chart, delhi bus route search, dtc route {{ stage.name }}, delhi bus route {{ stage.name }}, dtc {{ stage.name }}">
 
-  <meta itemprop="name" content="DTC Bus Routes | Stop {{ stage }} | {{ routes | length }} Buses">
-  <meta itemprop="description" content="DTC Bus Routes | Stop {{ stage }} | {{ routes | length }} Buses lists all the buses that stop on {{ stage }}. {{ routes | length }} stop at this bus stop.">
+  <meta itemprop="name" content="DTC Bus Routes | Stop {{ stage.name }} | {{ routes | length }} Buses">
+  <meta itemprop="description" content="DTC Bus Routes | Stop {{ stage.name }} | {{ routes | length }} Buses lists all the buses that stop on {{ stage.name }}. {{ routes | length }} stop at this bus stop.">
 
-  <meta property="og:title" content="DTC Bus Routes | Stop {{ stage }} | {{ routes | length }} Buses" />
-  <meta property="og:description" content="DTC Bus Routes | Stop {{ stage }} | {{ routes | length }} Buses lists all the buses that stop on {{ stage }}. {{ routes | length }} stop at this bus stop." />
+  <meta property="og:title" content="DTC Bus Routes | Stop {{ stage.name }} | {{ routes | length }} Buses" />
+  <meta property="og:description" content="DTC Bus Routes | Stop {{ stage.name }} | {{ routes | length }} Buses lists all the buses that stop on {{ stage.name }}. {{ routes | length }} stop at this bus stop." />
 
-  <meta name="twitter:title" content="DTC Bus Routes | Stop {{ stage }} | {{ routes | length }} Buses">
-  <meta name="twitter:description" content="DTC Bus Routes | Stop {{ stage }} | {{ routes | length }} Buses lists all the buses that stop on {{ stage }}. {{ routes | length }} stop at this bus stop.">
+  <meta name="twitter:title" content="DTC Bus Routes | Stop {{ stage.name }} | {{ routes | length }} Buses">
+  <meta name="twitter:description" content="DTC Bus Routes | Stop {{ stage.name }} | {{ routes | length }} Buses lists all the buses that stop on {{ stage.name }}. {{ routes | length }} stop at this bus stop.">
 {% endblock %}
 
 {% block css %}
