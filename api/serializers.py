@@ -95,10 +95,7 @@ class RouteAdvancedETASerializer(serializers.HyperlinkedModelSerializer):
         fields = ('id', 'name', 'frequency', 'url', 'start_stage','end_stage','stages', 'vehicle_list')
 
 
-class NearbyRouteSearializer(serializers.Serializer):
-    route = serializers.CharField(max_length=100)
-    route_id = serializers.IntegerField()
-
+class NearbyRouteStageSearializer(serializers.Serializer):
     stage = serializers.CharField(max_length=100)
     stage_id = serializers.IntegerField()
 
@@ -106,4 +103,15 @@ class NearbyRouteSearializer(serializers.Serializer):
     latitude = serializers.FloatField()
 
     distance = serializers.DecimalField(max_digits=10, decimal_places=3, coerce_to_string=False, allow_null=True)
-    # distance = serializers.FloatField(allow_null=True)
+    bus_count = serializers.IntegerField()
+
+class NearbyRouteSearializer(serializers.Serializer):
+    class StageListSerializer(serializers.ListSerializer):
+        child = NearbyRouteStageSearializer()
+
+    route = serializers.CharField(max_length=100)
+    route_id = serializers.IntegerField()
+
+    route_type = serializers.CharField(max_length=100)
+
+    stages = StageListSerializer()

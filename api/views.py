@@ -193,26 +193,32 @@ def nearby_route(request):
         max(ne_latlng[1], sw_latlng[1]),max(ne_latlng[0], sw_latlng[0])))
 
     route_sequences = list(StageSequence.objects.filter(
-        stage__location__contained=polygon).values('stage__location', 'stage__name', 'stage__id', 'route__name', 'route__id'))
+        stage__location__contained=polygon).values('stage__location', 'stage__name', 'stage__id', 'route__name', 'route__id', 'route__route_type'))
 
-    location_distance_map = {}
-    nearby_routes = []
+    nearby_routes = {}
+    nearby_stages = {}
+    route_types = dict(Route.ROUTE_TYPE_CHOICES)
+
     for route_seq in route_sequences:
-        coordinates = route_seq['stage__location'].coords
-        if coordinates not in location_distance_map and location:
-            location_distance_map[coordinates] = route_seq['stage__location'].distance(location) * 1000
+        if route_seq['stage__id'] not in nearby_stages:
+            nearby_stages[route_seq['stage__id']] = {
+                'stage': route_seq['stage__name'],
+                'stage_id': route_seq['stage__id'],
+                'latitude': route_seq['stage__location'].coords[1],
+                'longitude': route_seq['stage__location'].coords[0],
+                'distance': route_seq['stage__location'].distance(location) * 1000 if location else None,
+                'bus_count': StageSequence.objects.filter(stage_id=route_seq['stage__id']).count()
+            }
+        if route_seq['route__id'] not in nearby_routes:
+            nearby_routes[route_seq['route__id']] = {
+                'route': route_seq['route__name'],
+                'route_id': route_seq['route__id'],
+                'route_type': route_types[route_seq['route__route_type']],
+                'stages': []
+            }
+        nearby_routes[route_seq['route__id']]['stages'].append(nearby_stages[route_seq['stage__id']])
 
-        nearby_routes.append({
-            'route': route_seq['route__name'],
-            'route_id': route_seq['route__id'],
-            'stage': route_seq['stage__name'],
-            'stage_id': route_seq['stage__id'],
-            'longitude': coordinates[0],
-            'latitude': coordinates[1],
-            'distance': location_distance_map.get(coordinates)
-        })
-
-    serializer = NearbyRouteSearializer(nearby_routes, many=True, context={'request': request})
+    serializer = NearbyRouteSearializer(list(nearby_routes.values()), many=True, context={'request': request})
     return BusRoutesStandardResponse(serializer.data)
 
 @api_view(['GET'])
