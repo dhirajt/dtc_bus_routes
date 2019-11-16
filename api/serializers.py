@@ -35,10 +35,11 @@ class StageBasicSerializer(serializers.HyperlinkedModelSerializer):
 
 class StageAdvancedSerializer(serializers.HyperlinkedModelSerializer):
     url = serializers.HyperlinkedIdentityField(view_name='stage_details')
+    bus_count = serializers.IntegerField(source='route_count')
 
     class Meta:
         model = Stage
-        fields = ('id', 'name', 'name_slug', 'latitude', 'longitude','url')
+        fields = ('id', 'name', 'name_slug', 'latitude', 'longitude', 'url', 'bus_count')
 
 
 class StageETASerializer(serializers.HyperlinkedModelSerializer):

@@ -40,6 +40,10 @@ class Stage(models.Model):
     def __str__(self):
         return self.name
 
+    @property
+    def route_count(self):
+        return StageSequence.objects.filter(stage_id=self.id).count()
+
 
 class BusRouteTiming(models.Model):
     route = models.ForeignKey('Route', on_delete=models.DO_NOTHING)
