@@ -29,6 +29,7 @@ from django.db.models import Prefetch
 from django.contrib.gis.geos import Polygon, Point
 
 from django.conf import settings
+from geopy.distance import distance
 from busroutes.models import Stage, Route, StageSequence
 from .responses import BusRoutesStandardResponse
 
@@ -207,7 +208,7 @@ def nearby_route(request):
                 'stage_id': route_seq['stage__id'],
                 'latitude': route_seq['stage__location'].coords[1],
                 'longitude': route_seq['stage__location'].coords[0],
-                'distance': route_seq['stage__location'].distance(location) * 100000 if location else None,
+                'distance': distance(route_seq['stage__location'], location).meters,#route_seq['stage__location'].distance(location) * 100000 if location else None,
                 'bus_count': StageSequence.objects.filter(stage_id=route_seq['stage__id']).count()
             }
         if route_seq['route__id'] not in nearby_routes:
