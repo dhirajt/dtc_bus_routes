@@ -220,7 +220,7 @@ def nearby_route(request):
                 'latitude': route_seq['stage__location'].coords[1],
                 'longitude': route_seq['stage__location'].coords[0],
                 #'distance': distance(reversed(route_seq['stage__location'].coords), reversed(location.coords)).meters,
-                'distace' : route_seq['stage__location'].distance(location) * 100000 if location else None,
+                'distance' : route_seq['stage__location'].distance(location) * 100000 if location else None,
                 'bus_count': StageSequence.objects.filter(stage_id=route_seq['stage__id']).count()
             }
         if route_seq['route__id'] not in nearby_routes:
