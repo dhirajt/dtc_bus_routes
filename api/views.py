@@ -223,7 +223,9 @@ def nearby_route(request):
             }
         nearby_routes[route_seq['route__id']]['stages'].append(nearby_stages[route_seq['stage__id']])
 
-    serializer = NearbyRouteSearializer(list(nearby_routes.values()), many=True, context={'request': request})
+    data = sorted(list(nearby_routes.values()), key=lambda item: min([i['distance'] for i in item['stages']]))
+
+    serializer = NearbyRouteSearializer(data, many=True, context={'request': request})
     return BusRoutesStandardResponse(serializer.data)
 
 @api_view(['GET'])
