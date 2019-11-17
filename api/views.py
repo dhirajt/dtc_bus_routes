@@ -233,6 +233,7 @@ def nearby_route(request):
                 'stages': []
             }
         nearby_routes[route_seq['route__id']]['stages'].append(nearby_stages[route_seq['stage__id']])
+        nearby_routes[route_seq['route__id']]['stages'] = sorted(nearby_routes[route_seq['route__id']]['stages'], key=lambda item: item['distance'])
 
     data = sorted(list(nearby_routes.values()), key=lambda item: min([i['distance'] for i in item['stages']]))
 
