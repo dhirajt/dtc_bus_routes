@@ -12,7 +12,7 @@ from geoposition.fields import GeopositionField
 class Stage(models.Model):
     name = models.CharField(max_length=64)
     name_slug = models.SlugField(max_length=100)
-    location = geomodels.PointField(default=Point(0,0, srid=4326))
+    location = geomodels.PointField(default=Point(0,0, srid=4326),srid=4326)
     coordinates = GeopositionField()
     uid = models.CharField(max_length=10,blank=True,default='')
     last_modified = models.DateTimeField(auto_now=True)
