@@ -29,6 +29,7 @@ from django.db.models import Prefetch
 from django.contrib.gis.geos import Polygon, Point
 
 from django.conf import settings
+from django.contrib.gis.db.models.functions import Distance
 from geopy.distance import distance
 from busroutes.models import Stage, Route, StageSequence
 from .responses import BusRoutesStandardResponse
@@ -100,6 +101,7 @@ def stage_list(request):
     """
     viewportne = request.query_params.get('viewportne', None)
     viewportsw = request.query_params.get('viewportsw', None)
+    location = request.query_params.get('location', None)
     filter_expression = Q()
 
     if viewportsw and viewportne:
@@ -112,7 +114,16 @@ def stage_list(request):
 
         filter_expression.add(Q(location__contained=polygon), Q.AND)
 
-    stages = Stage.objects.filter(filter_expression).order_by('pk')
+    if location:
+        lat, lng = location.strip().split(',')
+        location = Point(float(lng.strip()), float(lat.strip()), srid=4326)
+
+    stages = None
+    if location:
+        stages = Stage.objects.filter(filter_expression).annotate(distance=Distance('location', location)).order_by("distance")
+    else:
+        stages = Stage.objects.filter(filter_expression).order_by('pk')
+
     response = get_paginated_response(
         stages,
         request,
@@ -208,8 +219,8 @@ def nearby_route(request):
                 'stage_id': route_seq['stage__id'],
                 'latitude': route_seq['stage__location'].coords[1],
                 'longitude': route_seq['stage__location'].coords[0],
-                'distance': distance(reversed(route_seq['stage__location'].coords), reversed(location.coords)).meters,
-                #'distace' : route_seq['stage__location'].distance(location) * 100000 if location else None,
+                #'distance': distance(reversed(route_seq['stage__location'].coords), reversed(location.coords)).meters,
+                'distace' : route_seq['stage__location'].distance(location) * 100000 if location else None,
                 'bus_count': StageSequence.objects.filter(stage_id=route_seq['stage__id']).count()
             }
         if route_seq['route__id'] not in nearby_routes:
