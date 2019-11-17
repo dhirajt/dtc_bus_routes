@@ -39,6 +39,8 @@ class StageAdvancedSerializer(serializers.HyperlinkedModelSerializer):
     distance = serializers.SerializerMethodField()
 
     def get_distance(self, obj):
+        if not getattr(obj, 'distance', None):
+            return None
         return obj.distance.m
 
     class Meta:
