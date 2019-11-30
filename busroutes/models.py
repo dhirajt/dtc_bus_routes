@@ -37,12 +37,12 @@ class Stage(models.Model):
     def longitude(self):
         return self.location.x
 
-    def __str__(self):
-        return self.name
-
     @property
     def route_count(self):
         return StageSequence.objects.filter(stage_id=self.id).count()
+
+    def __str__(self):
+        return self.name
 
 
 class BusRouteTiming(models.Model):
@@ -97,6 +97,10 @@ class Route(models.Model):
             'source':self.start_stage.name_slug,
             'destination':self.end_stage.name_slug
         })
+
+    @property
+    def stage_count(self):
+        return self.stages.count()
 
     def __str__(self):
         return self.name
