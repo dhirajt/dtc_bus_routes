@@ -230,6 +230,7 @@ def nearby_route(request):
                 'start_stage': route_seq['route__start_stage__name'],
                 'end_stage': route_seq['route__end_stage__name'],
                 'route_type': route_types[route_seq['route__route_type']],
+                'bus_count': StageSequence.objects.filter(route_id=route_seq['route__id']).count(),
                 'stages': []
             }
         nearby_routes[route_seq['route__id']]['stages'].append(nearby_stages[route_seq['stage__id']])

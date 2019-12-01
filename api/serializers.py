@@ -125,5 +125,6 @@ class NearbyRouteSearializer(serializers.Serializer):
     end_stage = serializers.CharField(max_length=100)
 
     route_type = serializers.CharField(max_length=100)
-
+    bus_count = serializers.IntegerField()
+    
     stages = StageListSerializer()
