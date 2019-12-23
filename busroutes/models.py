@@ -41,6 +41,10 @@ class Stage(models.Model):
     def route_count(self):
         return StageSequence.objects.filter(stage_id=self.id).count()
 
+    @property
+    def common_routes(self):
+        return list(StageSequence.objects.filter(stage_id=self.id)[:5].values_list('route__name', flat=True))
+
     def __str__(self):
         return self.name
 

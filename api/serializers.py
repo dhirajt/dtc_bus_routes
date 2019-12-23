@@ -37,15 +37,21 @@ class StageAdvancedSerializer(serializers.HyperlinkedModelSerializer):
     url = serializers.HyperlinkedIdentityField(view_name='stage_details')
     bus_count = serializers.IntegerField(source='route_count')
     distance = serializers.SerializerMethodField()
+    common_routes = serializers.SerializerMethodField()
 
     def get_distance(self, obj):
         if not getattr(obj, 'distance', None):
             return None
         return obj.distance.m
 
+    def get_common_routes(self, obj):
+        if not getattr(obj, 'common_routes', None):
+            return None
+        return obj.common_routes
+
     class Meta:
         model = Stage
-        fields = ('id', 'name', 'name_slug', 'latitude', 'longitude', 'url', 'bus_count', 'distance')
+        fields = ('id', 'name', 'name_slug', 'latitude', 'longitude', 'url', 'bus_count', 'distance', 'common_routes')
 
 
 class StageETASerializer(serializers.HyperlinkedModelSerializer):
