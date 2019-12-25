@@ -42,7 +42,7 @@ class Stage(models.Model):
         return StageSequence.objects.filter(stage_id=self.id).count()
 
     @property
-    def common_routes(self):
+    def routes(self):
         return list(StageSequence.objects.filter(stage_id=self.id).values_list('route__name', flat=True))
 
     def __str__(self):
