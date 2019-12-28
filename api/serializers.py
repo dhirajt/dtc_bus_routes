@@ -81,6 +81,7 @@ class RouteBasicSerializer(serializers.HyperlinkedModelSerializer):
 
 class RouteAdvancedSerializer(serializers.HyperlinkedModelSerializer):
     url = serializers.HyperlinkedIdentityField(view_name='route_details')
+    route_type = serializers.CharField(source='get_route_type_display')
 
     start_stage = StageBasicSerializer()
     end_stage = StageBasicSerializer()
@@ -89,7 +90,7 @@ class RouteAdvancedSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Route
-        fields = ('id', 'name', 'frequency', 'url', 'start_stage','end_stage','stages')
+        fields = ('id', 'name', 'frequency', 'url', 'route_type', 'start_stage','end_stage','stages')
 
 
 class RouteAdvancedETASerializer(serializers.HyperlinkedModelSerializer):
