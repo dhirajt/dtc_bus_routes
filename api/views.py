@@ -12,7 +12,7 @@ from collections import OrderedDict
 from .serializers import (StageBasicSerializer, StageAdvancedSerializer,
     RouteBasicSerializer, RouteAdvancedETASerializer, StageETASerializer,
     StageETAListSerializer, VehicleSerializer, RouteAdvancedSerializer,
-    NearbyRouteSearializer)
+    NearbyRouteSearializer, RoutePlannerSerializer)
 
 from rest_framework.request import Request
 from rest_framework.exceptions import NotFound, ParseError, ValidationError
@@ -270,6 +270,156 @@ def route_details(request,pk):
     return BusRoutesStandardResponse(serializer.data)
 
 @api_view(['GET'])
+def route_planner(request):
+    """
+    Plan a trip.
+    """
+    from_stage = request.GET.get('from_stage','')
+    to_stage = request.GET.get('to_stage','')
+
+    if not from_stage or not to_stage:
+        return ParseError()
+
+    try:
+        start_stage = Stage.objects.get(id=from_stage)
+    except Stage.DoesNotExist:
+        return ParseError()
+
+    try:
+        end_stage = Stage.objects.get(id=to_stage)
+    except Stage.DoesNotExist:
+        return ParseError()
+
+    final_payload = {
+        'from_stage': start_stage,
+        'to_stage': end_stage,
+        'itineraries': []
+    }
+
+    direct_routes = direct_routes_payload(start_stage, end_stage)
+    for item in direct_routes:
+        final_payload['itineraries'].append({
+            'legs' : [{
+                'leg_type': 'TRANSIT',
+                'trip_leg': item
+            }]
+        })
+
+    if not final_payload['itineraries']:
+        indirect_routes = indirect_routes_payload(start_stage, end_stage)
+        for item in indirect_routes:
+            final_payload['itineraries'].append({
+                'legs' : [{
+                    'leg_type': 'TRANSIT',
+                    'trip_leg': item[0]
+                }, {
+                    'leg_type': 'TRANSIT',
+                    'trip_leg': item[1]
+                }]
+            })
+    serializer = RoutePlannerSerializer(
+        final_payload,
+        context={'request': request})
+
+    return BusRoutesStandardResponse(serializer.data)
+
+def direct_routes_payload(start_stage, end_stage):
+    start_stage_routes = StageSequence.objects.filter(stage_id=start_stage).values_list('route__id', flat=True)
+    direct_buses = list(StageSequence.objects.filter(
+            route__id__in=start_stage_routes).filter(stage_id=end_stage).values_list('route__id', flat=True))
+    
+    data = {}
+    for bus in direct_buses:
+        stops = list(StageSequence.objects.select_related().filter(route_id=bus).order_by('sequence'))
+
+        start_stage_idx = -1
+        end_stage_idx = -1
+        for index, stop in enumerate(stops):
+            if stop.stage.id == start_stage.id:
+                start_stage_idx = index
+            elif stop.stage.id == end_stage.id:
+                end_stage_idx = index
+
+        final_stops = []
+        if end_stage_idx < start_stage_idx:
+            final_stops = stops[end_stage_idx:start_stage_idx+1]
+            final_stops.reverse()
+        else:
+            final_stops = stops[start_stage_idx:end_stage_idx+1]
+
+        data[bus] = {
+            'route': Route.objects.get(id=bus),
+            'start_stage': final_stops[0].stage,
+            'end_stage': final_stops[-1].stage,
+            'num_stops': len(final_stops),
+            'stop_names' : [item.stage.name for item in final_stops]
+        }
+    payload = list(sorted(data.values(), key=lambda item:len(item['stop_names'])))
+    return payload
+
+def indirect_routes_payload(start_stage, end_stage):
+    if not (start_stage and end_stage):
+        return []
+
+    routes_start = list(Route.objects.filter(stages=start_stage, is_active=True).prefetch_related(
+        Prefetch('stages', queryset=Stage.objects.all().order_by('stagesequence__sequence'))).all())
+    routes_end = list(Route.objects.filter(stages=end_stage, is_active=True).prefetch_related(
+        Prefetch('stages', queryset=Stage.objects.all().order_by('stagesequence__sequence'))).all())
+
+    itineraries = []
+    for rs in routes_start:
+        for re in routes_end:
+            stages_rs = list(rs.stages.all())
+            stages_re = list(re.stages.all())
+
+            changeovers = list(set(stages_rs) & set(stages_re))
+
+            if changeovers:
+                index_startstage = stages_rs.index(start_stage)
+                index_endstage = stages_re.index(end_stage)
+
+                potential_changeovers = [
+                    (stages_rs.index(item),abs(index_startstage - stages_rs.index(item))) for item in changeovers]
+
+                potential_changeovers = sorted(potential_changeovers,key=lambda item:item[1])
+
+                first_changeover_index_rs = potential_changeovers[0][0]
+                first_changeover = stages_rs[first_changeover_index_rs]
+
+                start_stages = []
+                if first_changeover_index_rs > index_startstage:
+                    start_stages = stages_rs[index_startstage:first_changeover_index_rs+1]
+                else:
+                    start_stages = stages_rs[first_changeover_index_rs:index_startstage+1]
+                    start_stages.reverse()
+
+                end_stages = []
+                first_changeover_index_re = stages_re.index(first_changeover)
+                if first_changeover_index_re > index_endstage:
+                    end_stages = stages_re[index_endstage:first_changeover_index_re+1]
+                    end_stages.reverse()
+                else:
+                    end_stages = stages_re[first_changeover_index_re:index_endstage+1]
+
+                itinerary = [{
+                    'route': rs,
+                    'start_stage': start_stages[0],
+                    'end_stage': start_stages[-1],
+                    'num_stops': len(start_stages),
+                    'stop_names' : [item.name for item in start_stages]
+                }, {
+                    'route': re,
+                    'start_stage': end_stages[0],
+                    'end_stage': end_stages[-1],
+                    'num_stops': len(end_stages),
+                    'stop_names' : [item.name for item in end_stages]
+                }]
+
+                itineraries.append(itinerary)
+    itineraries.sort(key=lambda item:item[0]['num_stops'] + item[-1]['num_stops'])
+    return itineraries
+
+@api_view(['GET'])
 def route_search(request):
     """
     Search for a stage in bus route database.
@@ -509,6 +659,7 @@ def api_root(request, format=None):
         ('stage', reverse('stage_details', request=request, kwargs={'pk':1}, format=format)),
         ('stage_search', reverse('stage_search', request=request, format=format)),
         ('routes', reverse('route_list', request=request, format=format)),
+        ('route_planner', reverse('route_planner', request=request, format=format)),
         ('route', reverse('route_details', request=request, kwargs={'pk':1}, format=format)),
         ('route_search', reverse('route_search', request=request, format=format)),
         ('stage_eta', reverse('stage_eta', request=request, format=format)),

@@ -31,7 +31,7 @@ class StageBasicSerializer(serializers.HyperlinkedModelSerializer):
     url = serializers.HyperlinkedIdentityField(view_name='stage_details')
     class Meta:
         model = Stage
-        fields = ('id', 'name', 'url')
+        fields = ('id', 'name', 'url', 'latitude', 'longitude')
 
 class StageAdvancedSerializer(serializers.HyperlinkedModelSerializer):
     url = serializers.HyperlinkedIdentityField(view_name='stage_details')
@@ -135,3 +135,23 @@ class NearbyRouteSearializer(serializers.Serializer):
     stage_count = serializers.IntegerField()
 
     stages = StageListSerializer()
+
+class TripLegSerializer(serializers.Serializer):
+    route = RouteBasicSerializer()
+    start_stage = StageBasicSerializer()
+    end_stage = StageBasicSerializer()
+    num_stops = serializers.IntegerField()
+    stop_names = serializers.ListField(child=serializers.CharField(max_length=100))
+
+class LegSerializer(serializers.Serializer):
+    leg_type = serializers.CharField(max_length=100)
+    trip_leg = TripLegSerializer()
+
+class ItinerarySerializer(serializers.Serializer):
+    legs = LegSerializer(many=True)
+
+class RoutePlannerSerializer(serializers.Serializer):
+    from_stage = StageBasicSerializer()
+    to_stage = StageBasicSerializer()
+
+    itineraries = ItinerarySerializer(many=True)
