@@ -349,6 +349,7 @@ def direct_routes_payload(start_stage, end_stage):
 
         data[bus] = {
             'route': Route.objects.get(id=bus),
+            'leg_type': "TRANSIT",
             'start_stage': final_stops[0].stage,
             'end_stage': final_stops[-1].stage,
             'num_stops': len(final_stops),
@@ -403,12 +404,14 @@ def indirect_routes_payload(start_stage, end_stage):
 
                 itinerary = [{
                     'route': rs,
+                    'leg_type': "TRANSIT",
                     'start_stage': start_stages[0],
                     'end_stage': start_stages[-1],
                     'num_stops': len(start_stages),
                     'stop_names' : [item.name for item in start_stages]
                 }, {
                     'route': re,
+                    'leg_type': "TRANSIT",
                     'start_stage': end_stages[0],
                     'end_stage': end_stages[-1],
                     'num_stops': len(end_stages),

@@ -137,6 +137,7 @@ class NearbyRouteSearializer(serializers.Serializer):
     stages = StageListSerializer()
 
 class TripLegSerializer(serializers.Serializer):
+    leg_type = serializers.CharField(max_length=100)
     route = RouteBasicSerializer()
     start_stage = StageBasicSerializer()
     end_stage = StageBasicSerializer()
