@@ -162,7 +162,7 @@ def stage_search(request):
         location = Point(float(lng.strip()), float(lat.strip()), srid=4326)
 
     if location:
-        stages = Stage.objects.filter(name__icontains=name).annotate(distance=Distance('location', location)).order_by("distance")
+        stages = Stage.objects.filter(name__icontains=name).annotate(distance=Distance('location', location))
     else:
         stages = Stage.objects.filter(name__icontains=name)
 
