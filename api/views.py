@@ -155,7 +155,16 @@ def stage_search(request):
     if not name:
         raise ParseError()
 
-    stages = list(Stage.objects.filter(name__icontains=name))
+    location = request.query_params.get('location', None)
+
+    if location:
+        lat, lng = location.strip().split(',')
+        location = Point(float(lng.strip()), float(lat.strip()), srid=4326)
+
+    if location:
+        stages = Stage.objects.filter(name__icontains=name).annotate(distance=Distance('location', location)).order_by("distance")
+    else:
+        stages = Stage.objects.filter(name__icontains=name)
 
     serializer = StageAdvancedSerializer(
         stages,
