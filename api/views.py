@@ -359,14 +359,27 @@ def direct_routes_payload(start_stage, end_stage):
         else:
             final_stops = stops[start_stage_idx:end_stage_idx+1]
 
+        first_stop_with_coordinates = None
+        last_stop_with_coordinates = None
+        for stop in final_stops:
+            if stop.stage.latitude < 1 or stop.stage.longitude < 1:
+                continue
+
+            if not first_stop_with_coordinates:
+                first_stop_with_coordinates = stop.stage
+            last_stop_with_coordinates = stop.stage
+
+
         data[bus] = {
             'route': Route.objects.get(id=bus),
             'leg_type': "TRANSIT",
             'start_stage': final_stops[0].stage,
             'end_stage': final_stops[-1].stage,
             'num_stops': len(final_stops),
-            'stop_names' : [item.stage.name for item in final_stops]
+            'stop_names' : [item.stage.name for item in final_stops],
+            'fare': get_fare_estimate(first_stop_with_coordinates.location.distance(last_stop_with_coordinates.location) * 100)
         }
+
     payload = list(sorted(data.values(), key=lambda item:len(item['stop_names'])))
     return payload
 
@@ -417,20 +430,42 @@ def indirect_routes_payload(start_stage, end_stage, direct_buses):
                 else:
                     end_stages = stages_re[first_changeover_index_re:index_endstage+1]
 
+                first_stop_with_coordinates_start = None
+                last_stop_with_coordinates_start = None
+                for stop in start_stages:
+                    if stop.latitude < 1 or stop.longitude < 1:
+                        continue
+
+                    if not first_stop_with_coordinates_start:
+                        first_stop_with_coordinates_start = stop
+                    last_stop_with_coordinates_start = stop
+
+                first_stop_with_coordinates_end = None
+                last_stop_with_coordinates_end = None
+                for stop in end_stages:
+                    if stop.latitude < 1 or stop.longitude < 1:
+                        continue
+
+                    if not first_stop_with_coordinates_end:
+                        first_stop_with_coordinates_end = stop
+                    last_stop_with_coordinates_end = stop
+
                 itinerary = [{
                     'route': rs,
                     'leg_type': "TRANSIT",
                     'start_stage': start_stages[0],
                     'end_stage': start_stages[-1],
                     'num_stops': len(start_stages),
-                    'stop_names' : [item.name for item in start_stages]
+                    'stop_names' : [item.name for item in start_stages],
+                    'fare': get_fare_estimate(first_stop_with_coordinates_start.location.distance(last_stop_with_coordinates_start.location) * 100)
                 }, {
                     'route': re,
                     'leg_type': "TRANSIT",
                     'start_stage': end_stages[0],
                     'end_stage': end_stages[-1],
                     'num_stops': len(end_stages),
-                    'stop_names' : [item.name for item in end_stages]
+                    'stop_names' : [item.name for item in end_stages],
+                    'fare': get_fare_estimate(first_stop_with_coordinates_end.location.distance(last_stop_with_coordinates_end.location) * 100)
                 }]
 
                 itineraries.append(itinerary)
@@ -668,6 +703,14 @@ def route_eta(request):
                         list(final_serialized_data["stages"][index].items())+list(zipped_data[index][1].items()))
 
     return BusRoutesStandardResponse(final_serialized_data)
+
+def get_fare_estimate(distance):
+    if 0 < distance < 4:
+        return 5
+    elif 4 <= distance < 10:
+        return 10
+    else:
+        return 15
 
 @api_view(('GET',))
 @permission_classes((AllowAny, ))
