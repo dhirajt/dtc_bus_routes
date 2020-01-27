@@ -314,19 +314,20 @@ def route_planner(request):
             }]
         })
 
-    direct_buses = set([item['route'].id for item in direct_routes])
-    indirect_routes = indirect_routes_payload(start_stage, end_stage, direct_buses)
-
-    for item in indirect_routes:
-        final_payload['itineraries'].append({
-            'legs' : [{
-                'leg_type': 'TRANSIT',
-                'trip_leg': item[0]
-            }, {
-                'leg_type': 'TRANSIT',
-                'trip_leg': item[1]
-            }]
-        })
+    if not final_payload['itineraries']:
+        direct_buses = set([item['route'].id for item in direct_routes])
+        indirect_routes = indirect_routes_payload(start_stage, end_stage, direct_buses)
+        
+        for item in indirect_routes:
+            final_payload['itineraries'].append({
+                'legs' : [{
+                    'leg_type': 'TRANSIT',
+                    'trip_leg': item[0]
+                }, {
+                    'leg_type': 'TRANSIT',
+                    'trip_leg': item[1]
+                }]
+            })
 
     serializer = RoutePlannerSerializer(
         final_payload,
