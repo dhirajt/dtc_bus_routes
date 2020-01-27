@@ -314,18 +314,20 @@ def route_planner(request):
             }]
         })
 
-    if not final_payload['itineraries']:
-        indirect_routes = indirect_routes_payload(start_stage, end_stage)
-        for item in indirect_routes:
-            final_payload['itineraries'].append({
-                'legs' : [{
-                    'leg_type': 'TRANSIT',
-                    'trip_leg': item[0]
-                }, {
-                    'leg_type': 'TRANSIT',
-                    'trip_leg': item[1]
-                }]
-            })
+    direct_buses = set([item['route'].id for item in direct_routes])
+    indirect_routes = indirect_routes_payload(start_stage, end_stage, direct_buses)
+
+    for item in indirect_routes:
+        final_payload['itineraries'].append({
+            'legs' : [{
+                'leg_type': 'TRANSIT',
+                'trip_leg': item[0]
+            }, {
+                'leg_type': 'TRANSIT',
+                'trip_leg': item[1]
+            }]
+        })
+
     serializer = RoutePlannerSerializer(
         final_payload,
         context={'request': request})
@@ -367,7 +369,7 @@ def direct_routes_payload(start_stage, end_stage):
     payload = list(sorted(data.values(), key=lambda item:len(item['stop_names'])))
     return payload
 
-def indirect_routes_payload(start_stage, end_stage):
+def indirect_routes_payload(start_stage, end_stage, direct_buses):
     if not (start_stage and end_stage):
         return []
 
@@ -375,6 +377,9 @@ def indirect_routes_payload(start_stage, end_stage):
         Prefetch('stages', queryset=Stage.objects.all().order_by('stagesequence__sequence'))).all())
     routes_end = list(Route.objects.filter(stages=end_stage, is_active=True).prefetch_related(
         Prefetch('stages', queryset=Stage.objects.all().order_by('stagesequence__sequence'))).all())
+
+    routes_start = [item for item in routes_start if item.id not in direct_buses]
+    routes_end = [item for item in routes_end if item.id not in direct_buses]
 
     itineraries = []
     for rs in routes_start:
