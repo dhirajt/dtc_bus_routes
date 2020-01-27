@@ -152,6 +152,7 @@ class LegSerializer(serializers.Serializer):
 
 class ItinerarySerializer(serializers.Serializer):
     legs = LegSerializer(many=True)
+    recommended = serializers.BooleanField(default=False)
 
 class RoutePlannerSerializer(serializers.Serializer):
     from_stage = StageBasicSerializer()

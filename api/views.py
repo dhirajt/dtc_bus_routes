@@ -328,6 +328,8 @@ def route_planner(request):
                     'trip_leg': item[1]
                 }]
             })
+    if final_payload['itineraries']:
+        final_payload['itineraries'][0]['recommended'] = True
 
     serializer = RoutePlannerSerializer(
         final_payload,
