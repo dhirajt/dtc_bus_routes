@@ -382,7 +382,7 @@ def direct_routes_payload(start_stage, end_stage):
             'fare': get_fare_estimate(first_stop_with_coordinates.location.distance(last_stop_with_coordinates.location) * 100)
         }
 
-    payload = list(sorted(data.values(), key=lambda item:len(item['stop_names'])))
+    payload = list(sorted(data.values(), key=lambda item:(len(item['stop_names']), item['fare'])))
     return payload
 
 def indirect_routes_payload(start_stage, end_stage, direct_buses):
@@ -471,7 +471,7 @@ def indirect_routes_payload(start_stage, end_stage, direct_buses):
                 }]
 
                 itineraries.append(itinerary)
-    itineraries.sort(key=lambda item:item[0]['num_stops'] + item[-1]['num_stops'])
+    itineraries.sort(key=lambda item:(item[0]['num_stops'] + item[-1]['num_stops'], item[0]['fare'] + item[-1]['fare']))
     return itineraries
 
 @api_view(['GET'])
