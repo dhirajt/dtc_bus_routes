@@ -378,11 +378,11 @@ def direct_routes_payload(start_stage, end_stage):
             'start_stage': final_stops[0].stage,
             'end_stage': final_stops[-1].stage,
             'num_stops': len(final_stops),
-            'stop_names' : [item.stage.name for item in final_stops],
+            'stops': [item.stage for item in final_stops],
             'fare': get_fare_estimate(first_stop_with_coordinates.location.distance(last_stop_with_coordinates.location) * 100)
         }
 
-    payload = list(sorted(data.values(), key=lambda item:(len(item['stop_names']), item['fare'])))
+    payload = list(sorted(data.values(), key=lambda item:(len(item['stops']), item['fare'])))
     return payload
 
 def indirect_routes_payload(start_stage, end_stage, direct_buses):
@@ -458,7 +458,7 @@ def indirect_routes_payload(start_stage, end_stage, direct_buses):
                     'start_stage': start_stages[0],
                     'end_stage': start_stages[-1],
                     'num_stops': len(start_stages),
-                    'stop_names' : [item.name for item in start_stages],
+                    'stops': start_stages,
                     'fare': get_fare_estimate(first_stop_with_coordinates_start.location.distance(last_stop_with_coordinates_start.location) * 100)
                 }, {
                     'route': re,
@@ -466,7 +466,7 @@ def indirect_routes_payload(start_stage, end_stage, direct_buses):
                     'start_stage': end_stages[0],
                     'end_stage': end_stages[-1],
                     'num_stops': len(end_stages),
-                    'stop_names' : [item.name for item in end_stages],
+                    'stops': end_stages,
                     'fare': get_fare_estimate(first_stop_with_coordinates_end.location.distance(last_stop_with_coordinates_end.location) * 100)
                 }]
 

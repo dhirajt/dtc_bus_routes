@@ -143,7 +143,7 @@ class TripLegSerializer(serializers.Serializer):
     start_stage = StageBasicSerializer()
     end_stage = StageBasicSerializer()
     num_stops = serializers.IntegerField()
-    stop_names = serializers.ListField(child=serializers.CharField(max_length=100))
+    stops = serializers.ListField(child=StageBasicSerializer())
     fare = serializers.IntegerField()
 
 class LegSerializer(serializers.Serializer):
