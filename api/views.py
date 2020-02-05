@@ -344,6 +344,7 @@ def direct_routes_payload(start_stage, end_stage):
     
     data = {}
     for bus in direct_buses:
+        direction = None
         stops = list(StageSequence.objects.select_related().filter(route_id=bus).order_by('sequence'))
 
         start_stage_idx = -1
@@ -356,9 +357,11 @@ def direct_routes_payload(start_stage, end_stage):
 
         final_stops = []
         if end_stage_idx < start_stage_idx:
+            direction = stops[0].stage
             final_stops = stops[end_stage_idx:start_stage_idx+1]
             final_stops.reverse()
         else:
+            direction = stops[-1].stage
             final_stops = stops[start_stage_idx:end_stage_idx+1]
 
         first_stop_with_coordinates = None
@@ -377,6 +380,7 @@ def direct_routes_payload(start_stage, end_stage):
             'leg_type': "TRANSIT",
             'start_stage': final_stops[0].stage,
             'end_stage': final_stops[-1].stage,
+            'direction': direction,
             'num_stops': len(final_stops),
             'stops': [item.stage for item in final_stops],
             'fare': get_fare_estimate(first_stop_with_coordinates.location.distance(last_stop_with_coordinates.location) * 100)
@@ -400,6 +404,8 @@ def indirect_routes_payload(start_stage, end_stage, direct_buses):
     itineraries = []
     for rs in routes_start:
         for re in routes_end:
+            direction_rs = None
+            direction_re = None
             stages_rs = list(rs.stages.all())
             stages_re = list(re.stages.all())
 
@@ -419,17 +425,21 @@ def indirect_routes_payload(start_stage, end_stage, direct_buses):
 
                 start_stages = []
                 if first_changeover_index_rs > index_startstage:
+                    direction_rs = stages_rs[-1]
                     start_stages = stages_rs[index_startstage:first_changeover_index_rs+1]
                 else:
+                    direction_rs = stages_rs[0]
                     start_stages = stages_rs[first_changeover_index_rs:index_startstage+1]
                     start_stages.reverse()
 
                 end_stages = []
                 first_changeover_index_re = stages_re.index(first_changeover)
                 if first_changeover_index_re > index_endstage:
+                    direction_re = stages_re[0]
                     end_stages = stages_re[index_endstage:first_changeover_index_re+1]
                     end_stages.reverse()
                 else:
+                    direction_re = stages_re[-1]
                     end_stages = stages_re[first_changeover_index_re:index_endstage+1]
 
                 first_stop_with_coordinates_start = None
@@ -458,6 +468,7 @@ def indirect_routes_payload(start_stage, end_stage, direct_buses):
                     'start_stage': start_stages[0],
                     'end_stage': start_stages[-1],
                     'num_stops': len(start_stages),
+                    'direction': direction_rs,
                     'stops': start_stages,
                     'fare': get_fare_estimate(first_stop_with_coordinates_start.location.distance(last_stop_with_coordinates_start.location) * 100)
                 }, {
@@ -466,6 +477,7 @@ def indirect_routes_payload(start_stage, end_stage, direct_buses):
                     'start_stage': end_stages[0],
                     'end_stage': end_stages[-1],
                     'num_stops': len(end_stages),
+                    'direction': direction_re,
                     'stops': end_stages,
                     'fare': get_fare_estimate(first_stop_with_coordinates_end.location.distance(last_stop_with_coordinates_end.location) * 100)
                 }]

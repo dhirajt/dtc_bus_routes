@@ -142,6 +142,7 @@ class TripLegSerializer(serializers.Serializer):
     route = RouteBasicSerializer()
     start_stage = StageBasicSerializer()
     end_stage = StageBasicSerializer()
+    direction = StageBasicSerializer()
     num_stops = serializers.IntegerField()
     stops = serializers.ListField(child=StageBasicSerializer())
     fare = serializers.IntegerField()
