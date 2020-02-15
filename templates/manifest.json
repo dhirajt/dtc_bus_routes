@@ -1,0 +1,13 @@
+{
+  "name": "DTC Bus Routes",
+  "short_name": "DTC Bus Routes",
+  "start_url": "/",
+  "display": "standalone",
+  "prefer_related_applications": true,
+  "related_applications": [
+    {
+      "platform": "play",
+      "id": "in.dtcbusroutes.app"
+    }
+  ]
+}

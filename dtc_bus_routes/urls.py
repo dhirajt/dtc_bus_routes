@@ -41,6 +41,7 @@ urlpatterns = [
     url(r'^$', TemplateView.as_view(template_name="home.html"), name='home'),
     url(r'^robots\.txt$', TemplateView.as_view(template_name='robots.txt', content_type='text/plain'), name='robots'),
     url(r'^ads\.txt$', TemplateView.as_view(template_name='ads.txt', content_type='text/plain'), name='ads'),
+    url(r'^manifest\.json$', TemplateView.as_view(template_name='manifest.json', content_type='application/json'), name='manifest'),
     url(r'^privacy/policy/$', TemplateView.as_view(template_name='privacypolicy.txt', content_type='text/plain'), name='privacypolicy'),
 
     url(r'^bus/route/search/$',search_by_stage,name='search_by_stage'),

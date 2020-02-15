@@ -26,17 +26,17 @@
     <title>{% block title %}DTC Bus Routes{% endblock %}</title>
 
     {% block meta_tags %}
-    <meta name="description" content="DTC Bus Routes makes it easier for you to commute in Delhi. It provides you the updated dtc bus routes and timings.">
-    <meta name="keywords" content="dtc, bus, delhi bus, bus routes, delhi bus route,  delhi bus service, dtc bus, dtc bus service, dtc routes, delhi buses, delhi bus list, delhi bus timings, delhi bus details, delhi bus route details, delhi transport corporation, delhi bus banner, bus in delhi, bus for delhi, bus for south delhi, bus for north delhi, bus for east delhi, buses in delhi,  delhi bus details, delhi bus route finder, delhi bus route no, delhi bus details, delhi bus route chart, delhi bus route search">
+    <meta name="description" content="Find detailed bus routes & directions on how to get to any place with DTC & Delhi Transit buses in Delhi. Get updated dtc bus routes, timings, fare and service alerts. Android app on Play Store : https://play.google.com/store/apps/details?id=in.dtcbusroutes.app">
+    <meta name="keywords" content="dtc, bus, delhi bus, bus routes, delhi bus route,  delhi bus service, dtc bus, dtc bus service, dtc routes, delhi buses, delhi bus list, delhi bus timings, delhi bus details, delhi bus route details, delhi transport corporation, dtc bus timing, bus in delhi, bus for delhi, delhi bus route map, buses in delhi, delhi bus app, dtc bus android app, delhi bus route no, delhi bus details, delhi bus route chart, delhi bus route search">
 
     <meta itemprop="name" content="DTC Bus Routes">
-    <meta itemprop="description" content="DTC Bus Routes makes it easier for you to commute in Delhi. It provides you the updated dtc bus routes and timings.">
+    <meta itemprop="description" content="Find detailed bus routes & directions on how to get to any place with DTC & Delhi Transit buses in Delhi. Get updated dtc bus routes, timings, fare and service alerts. Android app on Play Store : https://play.google.com/store/apps/details?id=in.dtcbusroutes.app">
 
     <meta property="og:title" content="DTC Bus Routes" />
-    <meta property="og:description" content="DTC Bus Routes makes it easier for you to commute in Delhi. It provides you the updated dtc bus routes and timings." />
+    <meta property="og:description" content="Find detailed bus routes & directions on how to get to any place with DTC & Delhi Transit buses in Delhi. Get updated dtc bus routes, timings, fare and service alerts. Android app on Play Store : https://play.google.com/store/apps/details?id=in.dtcbusroutes.app" />
 
     <meta name="twitter:title" content="DTC Bus Routes">
-    <meta name="twitter:description" content="DTC Bus Routes makes it easier for you to commute in Delhi. It provides you the updated dtc bus routes and timings.">
+    <meta name="twitter:description" content="Find detailed bus routes & directions on how to get to any place with DTC & Delhi Transit buses in Delhi. Get updated dtc bus routes, timings, fare and service alerts. Android app on Play Store : https://play.google.com/store/apps/details?id=in.dtcbusroutes.app">
     {% endblock %}
 
     <link href="{{ STATIC_URL }}css/modern.css" rel="stylesheet">
@@ -75,6 +75,7 @@
     </head>
 
     {% block css %}
+    <link rel="manifest" href="/manifest.json">
     <style>
       .container {
         height: 100%;
