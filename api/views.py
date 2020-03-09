@@ -30,6 +30,9 @@ from django.contrib.gis.geos import Polygon, Point
 
 from django.conf import settings
 from django.contrib.gis.db.models.functions import Distance
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
+from django.views.decorators.vary import vary_on_cookie
 from geopy.distance import distance
 from busroutes.models import Stage, Route, StageSequence
 from .responses import BusRoutesStandardResponse
@@ -189,6 +192,8 @@ def route_list(request):
         RouteBasicSerializer)
     return response
 
+@cache_page(60*60*24)
+@vary_on_cookie
 @api_view(['GET'])
 def nearby_route(request):
     """
@@ -250,6 +255,8 @@ def nearby_route(request):
     serializer = NearbyRouteSearializer(data, many=True, context={'request': request})
     return BusRoutesStandardResponse(serializer.data)
 
+@cache_page(60*60*24)
+@vary_on_cookie
 @api_view(['GET'])
 def route_details(request,pk):
     """
@@ -278,6 +285,8 @@ def route_details(request,pk):
 
     return BusRoutesStandardResponse(serializer.data)
 
+@cache_page(60*60*24)
+@vary_on_cookie
 @api_view(['GET'])
 def route_planner(request):
     """
