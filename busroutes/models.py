@@ -2,6 +2,7 @@
 from django.db import models
 from django.contrib.gis.db import models as geomodels
 from django.contrib.gis.geos import Point
+from django.contrib.postgres.fields import JSONField
 from django.utils import timezone
 from django.urls import reverse
 
@@ -12,12 +13,12 @@ from geoposition.fields import GeopositionField
 class Stage(models.Model):
     name = models.CharField(max_length=64)
     name_slug = models.SlugField(max_length=100)
-    location = geomodels.PointField(default=Point(0,0, srid=4326),srid=4326)
+    location = geomodels.PointField(default=Point(0, 0, srid=4326), srid=4326)
     coordinates = GeopositionField()
     uid = models.CharField(max_length=10,blank=True,default='')
     last_modified = models.DateTimeField(auto_now=True)
 
-    aliases = TaggableManager(verbose_name='aliases',blank=True)
+    aliases = TaggableManager(verbose_name='aliases', blank=True)
     
     class Meta:
         verbose_name = "Stage"
@@ -124,3 +125,19 @@ class StageSequence(models.Model):
 
     def __str__(self):
         return "Bus %s - %s. %s" % (self.route.name,str(self.sequence),str(self.stage.name))
+
+
+class MetroStation(models.Model):
+    name = models.CharField(max_length=64)
+    name_hindi = models.CharField(max_length=64)
+    wiki_link = models.URLField()
+    station_details = JSONField()
+    location = geomodels.PointField(default=Point(0, 0, srid=4326), srid=4326)
+    notes = models.TextField(max_length=1000)
+
+    class Meta:
+        verbose_name = "Metro Station"
+        verbose_name_plural = "Metro Stations"
+
+    def __str__(self):
+        return self.name

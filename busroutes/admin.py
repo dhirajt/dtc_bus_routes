@@ -4,7 +4,7 @@ from django.contrib.gis.admin import OSMGeoAdmin
 from django.utils.safestring import mark_safe
 from django.urls import reverse
 
-from busroutes.models import Route, Stage, StageSequence
+from busroutes.models import Route, Stage, StageSequence, MetroStation
 
 
 class StageAdmin(OSMGeoAdmin):
@@ -55,8 +55,15 @@ class RouteAdmin(admin.ModelAdmin):
             instance.get_absolute_url())
         return mark_safe(response)
     show_url.short_description = "URL"
+
+class MetroStationAdmin(OSMGeoAdmin):
+    list_display = ('name','name_hindi', 'location', 'wiki_link', 'notes', 'station_details')
+    search_fields = ['name', 'name_hindi', 'location', 'wiki_link', 'notes', 'station_details']
+
+    ordering = ('name',)
     
 admin.site.register(Route,RouteAdmin)
 admin.site.register(Stage,StageAdmin)
 admin.site.register(StageSequence,StageSequenceAdmin)
+admin.site.register(MetroStation,MetroStationAdmin)
 
