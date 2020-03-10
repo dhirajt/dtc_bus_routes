@@ -9,6 +9,29 @@ from django.urls import reverse
 from taggit.managers import TaggableManager
 from geoposition.fields import GeopositionField
 
+class MetroStation(models.Model):
+    name = models.CharField(max_length=64)
+    name_hindi = models.CharField(max_length=64)
+    wiki_link = models.URLField()
+    station_details = JSONField()
+    location = geomodels.PointField(default=Point(0, 0, srid=4326), srid=4326)
+    notes = models.TextField(max_length=1000)
+
+    class Meta:
+        verbose_name = "Metro Station"
+        verbose_name_plural = "Metro Stations"
+
+    def __str__(self):
+        return self.name
+
+    @property
+    def latitude(self):
+        return self.location.y
+
+    @property
+    def longitude(self):
+        return self.location.x
+
 
 class Stage(models.Model):
     name = models.CharField(max_length=64)
@@ -17,6 +40,7 @@ class Stage(models.Model):
     coordinates = GeopositionField()
     uid = models.CharField(max_length=10,blank=True,default='')
     last_modified = models.DateTimeField(auto_now=True)
+    metro_stations = models.ManyToManyField(MetroStation)
 
     aliases = TaggableManager(verbose_name='aliases', blank=True)
     
@@ -125,19 +149,3 @@ class StageSequence(models.Model):
 
     def __str__(self):
         return "Bus %s - %s. %s" % (self.route.name,str(self.sequence),str(self.stage.name))
-
-
-class MetroStation(models.Model):
-    name = models.CharField(max_length=64)
-    name_hindi = models.CharField(max_length=64)
-    wiki_link = models.URLField()
-    station_details = JSONField()
-    location = geomodels.PointField(default=Point(0, 0, srid=4326), srid=4326)
-    notes = models.TextField(max_length=1000)
-
-    class Meta:
-        verbose_name = "Metro Station"
-        verbose_name_plural = "Metro Stations"
-
-    def __str__(self):
-        return self.name

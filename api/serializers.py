@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from rest_framework import serializers
-from busroutes.models import Stage, Route, StageSequence
+from busroutes.models import Stage, Route, StageSequence, MetroStation
 
 
 class ETASerializer(serializers.Serializer):
@@ -27,17 +27,25 @@ class VehicleSerializer(ETASerializer):
     vehicle_number = serializers.CharField(max_length=15)
 
 
+class MetroStationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MetroStation
+        fields = ('name', 'name_hindi', 'wiki_link', 'station_details', 'notes', 'latitude', 'longitude')
+
 class StageBasicSerializer(serializers.HyperlinkedModelSerializer):
     url = serializers.HyperlinkedIdentityField(view_name='stage_details')
+    metro_stations = MetroStationSerializer(read_only=True, many=True)
+
     class Meta:
         model = Stage
-        fields = ('id', 'name', 'url', 'latitude', 'longitude')
+        fields = ('id', 'name', 'url', 'latitude', 'longitude', 'url', 'metro_stations')
 
 class StageAdvancedSerializer(serializers.HyperlinkedModelSerializer):
     url = serializers.HyperlinkedIdentityField(view_name='stage_details')
     bus_count = serializers.IntegerField(source='route_count')
     distance = serializers.SerializerMethodField()
     routes = serializers.SerializerMethodField()
+    metro_stations = MetroStationSerializer(read_only=True, many=True)
 
     def get_distance(self, obj):
         if not getattr(obj, 'distance', None):
@@ -51,7 +59,7 @@ class StageAdvancedSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Stage
-        fields = ('id', 'name', 'name_slug', 'latitude', 'longitude', 'url', 'bus_count', 'distance', 'routes')
+        fields = ('id', 'name', 'name_slug', 'latitude', 'longitude', 'url', 'bus_count', 'distance', 'routes', 'metro_stations')
 
 
 class StageETASerializer(serializers.HyperlinkedModelSerializer):
@@ -87,7 +95,7 @@ class RouteAdvancedSerializer(serializers.HyperlinkedModelSerializer):
     start_stage = StageBasicSerializer()
     end_stage = StageBasicSerializer()
 
-    stages = StageAdvancedSerializer(many=True)
+    stages = StageBasicSerializer(many=True)
 
     class Meta:
         model = Route
@@ -112,7 +120,7 @@ class RouteAdvancedETASerializer(serializers.HyperlinkedModelSerializer):
         fields = ('id', 'name', 'frequency', 'url', 'start_stage','end_stage','stages', 'vehicle_list')
 
 
-class NearbyRouteStageSearializer(serializers.Serializer):
+class NearbyRouteStageSerializer(serializers.Serializer):
     stage = serializers.CharField(max_length=100)
     stage_id = serializers.IntegerField()
 
@@ -122,9 +130,9 @@ class NearbyRouteStageSearializer(serializers.Serializer):
     distance = serializers.DecimalField(max_digits=10, decimal_places=3, coerce_to_string=False, allow_null=True)
     bus_count = serializers.IntegerField()
 
-class NearbyRouteSearializer(serializers.Serializer):
+class NearbyRouteSerializer(serializers.Serializer):
     class StageListSerializer(serializers.ListSerializer):
-        child = NearbyRouteStageSearializer()
+        child = NearbyRouteStageSerializer()
 
     route = serializers.CharField(max_length=100)
     route_id = serializers.IntegerField()

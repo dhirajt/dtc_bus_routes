@@ -6,13 +6,30 @@ from django.urls import reverse
 
 from busroutes.models import Route, Stage, StageSequence, MetroStation
 
+class MetroStationsInline(admin.TabularInline):
+    model = Stage.metro_stations.through
+
+class MetroStationAdmin(OSMGeoAdmin):
+    inlines = [
+        MetroStationsInline,
+    ]
+
+    list_display = ('name','name_hindi', 'location', 'wiki_link', 'notes', 'station_details')
+    search_fields = ['name', 'name_hindi', 'location', 'wiki_link', 'notes', 'station_details']
+
+    ordering = ('name',)
 
 class StageAdmin(OSMGeoAdmin):
+    inlines = [
+        MetroStationsInline,
+    ]
+
     list_display = ('name','name_slug','coordinates', 'location')
     search_fields = ['name', 'name_slug', 'coordinates', 'location']
     prepopulated_fields = {'name_slug': ('name',)}
 
     ordering = ('name',)
+    exclude = ('metro_stations',)
 
 class StageSequenceAdmin(admin.ModelAdmin):
     list_display = ('id', 'route', 'stage', 'sequence',)
@@ -56,11 +73,6 @@ class RouteAdmin(admin.ModelAdmin):
         return mark_safe(response)
     show_url.short_description = "URL"
 
-class MetroStationAdmin(OSMGeoAdmin):
-    list_display = ('name','name_hindi', 'location', 'wiki_link', 'notes', 'station_details')
-    search_fields = ['name', 'name_hindi', 'location', 'wiki_link', 'notes', 'station_details']
-
-    ordering = ('name',)
     
 admin.site.register(Route,RouteAdmin)
 admin.site.register(Stage,StageAdmin)

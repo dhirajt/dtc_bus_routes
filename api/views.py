@@ -8,11 +8,11 @@ import uuid
 
 from .aesencryption import AesCrypt256
 
-from collections import OrderedDict
+from collections import OrderedDict, Counter
 from .serializers import (StageBasicSerializer, StageAdvancedSerializer,
     RouteBasicSerializer, RouteAdvancedETASerializer, StageETASerializer,
     StageETAListSerializer, VehicleSerializer, RouteAdvancedSerializer,
-    NearbyRouteSearializer, RoutePlannerSerializer)
+    NearbyRouteSerializer, RoutePlannerSerializer)
 
 from rest_framework.request import Request
 from rest_framework.exceptions import NotFound, ParseError, ValidationError
@@ -123,9 +123,10 @@ def stage_list(request):
 
     stages = None
     if location:
-        stages = Stage.objects.filter(filter_expression).annotate(distance=Distance('location', location)).order_by("distance")
+        stages = Stage.objects.filter(filter_expression).prefetch_related('metro_stations').annotate(
+            distance=Distance('location', location)).order_by("distance")
     else:
-        stages = Stage.objects.filter(filter_expression).order_by('pk')
+        stages = Stage.objects.filter(filter_expression).prefetch_related('metro_stations').order_by('pk')
 
     response = get_paginated_response(
         stages,
@@ -219,8 +220,18 @@ def nearby_route(request):
         max(ne_latlng[1], sw_latlng[1]),max(ne_latlng[0], sw_latlng[0])))
 
     route_sequences = list(StageSequence.objects.filter(
-        stage__location__contained=polygon).values('stage__location', 'stage__name', 'stage__id', 
+        stage__location__contained=polygon).select_related().prefetch_related().values('stage__location', 'stage__name', 'stage__id', 
             'route__name', 'route__id', 'route__route_type', 'route__start_stage__name', 'route__end_stage__name'))
+
+    stage_ids = set([])
+    route_ids = set([])
+
+    for route_seq in route_sequences:
+        stage_ids.add(route_seq['stage__id'])
+        route_ids.add(route_seq['route__id'])
+
+    bus_counts = Counter(StageSequence.objects.filter(stage_id__in=stage_ids).values_list('stage_id', flat=True))
+    route_counts = Counter(StageSequence.objects.filter(route_id__in=route_ids).values_list('route_id', flat=True))
 
     nearby_routes = {}
     nearby_stages = {}
@@ -235,7 +246,7 @@ def nearby_route(request):
                 'longitude': route_seq['stage__location'].coords[0],
                 #'distance': distance(reversed(route_seq['stage__location'].coords), reversed(location.coords)).meters,
                 'distance' : route_seq['stage__location'].distance(location) * 100000 if location else None,
-                'bus_count': StageSequence.objects.filter(stage_id=route_seq['stage__id']).count()
+                'bus_count': bus_counts[route_seq['stage__id']]
             }
         if route_seq['route__id'] not in nearby_routes:
             nearby_routes[route_seq['route__id']] = {
@@ -244,7 +255,7 @@ def nearby_route(request):
                 'start_stage': route_seq['route__start_stage__name'],
                 'end_stage': route_seq['route__end_stage__name'],
                 'route_type': route_types[route_seq['route__route_type']],
-                'stage_count': StageSequence.objects.filter(route_id=route_seq['route__id']).count(),
+                'stage_count': route_counts[route_seq['route__id']],
                 'stages': []
             }
         nearby_routes[route_seq['route__id']]['stages'].append(nearby_stages[route_seq['stage__id']])
@@ -252,7 +263,7 @@ def nearby_route(request):
 
     data = sorted(list(nearby_routes.values()), key=lambda item: min([i['distance'] for i in item['stages']]))
 
-    serializer = NearbyRouteSearializer(data, many=True, context={'request': request})
+    serializer = NearbyRouteSerializer(data, many=True, context={'request': request})
     return BusRoutesStandardResponse(serializer.data)
 
 @cache_page(60*60*24)
@@ -275,7 +286,7 @@ def route_details(request,pk):
     #     context={'request': request})
 
     try:
-        route = Route.objects.get(pk=pk,is_active=True)
+        route = Route.objects.prefetch_related('stages').get(pk=pk,is_active=True)
     except Route.DoesNotExist:
         raise NotFound()
 
