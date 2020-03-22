@@ -42,6 +42,7 @@
     <link href="{{ STATIC_URL }}css/modern.css" rel="stylesheet">
     <link href="{{ STATIC_URL }}css/modern-responsive.css" rel="stylesheet">
     <link href="{{ STATIC_URL }}css/jquery.autocomplete.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/overhang@1.0.5/dist/overhang.min.css" rel="stylesheet">
 
     <script>
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -94,6 +95,10 @@
 
       #header {
         left: 80px;
+      }
+
+      .page-header {
+        margin-top: 50px;
       }
 
       #footer{
@@ -233,6 +238,10 @@
       .play-button {
         width: 150px;
       }
+
+      .overhang-message {
+        font-size: 15px;
+      }
     </style>
     {% endblock %}
 
@@ -310,6 +319,7 @@
         <script type="text/javascript" src="{{ STATIC_URL }}js/tile-drag.js"></script>-->
         <script type="text/javascript" src="{{ STATIC_URL }}js/dialog.js"></script>
         <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.autocomplete.min.js"></script>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/overhang@1.0.5/dist/overhang.min.js"></script>
 
         {% block js %}
         <script type="text/javascript">
@@ -333,6 +343,13 @@
               "inappropriate ads. If you find an inappropriate ad, please note the name of the <br />"+
               "product or website URL (better yet, provide us a screenshot), and send us the <br />"+
               "information at <a href='mailto:admin@dtcbusroutes.in'>admin@dtcbusroutes.in</a>.")
+        });
+
+        $("body").overhang({
+          type: "error",
+          html: true,
+          message: 'Click <a href="https://www.facebook.com/341497519286530/posts/2388713064564955/" style="font-family: Roboto,sans-serif;text-decoration: underline;">here</a> for Delhi lockdown and COVID-19 prevention updates.',
+          closeConfirm: true
         });
 
         !function (d, s, id) {
