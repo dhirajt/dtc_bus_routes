@@ -69,7 +69,7 @@
       "dismiss":"Got it!",
       "learnMore":"click here.",
       "link":"http://www.whatarecookies.com/",
-      "theme":"dark-top"};
+      "theme":"dark-bottom"};
     </script>
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/1.0.9/cookieconsent.min.js"></script>
     <!-- End Cookie Consent plugin -->
@@ -223,11 +223,19 @@
         #header {
           left: 0px;
         }
+
+        .page-header {
+          margin-top: 70px;
+        }
       }
 
       @media (max-width: 979px) and (min-width: 768px) {
           #header {
             left: 62px;
+          }
+
+          .page-header {
+            margin-top: 70px;
           }
       }
 
@@ -323,6 +331,13 @@
 
         {% block js %}
         <script type="text/javascript">
+
+        $("body").overhang({
+          type: "error",
+          html: true,
+          message: 'Click <a href="https://www.facebook.com/341497519286530/posts/2388713064564955/" style="font-family: Roboto,sans-serif;text-decoration: underline;">here</a> for Delhi lockdown and COVID-19 prevention updates.',
+        });
+
         function func_dialog(title,message) {
             $.Dialog({
                 'title': title,
@@ -335,6 +350,7 @@
                 }
             });
         }
+
         $("#ad_pitch").on( "click", function() {
           func_dialog(
               "Why ads?",
@@ -343,13 +359,6 @@
               "inappropriate ads. If you find an inappropriate ad, please note the name of the <br />"+
               "product or website URL (better yet, provide us a screenshot), and send us the <br />"+
               "information at <a href='mailto:admin@dtcbusroutes.in'>admin@dtcbusroutes.in</a>.")
-        });
-
-        $("body").overhang({
-          type: "error",
-          html: true,
-          message: 'Click <a href="https://www.facebook.com/341497519286530/posts/2388713064564955/" style="font-family: Roboto,sans-serif;text-decoration: underline;">here</a> for Delhi lockdown and COVID-19 prevention updates.',
-          closeConfirm: true
         });
 
         !function (d, s, id) {
