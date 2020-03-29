@@ -266,7 +266,7 @@ def nearby_route(request):
     serializer = NearbyRouteSerializer(data, many=True, context={'request': request})
     return BusRoutesStandardResponse(serializer.data)
 
-@cache_page(60*60*24)
+@cache_page(60*60*24*5)
 @vary_on_cookie
 @api_view(['GET'])
 def route_details(request,pk):
@@ -296,7 +296,7 @@ def route_details(request,pk):
 
     return BusRoutesStandardResponse(serializer.data)
 
-@cache_page(60*60*24)
+@cache_page(60*60*24*5)
 @vary_on_cookie
 @api_view(['GET'])
 def route_planner(request):

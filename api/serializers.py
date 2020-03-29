@@ -95,7 +95,7 @@ class RouteAdvancedSerializer(serializers.HyperlinkedModelSerializer):
     start_stage = StageBasicSerializer()
     end_stage = StageBasicSerializer()
 
-    stages = StageBasicSerializer(many=True)
+    stages = StageAdvancedSerializer(many=True)
 
     class Meta:
         model = Route
