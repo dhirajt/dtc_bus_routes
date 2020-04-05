@@ -10,6 +10,7 @@ urlpatterns = [
     url(r'^routes/$', views.route_list, name='route_list'),
     url(r'^route/(?P<pk>[0-9]+)/$', views.route_details, name='route_details'),
     url(r'^route/planner/$', views.route_planner, name='route_planner'),
+    url(r'^route/activity/feedback/(?P<route>[0-9]+)/$', views.route_activity_feedback, name='route_activity_feedback'),
     url(r'^search/route/$', views.route_search, name='route_search'),
     url(r'^nearby/route/$', views.nearby_route, name='nearby_route'),
 

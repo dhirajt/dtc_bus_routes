@@ -134,6 +134,18 @@ class Route(models.Model):
     def __str__(self):
         return self.name
 
+class RouteActivityFeedback(models.Model):
+    RESPONSE_TYPE = (
+        (0, "YES"),
+        (1, "NO"),
+        (2, "DON'T KNOW"),
+    )
+    route = models.ForeignKey(Route, on_delete=models.DO_NOTHING)
+    response_type = models.IntegerField(choices=RESPONSE_TYPE, default=2)
+    count = models.IntegerField()
+
+    class Meta:
+        unique_together = [['route', 'response_type']]
 
 class StageSequence(models.Model):
     route = models.ForeignKey(Route, on_delete=models.DO_NOTHING)

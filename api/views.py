@@ -12,7 +12,7 @@ from collections import OrderedDict, Counter
 from .serializers import (StageBasicSerializer, StageAdvancedSerializer,
     RouteBasicSerializer, RouteAdvancedETASerializer, StageETASerializer,
     StageETAListSerializer, VehicleSerializer, RouteAdvancedSerializer,
-    NearbyRouteSerializer, RoutePlannerSerializer)
+    NearbyRouteSerializer, RoutePlannerSerializer, RouteActivityFeedbackSerializer)
 
 from rest_framework.request import Request
 from rest_framework.exceptions import NotFound, ParseError, ValidationError
@@ -23,7 +23,7 @@ from rest_framework.response import Response
 from rest_framework.reverse import reverse
 from rest_framework.settings import api_settings
 
-from django.db.models import Q
+from django.db.models import F, Q
 from django.db.models import Prefetch
 
 from django.contrib.gis.geos import Polygon, Point
@@ -34,7 +34,7 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 from django.views.decorators.vary import vary_on_cookie
 from geopy.distance import distance
-from busroutes.models import Stage, Route, StageSequence
+from busroutes.models import Stage, Route, StageSequence, RouteActivityFeedback
 from .responses import BusRoutesStandardResponse
 
 
@@ -295,6 +295,37 @@ def route_details(request,pk):
         context={'request': request})
 
     return BusRoutesStandardResponse(serializer.data)
+
+@api_view(['GET', 'POST'])
+def route_activity_feedback(request, route):
+    """
+    Sets/Returns all the feedback collected for a route.
+    """
+    try:
+        route = Route.objects.get(id=route)
+    except Route.DoesNotExist:
+        raise NotFound()
+
+    if request.method == 'GET':
+        try:
+            feedback_list = RouteActivityFeedback.objects.filter(route=route)
+        except RouteActivityFeedback.DoesNotExist:
+            return NotFound()
+        serializer = RouteActivityFeedbackSerializer(
+            feedback_list, many=True, context={'request': request})
+        return BusRoutesStandardResponse(serializer.data)
+
+    elif request.method == 'POST':
+        response_type = request.data.get('response_type', -1)
+
+        if response_type > -1:
+            feedback, created = RouteActivityFeedback.objects.get_or_create(
+                route=route, response_type=response_type, defaults={"count" : 0})
+            feedback.count = F('count') + 1
+            feedback.save()
+        else:
+            return ParseError()
+        return BusRoutesStandardResponse(None)
 
 @cache_page(60*60*24*5)
 @vary_on_cookie
@@ -746,7 +777,7 @@ def get_fare_estimate(distance):
     else:
         return 15
 
-@api_view(('GET',))
+@api_view(('GET','POST'))
 @permission_classes((AllowAny, ))
 def api_root(request, format=None):
     return Response(OrderedDict([
@@ -756,6 +787,7 @@ def api_root(request, format=None):
         ('routes', reverse('route_list', request=request, format=format)),
         ('route_planner', reverse('route_planner', request=request, format=format)),
         ('route', reverse('route_details', request=request, kwargs={'pk':1}, format=format)),
+        ('route_activity_feedback', reverse('route_activity_feedback', request=request, kwargs={'route':1}, format=format)),
         ('route_search', reverse('route_search', request=request, format=format)),
         ('stage_eta', reverse('stage_eta', request=request, format=format)),
         ('route_eta', reverse('route_eta', request=request, format=format)),

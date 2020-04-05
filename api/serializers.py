@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from rest_framework import serializers
-from busroutes.models import Stage, Route, StageSequence, MetroStation
+from busroutes.models import Stage, Route, StageSequence, MetroStation, RouteActivityFeedback
 
 
 class ETASerializer(serializers.Serializer):
@@ -118,6 +118,13 @@ class RouteAdvancedETASerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Route
         fields = ('id', 'name', 'frequency', 'url', 'start_stage','end_stage','stages', 'vehicle_list')
+
+class RouteActivityFeedbackSerializer(serializers.ModelSerializer):
+    route = RouteBasicSerializer()
+
+    class Meta:
+        model = RouteActivityFeedback
+        fields = '__all__'
 
 
 class NearbyRouteStageSerializer(serializers.Serializer):
