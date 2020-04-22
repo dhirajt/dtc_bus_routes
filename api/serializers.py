@@ -30,7 +30,7 @@ class VehicleSerializer(ETASerializer):
 class MetroStationSerializer(serializers.ModelSerializer):
     class Meta:
         model = MetroStation
-        fields = ('name', 'name_hindi', 'wiki_link', 'station_details', 'notes', 'latitude', 'longitude')
+        fields = ('id', 'name', 'name_hindi', 'wiki_link', 'station_details', 'notes', 'latitude', 'longitude')
 
 class StageBasicSerializer(serializers.HyperlinkedModelSerializer):
     url = serializers.HyperlinkedIdentityField(view_name='stage_details')
