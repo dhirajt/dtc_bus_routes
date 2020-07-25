@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
+import datetime
 from django.contrib import admin
 from django.contrib.gis.admin import OSMGeoAdmin
 from django.utils.safestring import mark_safe
 from django.urls import reverse
 
-from busroutes.models import Route, Stage, StageSequence, MetroStation
+from busroutes.models import (Route, Stage, StageSequence, MetroStation, 
+    FirebaseNotification, FirebaseTopicSubscription)
 
 class MetroStationsInline(admin.TabularInline):
     model = Stage.metro_stations.through
@@ -73,9 +75,42 @@ class RouteAdmin(admin.ModelAdmin):
         return mark_safe(response)
     show_url.short_description = "URL"
 
+
+class FirebaseNotificationAdmin(admin.ModelAdmin):
+    list_display = ('data', 'notification', 'fcm_options', 'tokens', 'created_at')
+    search_fields = ['data', 'notification', 'fcm_options', 'tokens' ]
+    ordering = ('created_at',)
+
+    def get_changeform_initial_data(self, request):
+        return {
+            'data': {
+                'NotificationIntentType': 'WEB/APP_HOME',
+                'URL': '',
+                'title': '',
+                'body': '',
+                'image_url': ''
+            },
+            'notification': {
+                'title' : '',
+                'body' : '',
+                'image_url': '',
+            },
+            'topic' : '',
+            'fcm_options' : {
+                'analytics_label' : 'notif_' + datetime.datetime.now().strftime('%d%b%Y_%H%M%SPST')
+            },
+            'tokens': []
+        }
+
+class FirebaseTopicSubscriptionAdmin(admin.ModelAdmin):
+    list_display = ('instance_id', 'topic', 'created_at')
+    search_fields = ['instance_id', 'topic', 'created_at']
+    ordering = ('instance_id', 'created_at')
+
     
 admin.site.register(Route,RouteAdmin)
 admin.site.register(Stage,StageAdmin)
 admin.site.register(StageSequence,StageSequenceAdmin)
 admin.site.register(MetroStation,MetroStationAdmin)
-
+admin.site.register(FirebaseNotification, FirebaseNotificationAdmin)
+admin.site.register(FirebaseTopicSubscription, FirebaseTopicSubscriptionAdmin)

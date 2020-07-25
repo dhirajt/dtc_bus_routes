@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import datetime
 from django.db import models
 from django.contrib.gis.db import models as geomodels
 from django.contrib.gis.geos import Point
@@ -161,3 +162,37 @@ class StageSequence(models.Model):
 
     def __str__(self):
         return "Bus %s - %s. %s" % (self.route.name,str(self.sequence),str(self.stage.name))
+
+class FirebaseNotification(models.Model):
+    data = JSONField()
+    notification = JSONField()
+    fcm_options = JSONField()
+
+    channel_id = models.TextField(max_length=1000, blank=True, null=True)
+    topic = models.CharField(max_length=250, blank=True, null=True)
+
+    tokens = JSONField(blank=True, null=True)
+
+    sent = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = "Firebase Notification"
+        verbose_name_plural = "Firebase Notifications"
+
+    def __str__(self):
+        return "Firebase Notification - %s" % (self.created_at.strftime('%d %b %Y'))
+
+class FirebaseTopicSubscription(models.Model):
+    instance_id = models.CharField(max_length=1000)
+    topic = models.CharField(max_length=250)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = "Firebase Topic Subscription"
+        verbose_name_plural = "Firebase Topic Subscription"
+
+        unique_together = (('instance_id', 'topic'),)
+
+    def __str__(self):
+        return "Firebase Topic Subscription - %s...%s" % (self.instance_id[:20],self.instance_id[:10])

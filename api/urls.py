@@ -13,6 +13,7 @@ urlpatterns = [
     url(r'^route/activity/feedback/(?P<route>[0-9]+)/$', views.route_activity_feedback, name='route_activity_feedback'),
     url(r'^search/route/$', views.route_search, name='route_search'),
     url(r'^nearby/route/$', views.nearby_route, name='nearby_route'),
+    url(r'^firebase/topic/subscriptions/$', views.topic_subscriptions, name='topic_subscriptions'),
 
     url(r'^stage/eta/$', views.stage_eta, name='stage_eta'),
     url(r'^route/eta/$', views.route_eta, name='route_eta'),

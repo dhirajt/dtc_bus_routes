@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from rest_framework import serializers
-from busroutes.models import Stage, Route, StageSequence, MetroStation, RouteActivityFeedback
+from busroutes.models import (Stage, Route, StageSequence, MetroStation,
+    RouteActivityFeedback, FirebaseTopicSubscription)
 
 
 class ETASerializer(serializers.Serializer):
@@ -33,6 +34,13 @@ class MetroStationSerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'name_hindi', 'wiki_link', 'station_details', 'notes', 'latitude', 'longitude')
 
 class StageBasicSerializer(serializers.HyperlinkedModelSerializer):
+    url = serializers.HyperlinkedIdentityField(view_name='stage_details')
+
+    class Meta:
+        model = Stage
+        fields = ('id', 'name', 'url', 'latitude', 'longitude', 'url')
+
+class StateIntermediateSerializer(serializers.HyperlinkedModelSerializer):
     url = serializers.HyperlinkedIdentityField(view_name='stage_details')
     metro_stations = MetroStationSerializer(read_only=True, many=True)
 
@@ -79,8 +87,8 @@ class RouteBasicSerializer(serializers.HyperlinkedModelSerializer):
     url = serializers.HyperlinkedIdentityField(view_name='route_details')
     route_type = serializers.CharField(source='get_route_type_display')
 
-    start_stage = StageBasicSerializer()
-    end_stage = StageBasicSerializer()
+    start_stage = StateIntermediateSerializer()
+    end_stage = StateIntermediateSerializer()
 
     stage_count = serializers.IntegerField()
 
@@ -92,8 +100,8 @@ class RouteAdvancedSerializer(serializers.HyperlinkedModelSerializer):
     url = serializers.HyperlinkedIdentityField(view_name='route_details')
     route_type = serializers.CharField(source='get_route_type_display')
 
-    start_stage = StageBasicSerializer()
-    end_stage = StageBasicSerializer()
+    start_stage = StateIntermediateSerializer()
+    end_stage = StateIntermediateSerializer()
 
     stages = StageAdvancedSerializer(many=True)
 
@@ -105,8 +113,8 @@ class RouteAdvancedSerializer(serializers.HyperlinkedModelSerializer):
 class RouteAdvancedETASerializer(serializers.HyperlinkedModelSerializer):
     url = serializers.HyperlinkedIdentityField(view_name='route_details')
 
-    start_stage = StageBasicSerializer()
-    end_stage = StageBasicSerializer()
+    start_stage = StateIntermediateSerializer()
+    end_stage = StateIntermediateSerializer()
 
     stages = StageAdvancedSerializer(many=True)
 
@@ -175,3 +183,8 @@ class RoutePlannerSerializer(serializers.Serializer):
     to_stage = StageBasicSerializer()
 
     itineraries = ItinerarySerializer(many=True)
+
+class FirebaseTopicSubscriptionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FirebaseTopicSubscription
+        fields = '__all__'

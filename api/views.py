@@ -12,7 +12,8 @@ from collections import OrderedDict, Counter
 from .serializers import (StageBasicSerializer, StageAdvancedSerializer,
     RouteBasicSerializer, RouteAdvancedETASerializer, StageETASerializer,
     StageETAListSerializer, VehicleSerializer, RouteAdvancedSerializer,
-    NearbyRouteSerializer, RoutePlannerSerializer, RouteActivityFeedbackSerializer)
+    NearbyRouteSerializer, RoutePlannerSerializer, RouteActivityFeedbackSerializer,
+    FirebaseTopicSubscriptionSerializer)
 
 from rest_framework.request import Request
 from rest_framework.exceptions import NotFound, ParseError, ValidationError
@@ -96,6 +97,15 @@ def get_paginated_response(queryset,request,serailizer):
         ])
 
         return BusRoutesStandardResponse(response_data)
+
+@api_view(['POST'])
+def topic_subscriptions(request):
+    if request.method == 'POST':
+        serializer = FirebaseTopicSubscriptionSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return BusRoutesStandardResponse(serializer.data, status=status.HTTP_201_CREATED)
+        return BusRoutesStandardResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET'])
 def stage_list(request):
@@ -791,5 +801,6 @@ def api_root(request, format=None):
         ('route_search', reverse('route_search', request=request, format=format)),
         ('stage_eta', reverse('stage_eta', request=request, format=format)),
         ('route_eta', reverse('route_eta', request=request, format=format)),
-        ('nearby_route', reverse('nearby_route', request=request, format=format))
+        ('nearby_route', reverse('nearby_route', request=request, format=format)),
+        ('topic_subscriptions', reverse('topic_subscriptions', request=request, format=format)),
     ]))
