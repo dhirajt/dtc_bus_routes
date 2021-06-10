@@ -1,4 +1,4 @@
-Django==1.8.12
+Django==2.2.24
 django-environ==0.3.0
 django-geoposition==0.1.5
 psycopg2==2.6.1
