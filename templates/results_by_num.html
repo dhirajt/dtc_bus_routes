@@ -28,9 +28,18 @@
         }
         #stops {
             margin-top: 2%;
-            height: 480px;
+            height: 650px;
             overflow-y:auto;
         }
+        .tile-data-text {
+	    font-weight: bold !important;
+            padding-top: 5px !important;
+	    padding-bottom: 5px !important;
+	}
+	#stops p {
+	    padding-top:5px;
+            padding-bottom:5px;
+	}
         #content, #map {
             margin-top: 40px;
             height:100%;
@@ -49,6 +58,10 @@
             margin-bottom: 5px !important;
         }
 
+	#in-page-ad {
+	    display: none;
+	}
+
         @media (max-width: 480px) {
             #content {
                 margin-top: 40px;
@@ -57,8 +70,17 @@
 
             #map {
                 margin-top: 5px;
-                height: 250px;
+                height: 500px;
             }
+
+	    #in-page-ad {
+		margin-top: 2%;
+	        display: block;
+                height: 50px !important;
+	    }
+	    #vertical_ad {
+                display: none;
+	    }
         }
 
         @media (max-width: 1200px) and (min-width: 768px) {
@@ -95,16 +117,29 @@
                 {% endif %}
                     <div class="tile-content">
                         <b itemscope itemtype="http://schema.org/BusTrip">
-                            Route : <span itemprop="busName busNumber">{{ route.name }}</span> <br/>
-                            Operator: {{ route.get_route_type_display }} <br/>
-                            From : {{ startstage.name }} <br/>
-                            To : {{ endstage.name }} <br />
-                            Total Stops : {{ stops | length }}
+			  <p class="tile-data-text">Route : <span itemprop="busName busNumber">{{ route.name }}</span></p>
+                          <p class="tile-data-text">Operator: {{ route.get_route_type_display }}</p>
+                          <p class="tile-data-text">From : {{ startstage.name }}</p>
+                          <p class="tile-data-text">To : {{ endstage.name }}</p>
+			  <p class="tile-data-text">Total Stops : {{ stops | length }}</p>
                         </b>
                     </div>
                 </div>
             </div>
-
+	    <div id="in-page-ad" class="span4">
+		    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2660771687848747"
+     crossorigin="anonymous"></script>
+<!-- Mobile Ad Fixed -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-2660771687848747"
+     data-ad-slot="4168548596"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+	    </div>
             <div id="stops" class="span4">
                 <b> Stops At: </b> <br /> <br />
                 {% for item in stops %}
