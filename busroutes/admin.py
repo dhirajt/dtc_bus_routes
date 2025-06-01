@@ -26,8 +26,8 @@ class StageAdmin(OSMGeoAdmin):
         MetroStationsInline,
     ]
 
-    list_display = ('name','name_slug','coordinates', 'location')
-    search_fields = ['name', 'name_slug', 'coordinates', 'location']
+    list_display = ('name','name_slug', 'location')
+    search_fields = ['name', 'name_slug', 'location']
     prepopulated_fields = {'name_slug': ('name',)}
 
     ordering = ('name',)
