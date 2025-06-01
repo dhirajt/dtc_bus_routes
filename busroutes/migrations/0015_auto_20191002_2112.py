@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 
 from django.db import migrations, models
 import datetime
-from django.utils.timezone import utc
+from datetime import timezone
 
 
 class Migration(migrations.Migration):
@@ -16,7 +16,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='stage',
             name='last_modified',
-            field=models.DateTimeField(default=datetime.datetime(2019, 10, 2, 15, 42, 53, 417354, tzinfo=utc), auto_now=True),
+            field=models.DateTimeField(default=datetime.datetime(2019, 10, 2, 15, 42, 53, 417354, tzinfo=timezone.utc), auto_now=True),
             preserve_default=False,
         ),
         migrations.AlterField(

@@ -21,10 +21,8 @@ TEMPLATES[0]['OPTIONS']['debug'] = DEBUG
 # Note: This key only used for development and testing.
 SECRET_KEY = env("DJANGO_SECRET_KEY", default='CHANGEME!!!')
 
-GDAL_LIBRARY_PATH = env("GDAL_LIBRARY_PATH")
-GEOS_LIBRARY_PATH = env("GEOS_LIBRARY_PATH")
-
-USE_TZ = False
+# GDAL_LIBRARY_PATH = env("GDAL_LIBRARY_PATH")
+# GEOS_LIBRARY_PATH = env("GEOS_LIBRARY_PATH")
 
 # Mail settings
 # ------------------------------------------------------------------------------
@@ -58,7 +56,6 @@ DEBUG_TOOLBAR_CONFIG = {
 }
 
 DEBUG_TOOLBAR_PANELS = [
-    'ddt_request_history.panels.request_history.RequestHistoryPanel',  # Here it is
     'debug_toolbar.panels.versions.VersionsPanel',
     'debug_toolbar.panels.timer.TimerPanel',
     'debug_toolbar.panels.settings.SettingsPanel',

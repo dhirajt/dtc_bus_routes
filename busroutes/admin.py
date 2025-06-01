@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import datetime
 from django.contrib import admin
-from django.contrib.gis.admin import OSMGeoAdmin
+from django.contrib.gis.admin import GISModelAdmin
 from django.utils.safestring import mark_safe
 from django.urls import reverse
 
@@ -11,7 +11,7 @@ from busroutes.models import (Route, Stage, StageSequence, MetroStation,
 class MetroStationsInline(admin.TabularInline):
     model = Stage.metro_stations.through
 
-class MetroStationAdmin(OSMGeoAdmin):
+class MetroStationAdmin(GISModelAdmin):
     inlines = [
         MetroStationsInline,
     ]
@@ -21,7 +21,7 @@ class MetroStationAdmin(OSMGeoAdmin):
 
     ordering = ('name',)
 
-class StageAdmin(OSMGeoAdmin):
+class StageAdmin(GISModelAdmin):
     inlines = [
         MetroStationsInline,
     ]

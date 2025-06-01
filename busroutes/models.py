@@ -3,7 +3,7 @@ import datetime
 from django.db import models
 from django.contrib.gis.db import models as geomodels
 from django.contrib.gis.geos import Point
-from django.contrib.postgres.fields import JSONField
+from django.db.models import JSONField
 from django.utils import timezone
 from django.urls import reverse
 

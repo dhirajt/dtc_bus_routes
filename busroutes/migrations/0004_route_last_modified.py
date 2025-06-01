@@ -3,8 +3,7 @@ from __future__ import unicode_literals
 
 from django.db import models, migrations
 import datetime
-from django.utils.timezone import utc
-
+from datetime import timezone
 
 class Migration(migrations.Migration):
 
@@ -16,7 +15,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='route',
             name='last_modified',
-            field=models.DateTimeField(default=datetime.datetime(2015, 7, 15, 16, 35, 39, 777710, tzinfo=utc), auto_now=True),
+            field=models.DateTimeField(default=datetime.datetime(2015, 7, 15, 16, 35, 39, 777710, tzinfo=timezone.utc), auto_now=True),
             preserve_default=False,
         ),
     ]

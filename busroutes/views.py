@@ -106,7 +106,7 @@ def ajax_buses_from_here(request):
     return HttpResponse(route_list)
 
 def ajax_bus_number_search(request):
-    if not request.is_ajax():
+    if not request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
         return HttpResponseBadRequest
     query = request.GET.get('q','')
     bus_names = []
@@ -125,7 +125,7 @@ def ajax_bus_number_search(request):
     return HttpResponse("\n".join(bus_names))
 
 def ajax_stage_search(request):
-    if not request.is_ajax():
+    if not request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
         return HttpResponseBadRequest
     query = request.GET.get('q','')
     stages = []
