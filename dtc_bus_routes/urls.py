@@ -35,9 +35,6 @@ sitemaps = {
 
 handler500 = 'busroutes.views.server_error'
 
-print("settings.STATIC_URL : " + settings.STATIC_URL)
-print("settings.STATIC_ROOT : " + settings.STATIC_ROOT)
-print(static(settings.STATIC_URL, document_root=settings.STATIC_ROOT))
 urlpatterns = [
     re_path(r'^api/', include(api_urls)),
     re_path(r'^admin/', admin.site.urls),
