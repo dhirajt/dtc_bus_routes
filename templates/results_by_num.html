@@ -224,10 +224,10 @@ var static_url = "{{ STATIC_URL }}";
         var bus_stops_geojson = [];
 
         {% for item in stops %}
-            {% if not item.coordinates.longitude == 0 and not item.stage.coordinates.latitude == 0 %}
+            {% if not item.stage.location.coords.0 == 0 and not item.stage.location.coords.1 == 0 %}
             bus_route_geojson.features[0].geometry.coordinates.push([
-                {{item.stage.coordinates.longitude}},
-                {{item.stage.coordinates.latitude}}
+                {{item.stage.location.coords.0}},
+                {{item.stage.location.coords.1}}
             ]);
             bus_route_geojson.features[0].properties.coordTimes.push(
                 new Date().getTime()
@@ -237,8 +237,8 @@ var static_url = "{{ STATIC_URL }}";
                 "geometry": {
                     "type": "Point",
                     "coordinates":[
-                        {{item.stage.coordinates.longitude}},
-                        {{item.stage.coordinates.latitude}}
+                        {{item.stage.location.coords.0}},
+                        {{item.stage.location.coords.1}}
                     ]
                 },
                 "properties": {

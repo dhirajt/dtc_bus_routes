@@ -40,7 +40,6 @@ DJANGO_APPS = (
     'django.contrib.gis',
 )
 THIRD_PARTY_APPS = (
-    'geoposition',
     'rest_framework',
     'rest_framework.authtoken',
     'taggit'
@@ -51,8 +50,6 @@ LOCAL_APPS = (
     'busroutes',
     'api'
 )
-
-GEOPOSITION_GOOGLE_MAPS_API_KEY=env('GEOPOSITION_GOOGLE_MAPS_API_KEY')
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
